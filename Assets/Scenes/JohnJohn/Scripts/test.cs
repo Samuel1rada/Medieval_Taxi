@@ -1,23 +1,30 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class test : MonoBehaviour
 {
-    private int owned_cash = 0;  
-    private int salary = 5;
+    public int owned_cash = 0;  
+    public int salary = 5;
 
     public float timeRemaining; 
-    public float amountRemaining = 3;
+    public float amountRemaining = 1;
     public bool timerIsRunning = false;
+
+    public TextMeshProUGUI amount;
+   
 
     public bool onscreen = false;
 
-    [SerializeField] private popup mypopup;  
+    [SerializeField] private popup mypopup;
 
 
-  
+
     void Start()
     {
+        timeRemaining = amountRemaining;
+
+        amount.text = "Money:" + owned_cash.ToString();
 
         OpenPopup();
 
@@ -29,12 +36,13 @@ public class test : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (onscreen == false)
             {
                 owned_cash += salary;
-                mypopup.textMeshPro.text = "Current Cash: " + owned_cash.ToString();
+                mypopup.textMeshPro.text = "Cash gained: " + salary.ToString();
+                amount.text = "Money:" + owned_cash.ToString();
                 //mypopup.gameObject.SetActive(true);  
                 mypopup.animator.SetTrigger("fadein");
                 Debug.Log($"New owned cash: {owned_cash}");
@@ -43,8 +51,7 @@ public class test : MonoBehaviour
             }
             else
             {
-                onscreen = false;
-                mypopup.animator.SetTrigger("fadeout");
+
             }
         }
 
@@ -60,6 +67,8 @@ public class test : MonoBehaviour
                 timeRemaining = amountRemaining;
                 timerIsRunning = false;
                 //mypopup.gameObject.SetActive(false);
+                onscreen = false;
+                mypopup.animator.SetTrigger("fadeout");
             }
         }
     }
