@@ -1,3 +1,4 @@
+using MalbersAnimations;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +17,7 @@ public class Traffic : MonoBehaviour
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        FindStartWaypoint();
     }
 
     void Update()
@@ -23,10 +25,26 @@ public class Traffic : MonoBehaviour
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
             destinationPoint = Random.Range(0, waypoints.Length);
-            agent.SetDestination(waypoints[destinationPoint].position);
+            agent.SetDestination(waypoints[destinationPoint].position);            
         }
     }
 
+    private Transform FindStartWaypoint()
+    {
+        Transform closestWaypoint = null;
+        float minDistance = Mathf.Infinity;
+
+        foreach (Transform waypoint in waypoints)
+        {
+            float distance = Vector3.Distance(agent.transform.position, waypoint.position);
+            if (distance < minDistance)
+            {
+                closestWaypoint = waypoint;
+            }
+        }
+        Debug.Log(closestWaypoint);
+        return closestWaypoint;
+    }
 }
 
 
@@ -35,7 +53,7 @@ public class Traffic : MonoBehaviour
 
     private int startWaypoint;
     private int targetWaypoint;
-    private float[,] distanceMatrix;
+    private float[] distanceMatrix;
     private float[] distance;
     private int[] previous;
     private bool[] visited;
