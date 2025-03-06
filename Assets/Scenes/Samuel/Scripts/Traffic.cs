@@ -7,9 +7,25 @@ using UnityEngine.AI;
 public class Traffic : MonoBehaviour
 {
     [SerializeField] Transform[] waypoints;
-
+    private NavMeshAgent agent;
     private int destinationPoint;
-    private int[] l;
+    private int startpoint;
+    private int[] pathpoints;
+
+
+    private void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+    }
+
+    void Update()
+    {
+        if (!agent.pathPending && agent.remainingDistance < 0.5f)
+        {
+            destinationPoint = Random.Range(0, waypoints.Length);
+            agent.SetDestination(waypoints[destinationPoint].position);
+        }
+    }
 
 }
 
