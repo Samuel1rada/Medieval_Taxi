@@ -6,7 +6,15 @@ using UnityEngine.AI;
 
 public class Traffic : MonoBehaviour
 {
-    [SerializeField] private Transform[] waypoints;
+    [SerializeField] Transform[] waypoints;
+
+    private int destinationPoint;
+    private int[] l;
+
+}
+
+
+/*    [SerializeField] private Transform[] waypoints;
     private NavMeshAgent agent;
 
     private int startWaypoint;
@@ -28,12 +36,12 @@ public class Traffic : MonoBehaviour
 
     void CalculateDistances()
     {
-        int numWaypoints = waypoints.Length;
-        distanceMatrix = new float[numWaypoints, numWaypoints];
+        int numberOfWaypoints = waypoints.Length;
+        distanceMatrix = new float[numberOfWaypoints, numberOfWaypoints];
 
-        for (int i = 0; i < numWaypoints; i++)
+        for (int i = 0; i < numberOfWaypoints; i++)
         {
-            for (int j = 0; j < numWaypoints; j++)
+            for (int j = 0; j < numberOfWaypoints; j++)
             {
                 if (i != j)
                 {
@@ -141,5 +149,4 @@ public class Traffic : MonoBehaviour
         }
         return closestIndex;
 
-    }
-}
+    }*/
