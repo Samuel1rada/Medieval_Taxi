@@ -30,6 +30,7 @@ public class PickUpSystem : MonoBehaviour
     private float tripStartTime;
     private float cooldownEndTime;
 
+    [SerializeField] test poptext;
     void Start()
     {
         if (pickupIndicator == null)
@@ -133,6 +134,7 @@ public class PickUpSystem : MonoBehaviour
         float tripTime = Time.time - tripStartTime;
         float payment = CalculatePayment(tripTime);
         Debug.Log("Passenger dropped off! Trip Time: " + tripTime + ", Payment: " + payment);
+        poptext.owned_cash = poptext.salary;
         isPickupActive = false;
 
         if (pickupIndicator != null)

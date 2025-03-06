@@ -59811,7 +59811,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3152545728324825478, guid: b175fb666070c424fa683bc71cd8dc58, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b175fb666070c424fa683bc71cd8dc58, type: 3}
@@ -91181,11 +91182,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1753485416772967514, guid: 6c62ef2ecb31e924d93904f877accc98, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -307
+      value: -856
       objectReference: {fileID: 0}
     - target: {fileID: 1753485416772967514, guid: 6c62ef2ecb31e924d93904f877accc98, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 214.93558
+      value: 402
       objectReference: {fileID: 0}
     - target: {fileID: 1753485416772967514, guid: 6c62ef2ecb31e924d93904f877accc98, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -107965,6 +107966,7 @@ MonoBehaviour:
   looksMultiplier: 1
   cooldownTime: 5
   timeMultiplier: 2
+  poptext: {fileID: 0}
 --- !u!1 &6800844358562557148
 GameObject:
   m_ObjectHideFlags: 0
