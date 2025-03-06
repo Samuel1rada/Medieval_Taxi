@@ -1,10 +1,11 @@
 using UnityEngine;
 
-public class RagdollTest : MonoBehaviour
+public class Ragdoll : MonoBehaviour
 {
     private Rigidbody[] rigidbodies;
     public Collider specificTrigger; // Assign the specific collider in the inspector
     public string targetTag = "Player"; // The tag of the object that triggers the ragdoll, assignable in the Inspector
+    public bool DebugRagdoll = false; 
 
     void Awake()
     {
@@ -22,7 +23,7 @@ public class RagdollTest : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (DebugRagdoll && Input.GetKeyDown(KeyCode.Space))
         {
             EnableRagdoll();
         }

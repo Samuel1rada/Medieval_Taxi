@@ -19,7 +19,7 @@ public class PickUpSystem : MonoBehaviour
     public float comfortMultiplier = 1f; // Multiplier for comfort (can be adjusted by another script)
     public float looksMultiplier = 1f; // Multiplier for looks (can be adjusted by another script)
     public float cooldownTime = 5f; // Cooldown time before a new job can start
-    public float timeMultiplier = 2f; // Multiplier to increase estimated time
+    public float timeMultiplier = 1.3f; // Multiplier to increase estimated time
 
     private Transform currentPickupPoint;
     private Transform currentDropoffPoint;
