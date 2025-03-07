@@ -17,7 +17,6 @@ public class Traffic : MonoBehaviour
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        FindStartWaypoint();
     }
 
     void Update()
@@ -25,12 +24,13 @@ public class Traffic : MonoBehaviour
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
             destinationPoint = Random.Range(0, waypoints.Length);
-            agent.SetDestination(waypoints[destinationPoint].position);            
+            agent.SetDestination(waypoints[destinationPoint].position);
+            FindStartWaypoint();
         }
     }
 
     private Transform FindStartWaypoint()
-    {
+    { 
         Transform closestWaypoint = null;
         float minDistance = Mathf.Infinity;
 
@@ -39,10 +39,11 @@ public class Traffic : MonoBehaviour
             float distance = Vector3.Distance(agent.transform.position, waypoint.position);
             if (distance < minDistance)
             {
+                minDistance = distance;
                 closestWaypoint = waypoint;
             }
         }
-        Debug.Log(closestWaypoint);
+        Debug.Log("start waypoint is " + closestWaypoint);
         return closestWaypoint;
     }
 }
