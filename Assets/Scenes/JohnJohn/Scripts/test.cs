@@ -6,19 +6,16 @@ public class test : MonoBehaviour
 {
     public int owned_cash = 0;  
     public int salary = 5;
-
     public float timeRemaining; 
     public float amountRemaining = 1;
     public bool timerIsRunning = false;
 
-    public TextMeshProUGUI amount;
-   
-
+    public TextMeshProUGUI amount;   
     public bool onscreen = false;
 
-    [SerializeField] private popup mypopup;
+    [SerializeField] public popup mypopup;
 
-
+    public PickUpSystem pickUpSystem;
 
     void Start()
     {
@@ -36,24 +33,20 @@ public class test : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (onscreen == false)
-            {
-                owned_cash += salary;
-                mypopup.textMeshPro.text = "Cash gained: " + salary.ToString();
-                amount.text = "Money:" + owned_cash.ToString();
-                //mypopup.gameObject.SetActive(true);  
-                mypopup.animator.SetTrigger("fadein");
-                Debug.Log($"New owned cash: {owned_cash}");
-                timerIsRunning = true;
-                onscreen = true;
-            }
-            else
-            {
-
-            }
-        }
+        // if (Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     if (onscreen == false)
+        //     {
+        //         owned_cash += salary;
+        //         mypopup.textMeshPro.text = "Cash gained: " + salary.ToString();
+        //         amount.text = "Money:" + owned_cash.ToString();
+        //         //mypopup.gameObject.SetActive(true);  
+        //         mypopup.animator.SetTrigger("fadein");
+        //         Debug.Log($"New owned cash: {owned_cash}");
+        //         timerIsRunning = true;
+        //         onscreen = true;
+        //     }
+        // }
 
         if (timerIsRunning)
         {
@@ -75,7 +68,6 @@ public class test : MonoBehaviour
 
     private void OpenPopup()
     {
-        
         mypopup.textMeshPro.text = "Current Cash: " + owned_cash.ToString();  
     }
 
@@ -84,11 +76,4 @@ public class test : MonoBehaviour
         mypopup.gameObject.SetActive(false);  
         Debug.Log("closed");
     }
-
-    private void OpenClicked()
-    {
-
-
-    }
-
 }

@@ -30,7 +30,7 @@ public class PickUpSystem : MonoBehaviour
     private float tripStartTime;
     private float cooldownEndTime;
 
-    public test poptext;
+    public test popupSystem;
     void Start()
     {
         if (pickupIndicator == null)
@@ -45,6 +45,10 @@ public class PickUpSystem : MonoBehaviour
         if (pickupDropoffPoints == null || pickupDropoffPoints.Count == 0)
         {
             Debug.LogError("No pick-up/drop-off points assigned!");
+        }
+        if (popupSystem == null)
+        {
+            Debug.LogError("Popup System is not assigned!");
         }
     }
 
@@ -134,7 +138,22 @@ public class PickUpSystem : MonoBehaviour
         float tripTime = Time.time - tripStartTime;
         float payment = CalculatePayment(tripTime);
         Debug.Log("Passenger dropped off! Trip Time: " + tripTime + ", Payment: " + payment);
-        poptext.owned_cash += poptext.salary;
+
+        // Trigger the popup with the calculated payment
+        if (popupSystem != null)
+        {
+            popupSystem.owned_cash += (int)payment; // Add payment to owned cash
+            popupSystem.mypopup.textMeshPro.text = "Cash gained: " + payment.ToString("F2"); // Show payment in popup
+            popupSystem.amount.text = "Money: " + popupSystem.owned_cash.ToString(); // Update money display
+            popupSystem.mypopup.animator.SetTrigger("fadein"); // Show popup
+            popupSystem.timerIsRunning = true; // Start popup timer
+            popupSystem.onscreen = true; // Set popup as active
+        }
+        else
+        {
+            Debug.LogError("Popup System is not assigned!");
+        }
+
         isPickupActive = false;
 
         if (pickupIndicator != null)
