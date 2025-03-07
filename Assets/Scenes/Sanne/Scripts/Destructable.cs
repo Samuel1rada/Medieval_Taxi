@@ -5,7 +5,7 @@ using System.Collections;
 public class Destructable : MonoBehaviour
 {
     public GameObject BrokenVersion;
-    public float destroyDelay = 5f;
+    public float destroyDelay = 6f;
 
     void OnCollisionEnter(Collision collision)
     {
