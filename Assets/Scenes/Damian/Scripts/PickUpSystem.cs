@@ -1,25 +1,38 @@
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 [System.Serializable]
 public class PickupDropoffPoint
 {
-    public string pointName; // Name of the point (editable in the Inspector)
-    public Transform pointTransform; // Transform of the point
+    public string pointName;
+    public Transform pointTransform;
+    public Sprite destinationImage;
 }
 
 public class PickUpSystem : MonoBehaviour
 {
-    public List<PickupDropoffPoint> pickupDropoffPoints; // List of pick-up/drop-off points with names
-    public GameObject pickupIndicator; // Game object to show above the player when a pickup is active
-    public float baseFare = 10f; // Base fare for a trip
-    public float speedMultiplierFast = 1.5f; // Multiplier for faster trips
-    public float speedMultiplierNormal = 1f; // Multiplier for on-time trips
-    public float speedMultiplierSlow = 0.5f; // Multiplier for slower trips
-    public float comfortMultiplier = 1f; // Multiplier for comfort (can be adjusted by another script)
-    public float looksMultiplier = 1f; // Multiplier for looks (can be adjusted by another script)
-    public float cooldownTime = 5f; // Cooldown time before a new job can start
-    public float timeMultiplier = 1.3f; // Multiplier to increase estimated time
+    public List<PickupDropoffPoint> pickupDropoffPoints;
+    public GameObject pickupIndicator;
+    public float baseFare = 10f;
+    public float speedMultiplierFast = 1.5f;
+    public float speedMultiplierNormal = 1f;
+    public float speedMultiplierSlow = 0.5f;
+    public float comfortMultiplier = 1f;
+    public float looksMultiplier = 1f;
+    public float cooldownTime = 5f;
+    public float timeMultiplier = 1.3f;
+    public float maxSpeedForJobActivation = 5f;
+    public float maxSpeedForDropoff = 0.1f;
+
+    public test popupSystem;
+    public GameObject jobUIPanel;
+    public Image destinationImageUI;
+    public TextMeshProUGUI destinationText; // Destination text UI
+    public TextMeshProUGUI timerText; // Timer text UI
+    public Animator jobUIAnimator;
 
     private Transform currentPickupPoint;
     private Transform currentDropoffPoint;
@@ -29,8 +42,8 @@ public class PickUpSystem : MonoBehaviour
     private float estimatedDistance;
     private float tripStartTime;
     private float cooldownEndTime;
+    private Rigidbody playerRigidbody;
 
-    public test popupSystem;
     void Start()
     {
         if (pickupIndicator == null)
@@ -39,7 +52,7 @@ public class PickUpSystem : MonoBehaviour
         }
         else
         {
-            pickupIndicator.SetActive(false); // Hide the pickup indicator at the start
+            pickupIndicator.SetActive(false);
         }
 
         if (pickupDropoffPoints == null || pickupDropoffPoints.Count == 0)
@@ -50,6 +63,25 @@ public class PickUpSystem : MonoBehaviour
         {
             Debug.LogError("Popup System is not assigned!");
         }
+
+        playerRigidbody = GetComponent<Rigidbody>();
+        if (playerRigidbody == null)
+        {
+            Debug.LogError("Player Rigidbody is not found!");
+        }
+
+        if (jobUIPanel != null)
+        {
+            jobUIPanel.SetActive(false);
+        }
+    }
+    public static string FormatTime(float timeInSeconds)
+    {
+        int minutes = Mathf.FloorToInt(timeInSeconds / 60);
+        int seconds = Mathf.FloorToInt(timeInSeconds % 60);
+        int milliseconds = Mathf.FloorToInt((timeInSeconds - Mathf.Floor(timeInSeconds)) * 1000);
+
+        return string.Format("{0}:{1:00},{2:000}", minutes, seconds, milliseconds);
     }
 
     void Update()
@@ -61,13 +93,32 @@ public class PickUpSystem : MonoBehaviour
             {
                 Vector3 direction = (currentDropoffPoint.position - transform.position).normalized;
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-                // Adjust the rotation to ensure the arrow points horizontally (X rotation = 90 degrees)
                 pickupIndicator.transform.rotation = Quaternion.Euler(90f, targetRotation.eulerAngles.y, 0f);
             }
 
-            // Check if the player has reached the drop-off point
-            if (Vector3.Distance(transform.position, currentDropoffPoint.position) < 2f)
+            // Update the timer UI
+            if (timerText != null)
+            {
+                float elapsedTime = Time.time - tripStartTime;
+                timerText.text = FormatTime(elapsedTime);
+
+                // Change the timer text color based on trip time
+                if (elapsedTime < estimatedTime)
+                {
+                    timerText.color = Color.yellow; // Gold for faster trips
+                }
+                else if (elapsedTime >= estimatedTime && elapsedTime <= estimatedTime + 10f)
+                {
+                    timerText.color = Color.gray; // Silver for on-time trips
+                }
+                else
+                {
+                    timerText.color = new Color(0.8f, 0.5f, 0.2f); // Bronze for slower trips
+                }
+            }
+
+            // Check if the player has reached the drop-off point and is standing still
+            if (Vector3.Distance(transform.position, currentDropoffPoint.position) < 2f && playerRigidbody.linearVelocity.magnitude < maxSpeedForDropoff)
             {
                 DropOffPassenger();
             }
@@ -85,29 +136,28 @@ public class PickUpSystem : MonoBehaviour
     {
         Debug.Log("OnTriggerEnter called with: " + other.name);
 
-        if (!isPickupActive && !isOnCooldown)
+        if (!isPickupActive && !isOnCooldown && playerRigidbody.linearVelocity.magnitude < maxSpeedForJobActivation)
         {
-            // Check if the player is at a pick-up point
             foreach (var point in pickupDropoffPoints)
             {
                 if (point.pointTransform == other.transform)
                 {
                     Debug.Log("Pick-up point detected: " + point.pointName);
-                    StartTrip(point.pointTransform);
+                    StartTrip(point);
                     break;
                 }
             }
         }
         else
         {
-            Debug.Log("Collided with object, but a trip is already active or on cooldown.");
+            Debug.Log("Collided with object, but a trip is already active, on cooldown, or player is moving too fast.");
         }
     }
 
-    void StartTrip(Transform pickupPoint)
+    void StartTrip(PickupDropoffPoint pickupPoint)
     {
-        currentPickupPoint = pickupPoint;
-        currentDropoffPoint = GetRandomDropoffPoint(pickupPoint);
+        currentPickupPoint = pickupPoint.pointTransform;
+        currentDropoffPoint = GetRandomDropoffPoint(pickupPoint.pointTransform);
 
         if (currentDropoffPoint == null)
         {
@@ -116,20 +166,38 @@ public class PickUpSystem : MonoBehaviour
         }
 
         estimatedDistance = Vector3.Distance(currentPickupPoint.position, currentDropoffPoint.position);
-        estimatedTime = (estimatedDistance / 10f) * timeMultiplier; // Increase estimated time with multiplier
+        estimatedTime = (estimatedDistance / 10f) * timeMultiplier;
         tripStartTime = Time.time;
         isPickupActive = true;
 
         if (pickupIndicator != null)
         {
-            pickupIndicator.SetActive(true); // Show the pickup indicator
+            pickupIndicator.SetActive(true);
         }
         else
         {
             Debug.LogError("Pickup Indicator is not assigned!");
         }
 
-        Debug.Log("Trip started! Pick-up: " + GetPointName(currentPickupPoint) + ", Drop-off: " + GetPointName(currentDropoffPoint));
+        // Show the job UI panel with animation
+        if (jobUIPanel != null && jobUIAnimator != null)
+        {
+            jobUIPanel.SetActive(true);
+            jobUIAnimator.ResetTrigger("SlideOut"); // Reset the SlideOut trigger
+            jobUIAnimator.SetTrigger("SlideIn"); // Trigger the SlideIn animation
+
+            // Set the destination image and text
+            if (destinationImageUI != null)
+            {
+                destinationImageUI.sprite = pickupPoint.destinationImage;
+            }
+            if (destinationText != null)
+            {
+                destinationText.text = "Destination: " + GetPointName(currentDropoffPoint);
+            }
+        }
+
+        Debug.Log("Trip started! Pick-up: " + pickupPoint.pointName + ", Drop-off: " + GetPointName(currentDropoffPoint));
         Debug.Log("Estimated Distance: " + estimatedDistance + ", Estimated Time: " + estimatedTime);
     }
 
@@ -142,12 +210,12 @@ public class PickUpSystem : MonoBehaviour
         // Trigger the popup with the calculated payment
         if (popupSystem != null)
         {
-            popupSystem.owned_cash += (int)payment; // Add payment to owned cash
-            popupSystem.mypopup.textMeshPro.text = "Cash gained: " + payment.ToString("F2"); // Show payment in popup
-            popupSystem.amount.text = "Money: " + popupSystem.owned_cash.ToString(); // Update money display
-            popupSystem.mypopup.animator.SetTrigger("fadein"); // Show popup
-            popupSystem.timerIsRunning = true; // Start popup timer
-            popupSystem.onscreen = true; // Set popup as active
+            popupSystem.owned_cash += (int)payment;
+            popupSystem.mypopup.textMeshPro.text = "Cash gained: " + payment.ToString("F2");
+            popupSystem.amount.text = "Money: " + popupSystem.owned_cash.ToString();
+            popupSystem.mypopup.animator.SetTrigger("fadein");
+            popupSystem.timerIsRunning = true;
+            popupSystem.onscreen = true;
         }
         else
         {
@@ -158,15 +226,28 @@ public class PickUpSystem : MonoBehaviour
 
         if (pickupIndicator != null)
         {
-            pickupIndicator.SetActive(false); // Hide the pickup indicator
+            pickupIndicator.SetActive(false);
         }
         else
         {
             Debug.LogError("Pickup Indicator is not assigned!");
         }
 
+        // Hide the job UI panel with animation
+        if (jobUIPanel != null && jobUIAnimator != null)
+        {
+            jobUIAnimator.SetTrigger("SlideOut"); // Trigger the SlideOut animation
+            StartCoroutine(DeactivateJobUIPanelAfterAnimation());
+        }
+
         // Start cooldown
         StartCooldown();
+    }
+
+    System.Collections.IEnumerator DeactivateJobUIPanelAfterAnimation()
+    {
+        yield return new WaitForSeconds(1.5f); // Wait for the SlideOut animation to finish
+        jobUIPanel.SetActive(false);
     }
 
     void StartCooldown()
@@ -181,25 +262,23 @@ public class PickUpSystem : MonoBehaviour
         float timeDifference = tripTime - estimatedTime;
         float speedMultiplier;
 
-        if (timeDifference < -10f) // Faster than estimated time
+        if (timeDifference < -10f)
         {
             speedMultiplier = speedMultiplierFast;
             Debug.Log("Trip completed faster than estimated time!");
         }
-        else if (timeDifference >= -10f && timeDifference <= 10f) // Within +-10 seconds of estimated time
+        else if (timeDifference >= -10f && timeDifference <= 10f)
         {
             speedMultiplier = speedMultiplierNormal;
             Debug.Log("Trip completed within estimated time!");
         }
-        else // Slower than estimated time
+        else
         {
             speedMultiplier = speedMultiplierSlow;
             Debug.Log("Trip completed slower than estimated time!");
         }
 
-        // Calculate final payment with multipliers
-        float payment = baseFare * speedMultiplier * comfortMultiplier * looksMultiplier;
-        return payment;
+        return baseFare * speedMultiplier * comfortMultiplier * looksMultiplier;
     }
 
     Transform GetRandomDropoffPoint(Transform pickupPoint)
@@ -215,7 +294,7 @@ public class PickUpSystem : MonoBehaviour
         {
             int randomIndex = Random.Range(0, pickupDropoffPoints.Count);
             dropoffPoint = pickupDropoffPoints[randomIndex].pointTransform;
-        } while (dropoffPoint == pickupPoint); // Ensure the drop-off point is not the same as the pick-up point
+        } while (dropoffPoint == pickupPoint);
 
         return dropoffPoint;
     }
@@ -232,7 +311,6 @@ public class PickUpSystem : MonoBehaviour
         return "Unknown Point";
     }
 
-    // Public methods to adjust multipliers
     public void SetComfortMultiplier(float multiplier)
     {
         comfortMultiplier = multiplier;
