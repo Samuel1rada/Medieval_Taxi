@@ -1,3 +1,4 @@
+using PlasticPipe.PlasticProtocol.Messages;
 using UnityEditor;
 using UnityEngine;
 
@@ -40,6 +41,10 @@ public class WaypointManagerWindow : EditorWindow
         }
         if(Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<Waypoint>())
         {
+            if(GUILayout.Button("Create branch Waypoint"))
+            {
+                CreateBranch();
+            }
             if(GUILayout.Button("Create waypoint before"))
             {
                 CreateWaypointBefore();
@@ -72,6 +77,22 @@ public class WaypointManagerWindow : EditorWindow
         }
 
         Selection.activeGameObject = waypoint.gameObject;
+    }
+
+    void CreateBranch()
+    {
+        GameObject branchObj = new GameObject(" Waypoint " + waypointRoot.childCount, typeof(Waypoint));
+        branchObj.transform.SetParent(waypointRoot, false);
+
+        Waypoint branch = branchObj.GetComponent<Waypoint>();
+
+        Waypoint branchFrom = Selection.activeGameObject.GetComponent<Waypoint>();
+        branchFrom.branches.Add(branch);
+
+        branch.transform.position = branchFrom.transform.position;
+        branch.transform.forward = branchFrom.transform.forward;
+
+        Selection.activeGameObject = branch.gameObject;
     }
     void CreateWaypointBefore()
     {
