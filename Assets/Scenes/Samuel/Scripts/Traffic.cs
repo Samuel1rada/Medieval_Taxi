@@ -7,181 +7,142 @@ using UnityEngine.AI;
 
 public class Traffic : MonoBehaviour
 {
-    [SerializeField] Transform[] waypoints;
-    private NavMeshAgent agent;
+   /* [SerializeField] private Transform[] waypoints;
+    [SerializeField] public NavMeshAgent agent = null;
     private int destinationPoint;
-    private int startpoint;
-    private int[] pathpoints;
-
+    private int nextwaypoint;
+    private bool[] visited;
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        visited = new bool[waypoints.Length];
     }
 
     void Update()
     {
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
-            destinationPoint = Random.Range(0, waypoints.Length);
-            agent.SetDestination(waypoints[destinationPoint].position);
+            if (nextwaypoint >= 0 && nextwaypoint < visited.Length)
+            {
+                visited[nextwaypoint] = true;
+            }
+
             FindStartWaypoint();
+            FindNextWaypoint();
+
+            if (AllWaypointsVisited())
+            {
+                ResetVisitedWaypoints();
+                Debug.Log("All waypoints have been visited. Resetting visited array.");
+            }
         }
     }
 
     private Transform FindStartWaypoint()
-    { 
+    {
         Transform closestWaypoint = null;
         float minDistance = Mathf.Infinity;
 
-        foreach (Transform waypoint in waypoints)
+        for (int i = 0; i < waypoints.Length; i++)
         {
-            float distance = Vector3.Distance(agent.transform.position, waypoint.position);
+            float distance = Vector3.Distance(agent.transform.position, waypoints[i].position);
             if (distance < minDistance)
             {
                 minDistance = distance;
-                closestWaypoint = waypoint;
+                closestWaypoint = waypoints[i];
             }
         }
-        Debug.Log("start waypoint is " + closestWaypoint);
+        Debug.Log("Start waypoint is " + closestWaypoint);
         return closestWaypoint;
     }
-}
 
-
-/*    [SerializeField] private Transform[] waypoints;
-    private NavMeshAgent agent;
-
-    private int startWaypoint;
-    private int targetWaypoint;
-    private float[] distanceMatrix;
-    private float[] distance;
-    private int[] previous;
-    private bool[] visited;
-
-    void Start()
+    private Transform FindNextWaypoint()
     {
-        agent = GetComponent<NavMeshAgent>();
-        startWaypoint = FindClosestWaypoint();
-        targetWaypoint = 3;
-
-        CalculateDistances();
-        Pathfinding();
-    }
-
-    void CalculateDistances()
-    {
-        int numberOfWaypoints = waypoints.Length;
-        distanceMatrix = new float[numberOfWaypoints, numberOfWaypoints];
-
-        for (int i = 0; i < numberOfWaypoints; i++)
-        {
-            for (int j = 0; j < numberOfWaypoints; j++)
-            {
-                if (i != j)
-                {
-                    distanceMatrix[i, j] = Vector3.Distance(waypoints[i].position, waypoints[j].position);
-                }
-                else
-                {
-                    distanceMatrix[i, j] = Mathf.Infinity; 
-                }
-            }
-        }
-        for (int i = 0; i < waypoints.Length; i++)
-        {
-            for (int j = 0; j < waypoints.Length; j++)
-            {
-                Debug.Log($"Distance[{i},{j}] = {distanceMatrix[i, j]}");
-            }
-        }
-    }
-
-    void Pathfinding()
-    {
-        int numWaypoints = waypoints.Length;
-        distance = new float[numWaypoints];
-        previous = new int[numWaypoints];
-        visited = new bool[numWaypoints];
-
-        for (int i = 0; i < numWaypoints; i++)
-        {
-            distance[i] = Mathf.Infinity;
-            previous[i] = -1;
-        }
-        distance[startWaypoint] = 0;
-
-        for (int i = 0; i < numWaypoints; i++)
-        {
-            int currentWaypoint = -1;
-            float smallestDistance = Mathf.Infinity;
-
-            for (int j = 0; j < numWaypoints; j++)
-            {
-                if (!visited[j] && distance[j] < smallestDistance)
-                {
-                    smallestDistance = distance[j];
-                    currentWaypoint = j;
-                }
-            }
-
-            if (currentWaypoint == -1) break;
-
-            visited[currentWaypoint] = true;
-
-            for (int j = 0; j < numWaypoints; j++)
-            {
-                if (!visited[j] && distanceMatrix[currentWaypoint, j] > 0)
-                {
-                    float newDist = distance[currentWaypoint] + distanceMatrix[currentWaypoint, j];
-                    if (newDist < distance[j])
-                    {
-                        distance[j] = newDist;
-                        previous[j] = currentWaypoint;
-                    }
-                }
-            }
-        }
-        List<int> path = new List<int>();
-        int current = targetWaypoint;
-
-        while (current != -1)
-        {
-            path.Insert(0, current);
-            current = previous[current];
-        }
-
-        StartCoroutine(FollowPath(path));
-        Debug.Log("Generated path: " + string.Join(" -> ", path));
-    }
-    IEnumerator FollowPath(List<int> path)
-    {
-        foreach (int waypointIndex in path)
-        {
-            Debug.Log("Moving to waypoint: " + waypointIndex);
-            agent.SetDestination(waypoints[waypointIndex].position);
-            agent.isStopped = false;
-            Debug.Log("Agent moving to: " + waypoints[waypointIndex].position);
-            while (agent.remainingDistance > 0.5f)
-            {
-                yield return null;
-            }
-        }
-    }
-    int FindClosestWaypoint()
-    {
-        int closestIndex = 0;
+        Transform nextWaypoint = null;
         float minDistance = Mathf.Infinity;
 
         for (int i = 0; i < waypoints.Length; i++)
         {
-            float dist = Vector3.Distance(transform.position, waypoints[i].position);
-            if (dist < minDistance)
+            if (visited[i]) continue; // Skip already visited waypoints
+
+            float distance = Vector3.Distance(agent.transform.position, waypoints[i].position);
+            if (distance > 2 && distance < minDistance)
             {
-                minDistance = dist;
-                closestIndex = i;
+                minDistance = distance;
+                nextWaypoint = waypoints[i];
+                nextwaypoint = i;
             }
         }
-        return closestIndex;
 
-    }*/
+        if (nextWaypoint != null)
+        {
+            agent.SetDestination(nextWaypoint.position);
+        }
+        return nextWaypoint;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(agent.transform.position, 5);
+    }
+
+    private bool AllWaypointsVisited()
+    {
+        foreach (bool visitedWaypoint in visited)
+        {
+            if (!visitedWaypoint)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    private void ResetVisitedWaypoints()
+    {
+        for (int i = 0; i < visited.Length; i++)
+        {
+            visited[i] = false;
+        }
+    }
+*/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
