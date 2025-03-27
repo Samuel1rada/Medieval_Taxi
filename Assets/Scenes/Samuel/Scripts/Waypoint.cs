@@ -6,8 +6,8 @@ public class Waypoint : MonoBehaviour
     [SerializeField] public Waypoint previousWaypoint;
     [SerializeField] public Waypoint nextWaypoint;
 
-    [Range(1f, 5f)]
-    public float width = 1f;
+    [Range(1f, 10f)]
+    public float width = 10f;
 
     public List<Waypoint> branches = new List<Waypoint>();
 
