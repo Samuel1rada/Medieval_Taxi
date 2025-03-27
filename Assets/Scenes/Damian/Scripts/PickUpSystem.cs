@@ -30,9 +30,13 @@ public class PickUpSystem : MonoBehaviour
     public test popupSystem;
     public GameObject jobUIPanel;
     public Image destinationImageUI;
-    public TextMeshProUGUI destinationText; // Destination text UI
-    public TextMeshProUGUI timerText; // Timer text UI
+    public TextMeshProUGUI destinationText; 
+    public TextMeshProUGUI timerText; 
     public Animator jobUIAnimator;
+
+    [Header("Bean Management")]
+    public List<GameObject> beanList; // List of regular beans
+    public GameObject passengerBean; // The passenger bean
 
     private Transform currentPickupPoint;
     private Transform currentDropoffPoint;
@@ -74,7 +78,30 @@ public class PickUpSystem : MonoBehaviour
         {
             jobUIPanel.SetActive(false);
         }
+
+
+        // Initialize bean states
+        SetBeanStates(false);
     }
+
+    void SetBeanStates(bool jobActive)
+    {
+        // Enable/disable beans based on job status
+        foreach (var bean in beanList)
+        {
+            if (bean != null)
+            {
+                bean.SetActive(!jobActive);
+            }
+        }
+
+        // Passenger bean is active only when job is active
+        if (passengerBean != null)
+        {
+            passengerBean.SetActive(jobActive);
+        }
+    }
+
     public static string FormatTime(float timeInSeconds)
     {
         int minutes = Mathf.FloorToInt(timeInSeconds / 60);
@@ -170,6 +197,9 @@ public class PickUpSystem : MonoBehaviour
         tripStartTime = Time.time;
         isPickupActive = true;
 
+        // Update bean states
+        SetBeanStates(true);
+
         if (pickupIndicator != null)
         {
             pickupIndicator.SetActive(true);
@@ -223,6 +253,9 @@ public class PickUpSystem : MonoBehaviour
         }
 
         isPickupActive = false;
+
+        // Update bean states
+        SetBeanStates(false);
 
         if (pickupIndicator != null)
         {
