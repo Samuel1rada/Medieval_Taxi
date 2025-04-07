@@ -16737,6 +16737,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &258422815
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -24599,6 +24603,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &406639270
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -38239,6 +38247,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &591184224
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -47157,6 +47169,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &753755944
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -48520,6 +48536,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &772428434
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -48809,6 +48829,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &774017093
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -50855,12 +50879,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 805736453}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1000}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1694450552}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &805769007
 GameObject:
@@ -54141,6 +54165,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &874816030
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -79433,12 +79461,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1101315502}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1000, y: 0, z: 1000}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1694450552}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1102203969
 GameObject:
@@ -84613,6 +84641,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &1218885614
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -89848,6 +89880,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &1306074291
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -92010,6 +92046,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &1357440428
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -92500,6 +92540,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &1364849427
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -95052,6 +95096,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &1412536275
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -98114,6 +98162,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &1459082237
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -101641,6 +101693,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &1523092298
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -104323,6 +104379,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &1593995212
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -109363,6 +109423,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4541158621822020519}
+  - {fileID: 1700824398}
+  - {fileID: 805736456}
+  - {fileID: 1101315505}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1694727534 stripped
@@ -109693,12 +109756,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1700824395}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1000, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1694450552}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1702127786
 GameObject:
@@ -115515,6 +115578,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &1788427435
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -117548,6 +117615,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &1817159008
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -120222,6 +120293,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!136 &1888286710
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -145760,6 +145835,10 @@ MonoBehaviour:
   specificTrigger: {fileID: 0}
   targetTag: Player
   DebugRagdoll: 0
+  DestroyAfter: 10
+  minImpactForce: 20
+  maxImpactForce: 100
+  UpwardsForceRatio: 1
 --- !u!1 &661776864073642878
 GameObject:
   m_ObjectHideFlags: 0
@@ -199441,9 +199520,6 @@ SceneRoots:
   - {fileID: 1952796942}
   - {fileID: 1312926816}
   - {fileID: 2069425098236097657}
-  - {fileID: 1700824398}
-  - {fileID: 805736456}
-  - {fileID: 1101315505}
   - {fileID: 4559542}
   - {fileID: 376782247}
   - {fileID: 2024166830}
