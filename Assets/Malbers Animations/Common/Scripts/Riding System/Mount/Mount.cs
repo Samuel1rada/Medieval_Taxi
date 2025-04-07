@@ -201,7 +201,7 @@ namespace MalbersAnimations.HAP
             if (Animal == null)
                 Animal = this.FindComponent<MAnimal>();
 
-            AI = Animal.GetComponentInChildren<IAIControl>(true);
+            // AI = Animal.GetComponentInChildren<IAIControl>(true);
 
             MountTriggers = GetComponentsInChildren<MountTriggers>(true).ToList(); //Catche all the MountTriggers of the Mount
 

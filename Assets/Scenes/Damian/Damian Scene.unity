@@ -151742,7 +151742,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!33 &1690957894295384764
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -157204,7 +157204,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2640921518953094273
 Transform:
   m_ObjectHideFlags: 0
@@ -175517,6 +175517,7 @@ GameObject:
   - component: {fileID: 3788609431430378477}
   - component: {fileID: 6755873690183344448}
   - component: {fileID: 856345891843341699}
+  - component: {fileID: 6755873690183344449}
   m_Layer: 1
   m_Name: Western Wagon
   m_TagString: Wagon
@@ -189172,6 +189173,18 @@ MonoBehaviour:
   DrawLineTo: 0
   ConnectTo: {fileID: 0}
   Rect: {x: 1, y: 1, z: 1}
+--- !u!114 &6755873690183344449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4518027923221901860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 915fa6e0439cd2e48a05ba75fdf79cfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6757705486930436048
 Transform:
   m_ObjectHideFlags: 0

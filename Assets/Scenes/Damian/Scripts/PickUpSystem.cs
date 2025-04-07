@@ -23,7 +23,7 @@ public class PickUpSystem : MonoBehaviour
     public float comfortMultiplier = 1f;
     public float looksMultiplier = 1f;
     public float cooldownTime = 5f;
-    public float timeMultiplier = 1.3f;
+    public float timeMultiplier = 1.2f;
     public float maxSpeedForJobActivation = 5f;
     public float maxSpeedForDropoff = 0.1f;
 
