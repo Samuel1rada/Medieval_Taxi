@@ -27,16 +27,19 @@ public class PickUpSystem : MonoBehaviour
     public float maxSpeedForJobActivation = 5f;
     public float maxSpeedForDropoff = 0.1f;
 
+    [Header("UI Elements")]
+    public TextMeshProUGUI DropOffText;
+    public float dropOffFade = 2f;
     public test popupSystem;
     public GameObject jobUIPanel;
     public Image destinationImageUI;
-    public TextMeshProUGUI destinationText; 
-    public TextMeshProUGUI timerText; 
+    public TextMeshProUGUI destinationText;
+    public TextMeshProUGUI timerText;
     public Animator jobUIAnimator;
 
     [Header("Bean Management")]
-    public List<GameObject> beanList; // List of regular beans
-    public GameObject passengerBean; // The passenger bean
+    public List<GameObject> beanList;
+    public GameObject passengerBean;
 
     private Transform currentPickupPoint;
     private Transform currentDropoffPoint;
@@ -79,14 +82,18 @@ public class PickUpSystem : MonoBehaviour
             jobUIPanel.SetActive(false);
         }
 
+        if (DropOffText != null)
+        {
+            DropOffText.text = "";
+            DropOffText.alpha = 0f;
+        }
 
-        // Initialize bean states
+
         SetBeanStates(false);
     }
 
     void SetBeanStates(bool jobActive)
     {
-        // Enable/disable beans based on job status
         foreach (var bean in beanList)
         {
             if (bean != null)
@@ -95,7 +102,6 @@ public class PickUpSystem : MonoBehaviour
             }
         }
 
-        // Passenger bean is active only when job is active
         if (passengerBean != null)
         {
             passengerBean.SetActive(jobActive);
@@ -115,7 +121,6 @@ public class PickUpSystem : MonoBehaviour
     {
         if (isPickupActive)
         {
-            // Point the arrow toward the drop-off point
             if (pickupIndicator != null && currentDropoffPoint != null)
             {
                 Vector3 direction = (currentDropoffPoint.position - transform.position).normalized;
@@ -123,32 +128,30 @@ public class PickUpSystem : MonoBehaviour
                 pickupIndicator.transform.rotation = Quaternion.Euler(90f, targetRotation.eulerAngles.y, 0f);
             }
 
-            // Update the timer UI
             if (timerText != null)
             {
                 float elapsedTime = Time.time - tripStartTime;
                 timerText.text = FormatTime(elapsedTime);
 
-                // Change the timer text color based on trip time
                 if (elapsedTime < estimatedTime)
                 {
-                    timerText.color = Color.yellow; // Gold for faster trips
+                    timerText.color = Color.yellow;
                 }
                 else if (elapsedTime >= estimatedTime && elapsedTime <= estimatedTime + 10f)
                 {
-                    timerText.color = Color.gray; // Silver for on-time trips
+                    timerText.color = Color.gray;
                 }
                 else
                 {
-                    timerText.color = new Color(0.8f, 0.5f, 0.2f); // Bronze for slower trips
+                    timerText.color = new Color(0.8f, 0.5f, 0.2f);
                 }
             }
 
-            // Check if the player has reached the drop-off point and is standing still
             if (Vector3.Distance(transform.position, currentDropoffPoint.position) < 2f && playerRigidbody.linearVelocity.magnitude < maxSpeedForDropoff)
             {
                 DropOffPassenger();
             }
+            UpdateDropOffText();
         }
 
         // Handle cooldown
@@ -158,6 +161,40 @@ public class PickUpSystem : MonoBehaviour
             Debug.Log("Cooldown ended. Ready for a new job!");
         }
     }
+
+    void UpdateDropOffText()
+    {
+        if (DropOffText == null) return;
+
+        bool isNearDropOff = Vector3.Distance(transform.position, currentDropoffPoint.position) < 5f;
+
+        bool isSlowEnough = playerRigidbody.linearVelocity.magnitude < maxSpeedForDropoff;
+
+        if (isNearDropOff)
+        {
+
+            if (isSlowEnough)
+            {
+                DropOffText.text = "Dropping off passenger...";
+                DropOffText.color = Color.green;
+            }
+            else
+            {
+                DropOffText.text = "Too fast to drop off passenger";
+                DropOffText.color = Color.red;
+            }
+            DropOffText.alpha = Mathf.Lerp(DropOffText.alpha, 1f, dropOffFade * Time.deltaTime);
+        }
+        else
+        {
+            DropOffText.alpha = Mathf.Lerp(DropOffText.alpha, 0f, dropOffFade * Time.deltaTime);
+        }
+        if (isNearDropOff && isSlowEnough && Input.GetKeyDown(KeyCode.E))
+        {
+            DropOffPassenger();
+        }
+    }
+
 
     void OnTriggerEnter(Collider other)
     {
@@ -237,7 +274,11 @@ public class PickUpSystem : MonoBehaviour
         float payment = CalculatePayment(tripTime);
         Debug.Log("Passenger dropped off! Trip Time: " + tripTime + ", Payment: " + payment);
 
-        // Trigger the popup with the calculated payment
+        if (DropOffText != null)
+        {
+            DropOffText.alpha = 0f;
+        }
+
         if (popupSystem != null)
         {
             popupSystem.owned_cash += (int)payment;
