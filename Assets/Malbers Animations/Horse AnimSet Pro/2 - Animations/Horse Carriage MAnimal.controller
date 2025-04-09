@@ -126,127 +126,127 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Horizontal
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: State
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: StateStatus
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: LastState
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Mode
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Stance
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Grounded
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Movement
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: ModeStatus
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: StateFloat
     m_Type: 1
     m_DefaultFloat: 1
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: SpeedMultiplier
     m_Type: 1
     m_DefaultFloat: 1
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: DeltaAngle
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: StateTime
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Slope
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: StrafeAngle
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Type
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Offset
     m_Type: 1
     m_DefaultFloat: 0.3
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Random
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: StateOn
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: ModeOn
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -302,16 +302,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 768786c0d3c67a24686088fca6047717, type: 3}
   - {fileID: 8300000, guid: 0b12c7e4ff3ebc34e80ef36ccb6bbdab, type: 3}
   playOnEnter: 1
+  SkipTransition: 0
   Loop: 0
   stopOnExit: 0
-  playOnTime: 0
-  NormalizedTime: 0.5
+  PlayOnTime: 0.5
   pitch:
     minValue: 1
     maxValue: 1
   volume:
     minValue: 1
     maxValue: 1
+  MaxDistance: 10
 --- !u!114 &114035529168161908
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -349,12 +350,21 @@ MonoBehaviour:
     floatValue: 0
     stringValue: 
     intVarValue: {fileID: 0}
-    transformValue: {fileID: 0}
-    GoValue: {fileID: 0}
     ComponentValue: {fileID: 0}
+    TransformValue:
+      UseConstant: 1
+      ConstantValue: {fileID: 0}
+      Variable: {fileID: 0}
+    GOValue:
+      UseConstant: 1
+      ConstantValue: {fileID: 0}
+      Variable: {fileID: 0}
+    Old_transformValue: {fileID: 0}
+    Old_GoValue: {fileID: 0}
     time: 0
     sent: 0
     Active: 1
+    UpdateVarReference: 0
   - message: EnableLookAt
     typeM: 0
     boolValue: 0
@@ -362,12 +372,21 @@ MonoBehaviour:
     floatValue: 0
     stringValue: 
     intVarValue: {fileID: 0}
-    transformValue: {fileID: 0}
-    GoValue: {fileID: 0}
     ComponentValue: {fileID: 0}
+    TransformValue:
+      UseConstant: 1
+      ConstantValue: {fileID: 0}
+      Variable: {fileID: 0}
+    GOValue:
+      UseConstant: 1
+      ConstantValue: {fileID: 0}
+      Variable: {fileID: 0}
+    Old_transformValue: {fileID: 0}
+    Old_GoValue: {fileID: 0}
     time: 0
     sent: 0
     Active: 1
+    UpdateVarReference: 0
   onExitMessage: []
   onTimeMessage: []
   OnEnter: 1
@@ -408,8 +427,10 @@ MonoBehaviour:
   ModeID: {fileID: 11400000, guid: b04409080ae7e3c4fa645d8c67b40424, type: 2}
   EnterMode: 1
   ExitMode: 1
-  ExitOnAbility: 0
+  OnModeUpdate: 1
   ExitAbility: -1
+  NoExitTransitions: 0
+  ExitTime: 0.9
 --- !u!114 &114225507784172650
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -425,8 +446,10 @@ MonoBehaviour:
   ModeID: {fileID: 11400000, guid: b04409080ae7e3c4fa645d8c67b40424, type: 2}
   EnterMode: 1
   ExitMode: 1
-  ExitOnAbility: 0
+  OnModeUpdate: 1
   ExitAbility: -1
+  NoExitTransitions: 0
+  ExitTime: 0.9
 --- !u!114 &114278267528106708
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -442,8 +465,10 @@ MonoBehaviour:
   ModeID: {fileID: 11400000, guid: b04409080ae7e3c4fa645d8c67b40424, type: 2}
   EnterMode: 1
   ExitMode: 1
-  ExitOnAbility: 0
+  OnModeUpdate: 1
   ExitAbility: -1
+  NoExitTransitions: 0
+  ExitTime: 0.9
 --- !u!114 &114387573027696254
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -484,16 +509,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6da718969fc6cfc4682d3a0f2a141513, type: 3}
   - {fileID: 8300000, guid: 8732e1c6be9135946b80c461e5d8d89d, type: 3}
   playOnEnter: 1
+  SkipTransition: 0
   Loop: 0
   stopOnExit: 0
-  playOnTime: 0
-  NormalizedTime: 0.5
+  PlayOnTime: 0.5
   pitch:
     minValue: 1
     maxValue: 1
   volume:
     minValue: 1
     maxValue: 1
+  MaxDistance: 10
 --- !u!114 &114555171336497988
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -509,8 +535,10 @@ MonoBehaviour:
   ModeID: {fileID: 11400000, guid: b04409080ae7e3c4fa645d8c67b40424, type: 2}
   EnterMode: 1
   ExitMode: 1
-  ExitOnAbility: 0
+  OnModeUpdate: 1
   ExitAbility: -1
+  NoExitTransitions: 0
+  ExitTime: 0.9
 --- !u!114 &114757402875065322
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -526,8 +554,10 @@ MonoBehaviour:
   ModeID: {fileID: 11400000, guid: b04409080ae7e3c4fa645d8c67b40424, type: 2}
   EnterMode: 1
   ExitMode: 1
-  ExitOnAbility: 0
+  OnModeUpdate: 1
   ExitAbility: -1
+  NoExitTransitions: 0
+  ExitTime: 0.9
 --- !u!114 &114758427199280942
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -543,8 +573,10 @@ MonoBehaviour:
   ModeID: {fileID: 11400000, guid: b04409080ae7e3c4fa645d8c67b40424, type: 2}
   EnterMode: 1
   ExitMode: 1
-  ExitOnAbility: 0
+  OnModeUpdate: 1
   ExitAbility: -1
+  NoExitTransitions: 0
+  ExitTime: 0.9
 --- !u!114 &114803943371052884
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1251,8 +1283,7 @@ AnimatorStateTransition:
     m_ConditionEvent: _Jump
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102000011288181436, guid: 91d46eed503eb344dae9b2fd274c4bd9,
-    type: 2}
+  m_DstState: {fileID: 1102000011288181436, guid: 91d46eed503eb344dae9b2fd274c4bd9, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -2285,8 +2316,7 @@ AnimatorStateTransition:
     m_ConditionEvent: _Jump
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1102000011273645114, guid: 91d46eed503eb344dae9b2fd274c4bd9,
-    type: 2}
+  m_DstState: {fileID: 1102000011273645114, guid: 91d46eed503eb344dae9b2fd274c4bd9, type: 2}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -3248,7 +3278,7 @@ AnimatorStateMachine:
     m_Position: {x: 348, y: 108, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102280444490313340}
-    m_Position: {x: 348, y: 168, z: 0}
+    m_Position: {x: 350, y: 170, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 1101530577813649396}
