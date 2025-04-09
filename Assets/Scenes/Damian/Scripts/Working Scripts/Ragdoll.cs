@@ -56,7 +56,7 @@ public class Ragdoll : MonoBehaviour
 
     private void DisableRagdoll()
     {
-        foreach (var rigidbody in rigidbodies)
+        foreach (Rigidbody rigidbody in rigidbodies)
         {
             rigidbody.isKinematic = true;
         }
@@ -69,7 +69,7 @@ public class Ragdoll : MonoBehaviour
             animator.enabled = false; 
         }
 
-        foreach (var rigidbody in rigidbodies)
+        foreach (Rigidbody rigidbody in rigidbodies)
         {
             rigidbody.isKinematic = false;
             
