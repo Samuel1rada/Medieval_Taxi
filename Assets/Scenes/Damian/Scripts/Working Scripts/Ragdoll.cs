@@ -12,11 +12,51 @@ public class Ragdoll : MonoBehaviour
     public float minImpactForce = 20f;
     public float maxImpactForce = 100f;
     [Range(0, 1)] public float UpwardsForceRatio = 1f;
+    
+    // Audio variables
+    public enum Gender { Male, Female }
+    public Gender characterGender = Gender.Male;
+    [Range(0f, 1f)] public float rareSoundChance = 0.1f;
+    
+    [Header("Male Sounds")]
+    public AudioClip[] maleDefaultSounds;
+    public AudioClip[] maleRareSounds;
+    
+    [Header("Female Sounds")]
+    public AudioClip[] femaleDefaultSounds;
+    public AudioClip[] femaleRareSounds;
+    
+    public AudioSource audioSource;
+    [Range(0, 1)] public float volume = 1f;
+    public bool playRandomPitch = false;
+    [Range(0.1f, 3f)] public float minPitch = 0.9f;
+    [Range(0.1f, 3f)] public float maxPitch = 1.1f;
+    
+    // Audio fading
+    public bool enableDistanceFading = true;
+    public float maxHearingDistance = 30f;
+    public float minVolume = 0.2f;
+    private Transform playerTransform;
 
     void Awake()
     {
         rigidbodies = GetComponentsInChildren<Rigidbody>();
         animator = GetComponent<Animator>();
+        
+        // Audio source setup
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
+        }
+        
+        // Find player for distance fading
+        GameObject player = GameObject.FindGameObjectWithTag(targetTag);
+        if (player != null) playerTransform = player.transform;
+        
         DisableRagdoll();
     }
 
@@ -76,17 +116,74 @@ public class Ragdoll : MonoBehaviour
             float distance = Vector3.Distance(impactPoint, rigidbody.position);
             float forceMultiplier = 1f / (distance + 1f);
 
-            // Apply main force
             rigidbody.AddForce(direction * force * forceMultiplier, ForceMode.Impulse);
             
-            // Extra upward boost for core body parts
             if (rigidbody.transform == transform || rigidbody.transform.parent == transform)
             {
                 rigidbody.AddForce(Vector3.up * force * 0.5f, ForceMode.Impulse);
             }
         }
 
+        PlayGenderBasedSound();
         Destroy(gameObject, DestroyAfter);
+    }
+
+    private void PlayGenderBasedSound()
+    {
+        if (audioSource == null) return;
+
+        // Determine if we should play rare sound
+        bool playRareSound = Random.value < rareSoundChance;
+        AudioClip clipToPlay = null;
+
+        // Select appropriate sound based on gender and rarity
+        switch (characterGender)
+        {
+            case Gender.Male:
+                if (playRareSound && maleRareSounds.Length > 0)
+                {
+                    clipToPlay = maleRareSounds[Random.Range(0, maleRareSounds.Length)];
+                }
+                else if (maleDefaultSounds.Length > 0)
+                {
+                    clipToPlay = maleDefaultSounds[Random.Range(0, maleDefaultSounds.Length)];
+                }
+                break;
+                
+            case Gender.Female:
+                if (playRareSound && femaleRareSounds.Length > 0)
+                {
+                    clipToPlay = femaleRareSounds[Random.Range(0, femaleRareSounds.Length)];
+                }
+                else if (femaleDefaultSounds.Length > 0)
+                {
+                    clipToPlay = femaleDefaultSounds[Random.Range(0, femaleDefaultSounds.Length)];
+                }
+                break;
+        }
+
+        if (clipToPlay != null)
+        {
+            // Calculate volume based on distance if enabled
+            float finalVolume = volume;
+            if (enableDistanceFading && playerTransform != null)
+            {
+                float distance = Vector3.Distance(transform.position, playerTransform.position);
+                finalVolume = Mathf.Lerp(minVolume, volume, 1 - Mathf.Clamp01(distance / maxHearingDistance));
+            }
+
+            // Set random pitch if enabled
+            if (playRandomPitch)
+            {
+                audioSource.pitch = Random.Range(minPitch, maxPitch);
+            }
+            else
+            {
+                audioSource.pitch = 1f;
+            }
+
+            audioSource.PlayOneShot(clipToPlay, finalVolume);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
