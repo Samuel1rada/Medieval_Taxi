@@ -1852,7 +1852,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 118.13}
+  m_AnchoredPosition: {x: 16, y: 85}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &38199300
@@ -16741,6 +16741,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &258422815
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -20532,14 +20546,14 @@ RectTransform:
   m_GameObject: {fileID: 322266994}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.54924, y: 0.54924, z: 0.54924}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1366059623}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -150}
+  m_AnchoredPosition: {x: 15, y: -96.7}
   m_SizeDelta: {x: 300, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &324492583
@@ -24607,6 +24621,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &406639270
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -38251,6 +38279,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &591184224
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -46600,6 +46642,81 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 613dd737901eaad40a38d1e3e75270b6, type: 3}
+--- !u!1 &740738300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 740738301}
+  - component: {fileID: 740738303}
+  - component: {fileID: 740738302}
+  m_Layer: 5
+  m_Name: Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &740738301
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740738300}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 28}
+  m_LocalScale: {x: 0.37671, y: 0.60213, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 905581653}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -840, y: 476.5}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &740738302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740738300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 3b2c6ab3a32a5a34c877823fcb8e151d, type: 3}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &740738303
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740738300}
+  m_CullTransparentMesh: 1
 --- !u!1 &741407214
 GameObject:
   m_ObjectHideFlags: 0
@@ -47173,6 +47290,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &753755944
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -48540,6 +48671,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &772428434
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -48833,6 +48978,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &774017093
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -54169,6 +54328,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &874816030
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -55795,6 +55968,7 @@ RectTransform:
   m_Children:
   - {fileID: 2970611363584896912}
   - {fileID: 7836240603320985587}
+  - {fileID: 740738301}
   - {fileID: 5050644184258977059}
   - {fileID: 1366059623}
   m_Father: {fileID: 0}
@@ -84645,6 +84819,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1218885614
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -89884,6 +90072,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1306074291
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -92050,6 +92252,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1357440428
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -92544,6 +92760,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1364849427
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -92747,7 +92977,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 235, y: 0}
-  m_SizeDelta: {x: 304.68, y: 500}
+  m_SizeDelta: {x: 1174.5, y: 507}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1366059624
 MonoBehaviour:
@@ -92769,7 +92999,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ecbdb2a3812ec4e47afe37f864eb95e0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a2e09c540dfd391459717ccc1dac2614, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -95100,6 +95330,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1412536275
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -97662,14 +97906,14 @@ RectTransform:
   m_GameObject: {fileID: 1452336801}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.73484, y: 0.73484, z: 0.73484}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1366059623}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -45}
+  m_AnchoredPosition: {x: 18.5, y: -45}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1452336803
@@ -98166,6 +98410,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1459082237
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -101697,6 +101955,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1523092298
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -104383,6 +104655,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1593995212
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -115582,6 +115868,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1788427435
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -117619,6 +117919,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1817159008
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -120297,6 +120611,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1888286710
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -145839,6 +146167,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!1 &661776864073642878
 GameObject:
   m_ObjectHideFlags: 0
@@ -186790,6 +187132,8 @@ MonoBehaviour:
   timeMultiplier: 2
   maxSpeedForJobActivation: 8
   maxSpeedForDropoff: 0.1
+  DropOffText: {fileID: 0}
+  dropOffFade: 2
   popupSystem: {fileID: 3993705100401918123}
   jobUIPanel: {fileID: 1366059621}
   destinationImageUI: {fileID: 38199301}
