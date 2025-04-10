@@ -7,7 +7,7 @@ public class test : MonoBehaviour
     public int owned_cash = 0;  
     public int salary = 5;
     public float timeRemaining; 
-    public float amountRemaining = 1;
+    public float amountRemaining = 2;
     public bool timerIsRunning = false;
 
     public TextMeshProUGUI amount;   
@@ -33,20 +33,20 @@ public class test : MonoBehaviour
 
     private void Update()
     {
-        // if (Input.GetKeyDown(KeyCode.Space))
-        // {
-        //     if (onscreen == false)
-        //     {
-        //         owned_cash += salary;
-        //         mypopup.textMeshPro.text = "Cash gained: " + salary.ToString();
-        //         amount.text = "Money:" + owned_cash.ToString();
-        //         //mypopup.gameObject.SetActive(true);  
-        //         mypopup.animator.SetTrigger("fadein");
-        //         Debug.Log($"New owned cash: {owned_cash}");
-        //         timerIsRunning = true;
-        //         onscreen = true;
-        //     }
-        // }
+         if (Input.GetKeyDown(KeyCode.Space))
+         {
+            if (onscreen == false)
+            {
+                owned_cash += salary;
+                mypopup.textMeshPro.text = "Cash gained: " + salary.ToString();
+                amount.text = "Money:" + owned_cash.ToString();
+                mypopup.gameObject.SetActive(true);  
+                mypopup.animator.SetTrigger("fadein");
+                Debug.Log($"New owned cash: {owned_cash}");
+                timerIsRunning = true;
+                onscreen = true;
+            }
+         }
 
         if (timerIsRunning)
         {
