@@ -10,5 +10,4 @@ public class IgnorePlayer : MonoBehaviour
         Physics.IgnoreLayerCollision(21, 22);
         
     }
-
 }
