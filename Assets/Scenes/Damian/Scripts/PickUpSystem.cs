@@ -176,7 +176,7 @@ public class PickUpSystem : MonoBehaviour
 
             if (isSlowEnough)
             {
-                DropOffText.text = "Dropping off passenger...";
+                DropOffText.text = "";
                 DropOffText.color = Color.green;
             }
             else
@@ -190,7 +190,7 @@ public class PickUpSystem : MonoBehaviour
         {
             DropOffText.alpha = Mathf.Lerp(DropOffText.alpha, 0f, dropOffFade * Time.deltaTime);
         }
-        if (isNearDropOff && isSlowEnough && Input.GetKeyDown(KeyCode.E))
+        if (isNearDropOff && isSlowEnough && Input.GetKeyDown(KeyCode.N))
         {
             DropOffPassenger();
         }
@@ -276,8 +276,10 @@ public class PickUpSystem : MonoBehaviour
         Debug.Log("Passenger dropped off! Trip Time: " + tripTime + ", Payment: " + payment);
         RepScript.AddScore(1);
 
+        // Immediately hide the drop-off text
         if (DropOffText != null)
         {
+            DropOffText.text = "";
             DropOffText.alpha = 0f;
         }
 
@@ -319,7 +321,6 @@ public class PickUpSystem : MonoBehaviour
         // Start cooldown
         StartCooldown();
     }
-
     System.Collections.IEnumerator DeactivateJobUIPanelAfterAnimation()
     {
         yield return new WaitForSeconds(1.5f); // Wait for the SlideOut animation to finish

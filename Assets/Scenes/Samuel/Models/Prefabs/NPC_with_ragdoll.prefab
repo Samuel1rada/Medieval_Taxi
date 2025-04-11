@@ -3409,6 +3409,7 @@ GameObject:
   - component: {fileID: 600537191037703808}
   - component: {fileID: 3860019935917678451}
   - component: {fileID: 1618532754897123375}
+  - component: {fileID: 5677996033794577151}
   m_Layer: 0
   m_Name: NPC_with_ragdoll
   m_TagString: Untagged
@@ -3478,15 +3479,23 @@ MonoBehaviour:
   UpwardsForceRatio: 1
   characterGender: 0
   rareSoundChance: 0.1
-  maleDefaultSounds: []
-  maleRareSounds: []
-  femaleDefaultSounds: []
-  femaleRareSounds: []
-  audioSource: {fileID: 0}
+  maleDefaultSounds:
+  - {fileID: 8300000, guid: bf20a66b362a080498772ee915b67155, type: 3}
+  - {fileID: 8300000, guid: 80fa10941f7d4cf4397bb1a7ed77904d, type: 3}
+  - {fileID: 8300000, guid: 523e9cf3644d2e649a32449fbb7538bf, type: 3}
+  - {fileID: 8300000, guid: 0b754e780d02bb547a9e6058b3421702, type: 3}
+  maleRareSounds:
+  - {fileID: 8300000, guid: 36d49de072b56a044b1026387280f073, type: 3}
+  femaleDefaultSounds:
+  - {fileID: 8300000, guid: dc8b500b7cfc66949b88ded4675a7a8d, type: 3}
+  - {fileID: 8300000, guid: cdbee5dbac397574daf0f2570f295e9a, type: 3}
+  femaleRareSounds:
+  - {fileID: 8300000, guid: 36d49de072b56a044b1026387280f073, type: 3}
+  audioSource: {fileID: 5677996033794577151}
   volume: 1
-  playRandomPitch: 0
-  minPitch: 0.9
-  maxPitch: 1.1
+  playRandomPitch: 1
+  minPitch: 1.03
+  maxPitch: 1.5
   enableDistanceFading: 1
   maxHearingDistance: 30
   minVolume: 0.2
@@ -3547,3 +3556,100 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currenwaypoint: {fileID: 0}
+--- !u!82 &5677996033794577151
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9033235560834395399}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
