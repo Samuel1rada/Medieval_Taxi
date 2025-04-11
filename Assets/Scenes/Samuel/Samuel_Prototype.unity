@@ -14734,6 +14734,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &258422815
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -15165,11 +15179,6 @@ CapsuleCollider:
   m_Height: 0.51145995
   m_Direction: 1
   m_Center: {x: 0, y: 0.25572997, z: 0}
---- !u!4 &265620873 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4be41beeaff51144895ea8d25260f69f, type: 3}
-  m_PrefabInstance: {fileID: 1600842631}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &265982826
 GameObject:
   m_ObjectHideFlags: 0
@@ -19970,6 +19979,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &406639270
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -26713,6 +26736,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &449520283
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -31406,6 +31443,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &591184224
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -35545,67 +35596,6 @@ Transform:
   - {fileID: 316210171}
   m_Father: {fileID: 2045523443}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &696661691
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 7b83a3aec8566f54ca3e45acaa72af16, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 595.51
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7b83a3aec8566f54ca3e45acaa72af16, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 49.9
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7b83a3aec8566f54ca3e45acaa72af16, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2020.44
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7b83a3aec8566f54ca3e45acaa72af16, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071067
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7b83a3aec8566f54ca3e45acaa72af16, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7b83a3aec8566f54ca3e45acaa72af16, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7b83a3aec8566f54ca3e45acaa72af16, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7b83a3aec8566f54ca3e45acaa72af16, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7b83a3aec8566f54ca3e45acaa72af16, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7b83a3aec8566f54ca3e45acaa72af16, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 7b83a3aec8566f54ca3e45acaa72af16, type: 3}
-      propertyPath: m_Name
-      value: Road
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 7b83a3aec8566f54ca3e45acaa72af16, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7b83a3aec8566f54ca3e45acaa72af16, type: 3}
 --- !u!1 &700793640
 GameObject:
   m_ObjectHideFlags: 0
@@ -37782,6 +37772,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &753755944
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -39002,6 +39006,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &772428434
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -39211,6 +39229,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &774017093
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -42876,6 +42908,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &874816030
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -66408,8 +66454,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 265620873}
+  m_Children: []
   m_Father: {fileID: 1518669491}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1123590431
@@ -70024,6 +70069,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1218885614
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -74478,6 +74537,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1306074291
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -76200,6 +76273,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1357440428
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -76527,6 +76614,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1364849427
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -78488,6 +78589,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1412536275
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -80848,6 +80963,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1459082237
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -83359,6 +83488,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1523092298
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -85417,6 +85560,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1593995212
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -85615,75 +85772,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 862812295}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1600842631
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1122600354}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 4be41beeaff51144895ea8d25260f69f, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.9929298
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4be41beeaff51144895ea8d25260f69f, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.8917974
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4be41beeaff51144895ea8d25260f69f, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.9929298
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4be41beeaff51144895ea8d25260f69f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 27
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4be41beeaff51144895ea8d25260f69f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.2700005
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4be41beeaff51144895ea8d25260f69f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -3.75
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4be41beeaff51144895ea8d25260f69f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.8245507
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4be41beeaff51144895ea8d25260f69f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4be41beeaff51144895ea8d25260f69f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.56578815
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4be41beeaff51144895ea8d25260f69f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4be41beeaff51144895ea8d25260f69f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4be41beeaff51144895ea8d25260f69f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -68.914
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4be41beeaff51144895ea8d25260f69f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 4be41beeaff51144895ea8d25260f69f, type: 3}
-      propertyPath: m_Name
-      value: House
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4be41beeaff51144895ea8d25260f69f, type: 3}
 --- !u!1 &1601882349
 GameObject:
   m_ObjectHideFlags: 0
@@ -94317,6 +94405,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1788427435
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -95966,6 +96068,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1817159008
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -97796,6 +97912,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!136 &1888286710
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -119488,6 +119618,20 @@ MonoBehaviour:
   minImpactForce: 20
   maxImpactForce: 100
   UpwardsForceRatio: 1
+  characterGender: 0
+  rareSoundChance: 0.1
+  maleDefaultSounds: []
+  maleRareSounds: []
+  femaleDefaultSounds: []
+  femaleRareSounds: []
+  audioSource: {fileID: 0}
+  volume: 1
+  playRandomPitch: 0
+  minPitch: 0.9
+  maxPitch: 1.1
+  enableDistanceFading: 1
+  maxHearingDistance: 30
+  minVolume: 0.2
 --- !u!1 &661776864073642878
 GameObject:
   m_ObjectHideFlags: 0
@@ -127158,6 +127302,14 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5774202581143399619}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!33 &2079373818689977610
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7429048863473071807}
+  m_Mesh: {fileID: -8720126774263496290, guid: e102d8e247f73c1429b6ab34f8d0d228, type: 3}
 --- !u!1 &2084217647384568085
 GameObject:
   m_ObjectHideFlags: 0
@@ -147918,6 +148070,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!4 &4651950198746394541
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5459731243596150039}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.66604865, z: -0, w: 0.7459084}
+  m_LocalPosition: {x: 817.56, y: 50.43, z: 1839.8}
+  m_LocalScale: {x: 1.41, y: 1.41, z: 1.41}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5249627236130207398}
+  - {fileID: 6599469666824897299}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 83.526, z: 0}
 --- !u!4 &4660779951171641484
 Transform:
   m_ObjectHideFlags: 0
@@ -151640,6 +151809,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &5249627236130207398
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6474840426787220849}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+  m_LocalPosition: {x: -0.00000007850986, y: 10.693922, z: -4.499997}
+  m_LocalScale: {x: 21.58337, y: 25.661827, z: 21.58337}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4651950198746394541}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5253500675022582025
 GameObject:
   m_ObjectHideFlags: 0
@@ -152868,6 +153052,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9201771911907237316}
   m_LocalEulerAnglesHint: {x: 0, y: -1.008, z: 0}
+--- !u!1 &5459731243596150039
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4651950198746394541}
+  m_Layer: 0
+  m_Name: Gate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &5463893193564485715
 Transform:
   m_ObjectHideFlags: 0
@@ -155072,6 +155272,51 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!23 &5808413555557565574
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7429048863473071807}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!23 &5811367540930530138
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -158283,6 +158528,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2598625272672077205}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &6474840426787220849
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5249627236130207398}
+  - component: {fileID: 8793710625762768260}
+  - component: {fileID: 6639637823293188383}
+  m_Layer: 0
+  m_Name: Gate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &6474874994396399369
 GameObject:
   m_ObjectHideFlags: 0
@@ -159157,6 +159420,21 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!4 &6599469666824897299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7429048863473071807}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+  m_LocalPosition: {x: -0, y: 1, z: 0}
+  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4651950198746394541}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6607684297224893475
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -159350,6 +159628,51 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8782752241661999877}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &6639637823293188383
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6474840426787220849}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &6642955244507982901
 GameObject:
   m_ObjectHideFlags: 0
@@ -160335,6 +160658,8 @@ MonoBehaviour:
   timeMultiplier: 2
   maxSpeedForJobActivation: 8
   maxSpeedForDropoff: 0.1
+  DropOffText: {fileID: 0}
+  dropOffFade: 2
   popupSystem: {fileID: 3993705100401918123}
   jobUIPanel: {fileID: 1366059621}
   destinationImageUI: {fileID: 38199301}
@@ -163539,6 +163864,24 @@ GameObject:
   - component: {fileID: 2647741803293737763}
   m_Layer: 5
   m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &7429048863473071807
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6599469666824897299}
+  - component: {fileID: 2079373818689977610}
+  - component: {fileID: 5808413555557565574}
+  m_Layer: 0
+  m_Name: GateWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -170800,6 +171143,14 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2370621622724428759}
   m_LocalEulerAnglesHint: {x: 0, y: -0.323, z: 0}
+--- !u!33 &8793710625762768260
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6474840426787220849}
+  m_Mesh: {fileID: 962209921104072034, guid: e102d8e247f73c1429b6ab34f8d0d228, type: 3}
 --- !u!4 &8795480556645829176
 Transform:
   m_ObjectHideFlags: 0
@@ -173025,7 +173376,6 @@ SceneRoots:
   - {fileID: 2069425098236097657}
   - {fileID: 1297904190}
   - {fileID: 41558920}
-  - {fileID: 696661691}
   - {fileID: 819479735}
   - {fileID: 1908735159}
   - {fileID: 419767681}
@@ -173033,3 +173383,4 @@ SceneRoots:
   - {fileID: 584151587}
   - {fileID: 833049612}
   - {fileID: 793399936}
+  - {fileID: 4651950198746394541}
