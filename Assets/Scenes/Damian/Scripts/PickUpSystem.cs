@@ -112,9 +112,9 @@ public class PickUpSystem : MonoBehaviour
     {
         int minutes = Mathf.FloorToInt(timeInSeconds / 60);
         int seconds = Mathf.FloorToInt(timeInSeconds % 60);
-        int deciseconds = Mathf.FloorToInt((timeInSeconds - Mathf.Floor(timeInSeconds)) * 10);
+        int milliseconds = Mathf.FloorToInt((timeInSeconds - Mathf.Floor(timeInSeconds)) * 1000);
 
-        return string.Format("{0}:{1:00},{2:0}", minutes, seconds, deciseconds);
+        return string.Format("{0}:{1:00},{2:000}", minutes, seconds, milliseconds);
     }
 
     void Update()
