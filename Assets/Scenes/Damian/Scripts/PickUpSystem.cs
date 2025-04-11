@@ -14,6 +14,7 @@ public class PickupDropoffPoint
 
 public class PickUpSystem : MonoBehaviour
 {
+    [SerializeField] private RepScript RepScript;
     public List<PickupDropoffPoint> pickupDropoffPoints;
     public GameObject pickupIndicator;
     public float baseFare = 10f;
@@ -273,6 +274,7 @@ public class PickUpSystem : MonoBehaviour
         float tripTime = Time.time - tripStartTime;
         float payment = CalculatePayment(tripTime);
         Debug.Log("Passenger dropped off! Trip Time: " + tripTime + ", Payment: " + payment);
+        RepScript.AddScore(1);
 
         if (DropOffText != null)
         {
