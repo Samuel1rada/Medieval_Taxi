@@ -66,6 +66,8 @@ namespace MalbersAnimations
             if (m_StepsManager) StepAudio.volume = m_StepsManager.StepsVolume;
         }
 
+
+
         void OnTriggerEnter(Collider other)
         {
             if (other.isTrigger) return;

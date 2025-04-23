@@ -55,7 +55,7 @@ namespace MalbersAnimations.Reactions
         {
             Vector3 dir = Mode switch
             {
-                DirectionType.Local => animal.transform.InverseTransformDirection(Direction),
+                DirectionType.Local => animal.transform.TransformDirection(Direction),
                 DirectionType.World => (Vector3)Direction,
                 DirectionType.TargetPush => animal.transform.position - m_Value.position,
                 DirectionType.TargetPull => m_Value.position - animal.transform.position,

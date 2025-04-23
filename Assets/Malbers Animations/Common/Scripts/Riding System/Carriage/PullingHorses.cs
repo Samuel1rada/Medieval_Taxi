@@ -44,7 +44,6 @@ namespace MalbersAnimations.HAP
             //MainAnimal.DisablePosition = true;
             //SecondAnimal.DisablePosition = true;
 
-             MainAnimal.DisableRotation = true;
              SecondAnimal.DisableRotation = true;
 
             if (HasSecondAnimal)
