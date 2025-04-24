@@ -1010,6 +1010,7 @@ GameObject:
   - component: {fileID: 951400417026101381}
   - component: {fileID: 8610149247439416536}
   - component: {fileID: 1246766991411246765}
+  - component: {fileID: 8165165685190543411}
   m_Layer: 20
   m_Name: Main Horse Carriage
   m_TagString: Animal
@@ -4688,6 +4689,22 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   passengerBean: {fileID: 7631494894290841636}
+--- !u!114 &8165165685190543411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501657267727431575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05dabdaed03c68e43acb921c24e2858e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whipSound: {fileID: 8300000, guid: 79583dcad330cc54bb06b67783d37e33, type: 3}
+  cooldownDuration: 5
+  movementThreshold: 0.2
+  whipKey: 304
 --- !u!1 &1511445980999130731
 GameObject:
   m_ObjectHideFlags: 0
@@ -6350,7 +6367,7 @@ ParentConstraint:
   m_TranslationAtRest: {x: 0, y: 1.9759827, z: 1.8209839}
   m_RotationAtRest: {x: 42.717377, y: 0.00023603423, z: 0.00009655946}
   m_TranslationOffsets:
-  - {x: -0.3517456, y: -0.20803833, z: 0.0015869141}
+  - {x: -0.35168457, y: -0.20800781, z: 0.0015869141}
   m_RotationOffsets:
   - {x: -71.1197, y: -90.19252, z: -179.73735}
   m_AffectTranslationX: 1
@@ -12317,7 +12334,7 @@ Transform:
   m_GameObject: {fileID: 9106178936458378747}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 812.06, y: 50.009155, z: 845.29}
+  m_LocalPosition: {x: 1433.7312, y: 80, z: 1249.72}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
