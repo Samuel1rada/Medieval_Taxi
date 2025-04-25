@@ -5,9 +5,9 @@ public class HorseWhipSound : MonoBehaviour
 {
     [Header("Whip Sound Settings")]
     public AudioClip whipSound;
-    public float cooldownDuration = 10f; 
-    public float movementThreshold = 0.2f; 
-    public KeyCode whipKey = KeyCode.LeftShift; 
+    public float cooldownDuration = 10f;
+    public float movementThreshold = 0.2f;
+    public KeyCode whipKey = KeyCode.LeftShift;
 
     private AudioSource audioSource;
     private float cooldownTimer;
@@ -33,19 +33,23 @@ public class HorseWhipSound : MonoBehaviour
             {
                 isOnCooldown = false;
             }
-            return; 
+            return;
         }
 
         bool isMoving = (transform.position - lastPosition).magnitude > movementThreshold;
+        bool justStartedMoving = isMoving && !wasMovingLastFrame;
+        wasMovingLastFrame = isMoving;
         lastPosition = transform.position;
 
-        bool whipKeyPressed = Input.GetKey(whipKey);
+        bool whipKeyPressed = Input.GetKeyDown(whipKey); // Changed to GetKeyDown
 
-        if ((isMoving || whipKeyPressed) && whipSound != null)
+        if ((justStartedMoving || whipKeyPressed) && whipSound != null)
         {
             PlayWhipSound();
         }
     }
+
+    private bool wasMovingLastFrame = false;
 
     void PlayWhipSound()
     {
