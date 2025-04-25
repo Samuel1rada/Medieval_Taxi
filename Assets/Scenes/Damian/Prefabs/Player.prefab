@@ -1279,6 +1279,66 @@ MonoBehaviour:
     OnInputFloat:
       m_PersistentCalls:
         m_Calls: []
+  - name: Sprint
+    active:
+      UseConstant: 1
+      ConstantValue: 1
+      Variable: {fileID: 0}
+    ignoreOnPause:
+      UseConstant: 1
+      ConstantValue: 0
+      Variable: {fileID: 0}
+    type: 1
+    input: InputValue
+    key: 331
+    debug: 0
+    GetPressed: 0
+    ResetOnDisable: 1
+    OnInputDown:
+      m_PersistentCalls:
+        m_Calls: []
+    OnInputUp:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLongPress:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLongPressReleased:
+      m_PersistentCalls:
+        m_Calls: []
+    OnDoubleTap:
+      m_PersistentCalls:
+        m_Calls: []
+    OnInputChanged:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8472086597697348087}
+          m_TargetAssemblyTypeName: MalbersAnimations.Controller.MAnimal, MalbersAnimations
+          m_MethodName: set_Sprint
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    OnInputEnable:
+      m_PersistentCalls:
+        m_Calls: []
+    OnInputDisable:
+      m_PersistentCalls:
+        m_Calls: []
+    DoubleTapTime: 0.3
+    LongPressTime: 0.5
+    SmoothDecrease: 0
+    OnInputPressed:
+      m_PersistentCalls:
+        m_Calls: []
+    OnInputFloat:
+      m_PersistentCalls:
+        m_Calls: []
   AllInputs: []
   actionMaps: []
   ActiveMapIndex: 0
@@ -1360,8 +1420,8 @@ MonoBehaviour:
   SelectedState: 0
   SelectedStance: 0
   ShowStateInInspector: 0
-  Editor_Tabs1: 4
-  Editor_Tabs2: 1
+  Editor_Tabs1: 0
+  Editor_Tabs2: 4
   SelectedMode: 0
   Mode_Tabs1: 0
   Ability_Tabs: 0
@@ -4636,28 +4696,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RepScript: {fileID: 0}
   pickupDropoffPoints:
-  - pointName: Stable
+  - pointName: Point 1
     pointTransform: {fileID: 0}
     destinationImage: {fileID: 21300000, guid: bc0f9cede6f103d47956614b2d8f21af, type: 3}
-  - pointName: Gate Entry
-    pointTransform: {fileID: 0}
-    destinationImage: {fileID: 21300000, guid: bc0f9cede6f103d47956614b2d8f21af, type: 3}
-  - pointName: Bridge Entry
-    pointTransform: {fileID: 0}
-    destinationImage: {fileID: 21300000, guid: bc0f9cede6f103d47956614b2d8f21af, type: 3}
-  - pointName: Town of broke people
-    pointTransform: {fileID: 0}
-    destinationImage: {fileID: 21300000, guid: bc0f9cede6f103d47956614b2d8f21af, type: 3}
-  - pointName: The Tower of blocks
-    pointTransform: {fileID: 0}
-    destinationImage: {fileID: 21300000, guid: bc0f9cede6f103d47956614b2d8f21af, type: 3}
-  - pointName: More Rich people
-    pointTransform: {fileID: 0}
-    destinationImage: {fileID: 21300000, guid: bc0f9cede6f103d47956614b2d8f21af, type: 3}
-  - pointName: The wall of dirt
-    pointTransform: {fileID: 0}
-    destinationImage: {fileID: 21300000, guid: bc0f9cede6f103d47956614b2d8f21af, type: 3}
-  - pointName: Castle grounds
+  - pointName: Point 2
     pointTransform: {fileID: 0}
     destinationImage: {fileID: 21300000, guid: bc0f9cede6f103d47956614b2d8f21af, type: 3}
   pickupIndicator: {fileID: 4561800643707298593}
@@ -4679,15 +4721,7 @@ MonoBehaviour:
   destinationText: {fileID: 0}
   timerText: {fileID: 0}
   jobUIAnimator: {fileID: 0}
-  beanList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  beanList: []
   passengerBean: {fileID: 7631494894290841636}
 --- !u!114 &8165165685190543411
 MonoBehaviour:
@@ -4702,7 +4736,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   whipSound: {fileID: 8300000, guid: 79583dcad330cc54bb06b67783d37e33, type: 3}
-  cooldownDuration: 5
+  cooldownDuration: 2
   movementThreshold: 0.2
   whipKey: 304
 --- !u!1 &1511445980999130731
