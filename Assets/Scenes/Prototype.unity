@@ -168030,7 +168030,7 @@ Transform:
   m_GameObject: {fileID: 2149380675279275752}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 476, y: 157.7, z: 447}
+  m_LocalPosition: {x: 476, y: 252, z: 447}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -200399,14 +200399,14 @@ MonoBehaviour:
   - {fileID: 1437328374086180, guid: ce2ed080f5d824a43b6d42d0847e4865, type: 3}
   - {fileID: 1058672481168554, guid: b68fb4865e4ff9e4888b381296c8a832, type: 3}
   - {fileID: 1443131901969886, guid: 2e7bc33a0aa05f84491fd0330c14d73c, type: 3}
-  spawnInterval: 0.57
+  spawnInterval: 0.74
   burstSpawnCount: 1
   widthRange: {x: 20, y: 30}
   lengthRange: {x: 19.008335, y: 19.105556}
   heightRange: {x: 5, y: 5}
-  uniformScaling: 0
+  uniformScaling: 1
   moveDirection: {x: 1, y: 0, z: 0}
-  moveSpeed: 23.6
+  moveSpeed: 10
   cloudLifetime: 25.9
   spawnAreaSize: {x: 1250, y: 40, z: 1250}
 --- !u!4 &5714726321235974519
@@ -205352,7 +205352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05dabdaed03c68e43acb921c24e2858e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whipSound: {fileID: 8300000, guid: 79583dcad330cc54bb06b67783d37e33, type: 3}
+  whipSound: {fileID: 8300000, guid: 3dc0d27563fcf3e499f2d8c9e7310f20, type: 3}
   cooldownDuration: 2
   movementThreshold: 0.2
   whipKey: 304
