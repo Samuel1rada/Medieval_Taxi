@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.InputSystem;
 
 [System.Serializable]
 public class PickupDropoffPoint
@@ -27,6 +28,7 @@ public class PickUpSystem : MonoBehaviour
     public float timeMultiplier = 1.2f;
     public float maxSpeedForJobActivation = 5f;
     public float maxSpeedForDropoff = 0.1f;
+    private bool isInDropoffTrigger = false;
 
     [Header("UI Elements")]
     public TextMeshProUGUI DropOffText;
@@ -89,6 +91,14 @@ public class PickUpSystem : MonoBehaviour
             DropOffText.alpha = 0f;
         }
 
+        if (Gamepad.current == null)
+        {
+            Debug.Log("No gamepad detected - keyboard controls only");
+        }
+        else
+        {
+            Debug.Log("Gamepad detected: " + Gamepad.current.name);
+        }
 
         SetBeanStates(false);
     }
@@ -148,10 +158,6 @@ public class PickUpSystem : MonoBehaviour
                 }
             }
 
-            if (Vector3.Distance(transform.position, currentDropoffPoint.position) < 2f && playerRigidbody.linearVelocity.magnitude < maxSpeedForDropoff)
-            {
-                DropOffPassenger();
-            }
             UpdateDropOffText();
         }
 
@@ -165,19 +171,22 @@ public class PickUpSystem : MonoBehaviour
 
     void UpdateDropOffText()
     {
-        if (DropOffText == null) return;
-
-        bool isNearDropOff = Vector3.Distance(transform.position, currentDropoffPoint.position) < 5f;
+        if (DropOffText == null || !isPickupActive) return;
 
         bool isSlowEnough = playerRigidbody.linearVelocity.magnitude < maxSpeedForDropoff;
+        bool controllerNorthPressed = Gamepad.current != null && Gamepad.current.buttonNorth.wasPressedThisFrame;
 
-        if (isNearDropOff)
+        if (isInDropoffTrigger)
         {
-
             if (isSlowEnough)
             {
-                DropOffText.text = "";
+                DropOffText.text = "Press E or (Y/△) to drop off passenger";
                 DropOffText.color = Color.green;
+
+                if (Input.GetKeyDown(KeyCode.E) || controllerNorthPressed)
+                {
+                    DropOffPassenger();
+                }
             }
             else
             {
@@ -190,17 +199,13 @@ public class PickUpSystem : MonoBehaviour
         {
             DropOffText.alpha = Mathf.Lerp(DropOffText.alpha, 0f, dropOffFade * Time.deltaTime);
         }
-        if (isNearDropOff && isSlowEnough && Input.GetKeyDown(KeyCode.N))
-        {
-            DropOffPassenger();
-        }
     }
-
 
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("OnTriggerEnter called with: " + other.name);
 
+        // Check if this is a pickup point (when not active and not on cooldown)
         if (!isPickupActive && !isOnCooldown && playerRigidbody.linearVelocity.magnitude < maxSpeedForJobActivation)
         {
             foreach (var point in pickupDropoffPoints)
@@ -213,9 +218,20 @@ public class PickUpSystem : MonoBehaviour
                 }
             }
         }
-        else
+        // Check if this is our current dropoff point
+        else if (isPickupActive && other.transform == currentDropoffPoint)
         {
-            Debug.Log("Collided with object, but a trip is already active, on cooldown, or player is moving too fast.");
+            isInDropoffTrigger = true;
+            Debug.Log("Entered drop-off point trigger");
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (isPickupActive && other.transform == currentDropoffPoint)
+        {
+            isInDropoffTrigger = false;
+            Debug.Log("Exited drop-off point trigger");
         }
     }
 
@@ -271,12 +287,24 @@ public class PickUpSystem : MonoBehaviour
 
     void DropOffPassenger()
     {
+
+        bool controllerNorthPressed = Gamepad.current != null && Gamepad.current.buttonNorth.wasPressedThisFrame;
+
+        // Additional safety checks
+        if (!isInDropoffTrigger ||
+            playerRigidbody.linearVelocity.magnitude >= maxSpeedForDropoff ||
+            (!Input.GetKeyDown(KeyCode.E) && !controllerNorthPressed))
+        {
+            Debug.Log("Can't drop off - not in trigger, moving too fast, or no input detected!");
+            return;
+        }
+
+
         float tripTime = Time.time - tripStartTime;
         float payment = CalculatePayment(tripTime);
         Debug.Log("Passenger dropped off! Trip Time: " + tripTime + ", Payment: " + payment);
         RepScript.AddScore(1);
 
-        // Immediately hide the drop-off text
         if (DropOffText != null)
         {
             DropOffText.text = "";
@@ -299,7 +327,6 @@ public class PickUpSystem : MonoBehaviour
 
         isPickupActive = false;
 
-        // Update bean states
         SetBeanStates(false);
 
         if (pickupIndicator != null)
@@ -311,14 +338,12 @@ public class PickUpSystem : MonoBehaviour
             Debug.LogError("Pickup Indicator is not assigned!");
         }
 
-        // Hide the job UI panel with animation
         if (jobUIPanel != null && jobUIAnimator != null)
         {
-            jobUIAnimator.SetTrigger("SlideOut"); // Trigger the SlideOut animation
+            jobUIAnimator.SetTrigger("SlideOut");
             StartCoroutine(DeactivateJobUIPanelAfterAnimation());
         }
 
-        // Start cooldown
         StartCooldown();
     }
     System.Collections.IEnumerator DeactivateJobUIPanelAfterAnimation()
