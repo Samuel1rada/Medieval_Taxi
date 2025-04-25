@@ -1,10 +1,11 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PedestrianSpawner : MonoBehaviour
 {
 
-    [SerializeField] private GameObject pedestrian;
+    [SerializeField] private List<GameObject> pedestrian = new List<GameObject>();
     public int pedestrianAmount;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,7 +24,7 @@ public class PedestrianSpawner : MonoBehaviour
         int count = 0;
         while(count < pedestrianAmount)
         {
-            GameObject obj = Instantiate(pedestrian);
+            GameObject obj = Instantiate(pedestrian[Random.Range(0, pedestrian.Count)]);
             Transform child = transform.GetChild(Random.Range(0, transform.childCount - 1));
             obj.GetComponent<WaypintNavigator>().currenwaypoint = child.GetComponent<Waypoint>();
             obj.transform.position = child.position;

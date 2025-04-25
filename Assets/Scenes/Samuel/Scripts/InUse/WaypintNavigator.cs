@@ -12,6 +12,8 @@ public class WaypintNavigator : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+
+       
     }
 
 
@@ -19,6 +21,16 @@ public class WaypintNavigator : MonoBehaviour
     {
         direction = Mathf.RoundToInt(Random.Range(0f, 1f));
         agent.SetDestination(currenwaypoint.Getposition());
+
+        if (NavMesh.SamplePosition(transform.position, out var hit, 2f, NavMesh.AllAreas))
+        {
+            transform.position = hit.position;
+            agent.Warp(hit.position); // warp ensures full grounding
+        }
+        else
+        {
+            Debug.LogError($"{gameObject.name} is not on the NavMesh!");
+        }
     }
 
     // Update is called once per frame
