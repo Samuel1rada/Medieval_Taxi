@@ -3,12 +3,12 @@ using UnityEngine;
 public class GateManager : MonoBehaviour
 {
     [SerializeField] private Animator gateOpen;
-    [SerializeField] private BoxCollider collider;
+    [SerializeField] private new BoxCollider collider;
 
     private void Start()
     {
         collider = GetComponent<BoxCollider>();
-        collider.enabled = true;
+        collider.enabled = false;
     }
 
     private void FixedUpdate()
