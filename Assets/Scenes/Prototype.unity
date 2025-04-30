@@ -121905,6 +121905,59 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc2ebcfb5963704448e67f92b57f0edf, type: 3}
+--- !u!1 &1546574759
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1546574760}
+  - component: {fileID: 1546574761}
+  m_Layer: 21
+  m_Name: Wagon-Ragdoll_Collider
+  m_TagString: Player
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1546574760
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546574759}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0.702}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1079536969609412906}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!65 &1546574761
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546574759}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 1089503807
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.0283346, y: 3.814841, z: 1.7043043}
+  m_Center: {x: 0.020992957, y: 0.25446564, z: 0.35215154}
 --- !u!1 &1548880342
 GameObject:
   m_ObjectHideFlags: 0
@@ -172322,6 +172375,7 @@ Transform:
   - {fileID: 1784995576881942868}
   - {fileID: 8509974852282488532}
   - {fileID: 8519030157732111427}
+  - {fileID: 1546574760}
   m_Father: {fileID: 8804958170267155064}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1079985268497578555
@@ -204157,7 +204211,7 @@ GameObject:
   - component: {fileID: 6668806747222048924}
   - component: {fileID: 6740219290060791424}
   m_Layer: 21
-  m_Name: Colliders
+  m_Name: Horse-Ragdoll_Collider
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -212492,13 +212546,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5403246613591522392}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.7359815, y: -0, z: -0.000000029802315, w: 0.6770016}
+  m_LocalPosition: {x: -0, y: 1.04, z: 0.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 431281922922402908}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -94.78, y: 0, z: 0}
 --- !u!208 &6670001466132788602
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -213041,16 +213095,16 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1089503807
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.35238647
+  m_Radius: 0.5158932
   m_Height: 2.2168884
   m_Direction: 1
-  m_Center: {x: 0, y: 1.1066856, z: 2.2639465}
+  m_Center: {x: -0.0000000074394144, y: 0.0000000071136173, z: 0.16350685}
 --- !u!23 &6744778446210519525
 MeshRenderer:
   m_ObjectHideFlags: 0
