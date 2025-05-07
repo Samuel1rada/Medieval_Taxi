@@ -11,19 +11,17 @@ public class PickupDropoffPoint
     public string pointName;
     public Transform pointTransform;
     public Sprite destinationImage;
+    public NPCPref passengerPreferences; // This should hold a reference to the NPC's preferences
 }
 
 public class PickUpSystem : MonoBehaviour
 {
-    [SerializeField] private RepScript RepScript;
     public List<PickupDropoffPoint> pickupDropoffPoints;
     public GameObject pickupIndicator;
     public float baseFare = 10f;
     public float speedMultiplierFast = 1.5f;
     public float speedMultiplierNormal = 1f;
     public float speedMultiplierSlow = 0.5f;
-    public float comfortMultiplier = 1f;
-    public float looksMultiplier = 1f;
     public float cooldownTime = 5f;
     public float timeMultiplier = 1.2f;
     public float maxSpeedForJobActivation = 5f;
@@ -33,7 +31,6 @@ public class PickUpSystem : MonoBehaviour
     [Header("UI Elements")]
     public TextMeshProUGUI DropOffText;
     public float dropOffFade = 2f;
-    public test popupSystem;
     public GameObject jobUIPanel;
     public Image destinationImageUI;
     public TextMeshProUGUI destinationText;
@@ -54,36 +51,13 @@ public class PickUpSystem : MonoBehaviour
     private float cooldownEndTime;
     private Rigidbody playerRigidbody;
 
+    [Header("Scoring System")]
+    public ScoreManager scoreManager;
+
     void Start()
     {
-        if (pickupIndicator == null)
-        {
-            Debug.LogError("Pickup Indicator is not assigned!");
-        }
-        else
-        {
+        if (pickupIndicator != null)
             pickupIndicator.SetActive(false);
-        }
-
-        if (pickupDropoffPoints == null || pickupDropoffPoints.Count == 0)
-        {
-            Debug.LogError("No pick-up/drop-off points assigned!");
-        }
-        if (popupSystem == null)
-        {
-            Debug.LogError("Popup System is not assigned!");
-        }
-
-        playerRigidbody = GetComponent<Rigidbody>();
-        if (playerRigidbody == null)
-        {
-            Debug.LogError("Player Rigidbody is not found!");
-        }
-
-        if (jobUIPanel != null)
-        {
-            jobUIPanel.SetActive(false);
-        }
 
         if (DropOffText != null)
         {
@@ -91,14 +65,14 @@ public class PickUpSystem : MonoBehaviour
             DropOffText.alpha = 0f;
         }
 
+        playerRigidbody = GetComponent<Rigidbody>();
+        if (jobUIPanel != null)
+            jobUIPanel.SetActive(false);
+
         if (Gamepad.current == null)
-        {
             Debug.Log("No gamepad detected - keyboard controls only");
-        }
         else
-        {
             Debug.Log("Gamepad detected: " + Gamepad.current.name);
-        }
 
         SetBeanStates(false);
     }
@@ -106,17 +80,10 @@ public class PickUpSystem : MonoBehaviour
     void SetBeanStates(bool jobActive)
     {
         foreach (var bean in beanList)
-        {
-            if (bean != null)
-            {
-                bean.SetActive(!jobActive);
-            }
-        }
+            if (bean != null) bean.SetActive(!jobActive);
 
         if (passengerBean != null)
-        {
             passengerBean.SetActive(jobActive);
-        }
     }
 
     public static string FormatTime(float timeInSeconds)
@@ -124,8 +91,7 @@ public class PickUpSystem : MonoBehaviour
         int minutes = Mathf.FloorToInt(timeInSeconds / 60);
         int seconds = Mathf.FloorToInt(timeInSeconds % 60);
         int deciseconds = Mathf.FloorToInt((timeInSeconds - Mathf.Floor(timeInSeconds)) * 10);
-
-        return string.Format("{0}:{1:00},{2:0}", minutes, seconds, deciseconds);
+        return $"{minutes}:{seconds:00},{deciseconds:0}";
     }
 
     void Update()
@@ -143,25 +109,14 @@ public class PickUpSystem : MonoBehaviour
             {
                 float elapsedTime = Time.time - tripStartTime;
                 timerText.text = FormatTime(elapsedTime);
-
-                if (elapsedTime < estimatedTime)
-                {
-                    timerText.color = Color.yellow;
-                }
-                else if (elapsedTime >= estimatedTime && elapsedTime <= estimatedTime + 10f)
-                {
-                    timerText.color = Color.gray;
-                }
-                else
-                {
-                    timerText.color = new Color(0.8f, 0.5f, 0.2f);
-                }
+                timerText.color = elapsedTime < estimatedTime ? Color.yellow :
+                                  elapsedTime <= estimatedTime + 10f ? Color.gray :
+                                  new Color(0.8f, 0.5f, 0.2f);
             }
 
             UpdateDropOffText();
         }
 
-        // Handle cooldown
         if (isOnCooldown && Time.time >= cooldownEndTime)
         {
             isOnCooldown = false;
@@ -184,15 +139,14 @@ public class PickUpSystem : MonoBehaviour
                 DropOffText.color = Color.green;
 
                 if (Input.GetKeyDown(KeyCode.E) || controllerNorthPressed)
-                {
                     DropOffPassenger();
-                }
             }
             else
             {
                 DropOffText.text = "Too fast to drop off passenger";
                 DropOffText.color = Color.red;
             }
+
             DropOffText.alpha = Mathf.Lerp(DropOffText.alpha, 1f, dropOffFade * Time.deltaTime);
         }
         else
@@ -203,152 +157,146 @@ public class PickUpSystem : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("OnTriggerEnter called with: " + other.name);
-
-        // Check if this is a pickup point (when not active and not on cooldown)
-        if (!isPickupActive && !isOnCooldown && playerRigidbody.linearVelocity.magnitude < maxSpeedForJobActivation)
+        if (!isPickupActive && !isOnCooldown &&
+            playerRigidbody.linearVelocity.magnitude < maxSpeedForJobActivation)
         {
             foreach (var point in pickupDropoffPoints)
             {
                 if (point.pointTransform == other.transform)
                 {
-                    Debug.Log("Pick-up point detected: " + point.pointName);
                     StartTrip(point);
                     break;
                 }
             }
         }
-        // Check if this is our current dropoff point
         else if (isPickupActive && other.transform == currentDropoffPoint)
         {
             isInDropoffTrigger = true;
-            Debug.Log("Entered drop-off point trigger");
         }
     }
 
     void OnTriggerExit(Collider other)
     {
         if (isPickupActive && other.transform == currentDropoffPoint)
-        {
             isInDropoffTrigger = false;
-            Debug.Log("Exited drop-off point trigger");
-        }
     }
 
     void StartTrip(PickupDropoffPoint pickupPoint)
     {
         currentPickupPoint = pickupPoint.pointTransform;
         currentDropoffPoint = GetRandomDropoffPoint(pickupPoint.pointTransform);
+        if (currentDropoffPoint == null) return;
 
-        if (currentDropoffPoint == null)
+        // Get or add NPCPref component to the pickup point if it doesn't exist
+        NPCPref passengerPrefs = pickupPoint.pointTransform.GetComponent<NPCPref>();
+        if (passengerPrefs == null)
         {
-            Debug.LogError("Failed to find a valid drop-off point!");
-            return;
+            passengerPrefs = pickupPoint.pointTransform.gameObject.AddComponent<NPCPref>();
         }
+
+        // Randomly select a personality preset (excluding Custom)
+        passengerPrefs.preset = (NPCPref.PersonalityPreset)Random.Range(1, System.Enum.GetValues(typeof(NPCPref.PersonalityPreset)).Length);
+
+        // Apply the selected preset
+        passengerPrefs.ApplySelectedPreset();
 
         estimatedDistance = Vector3.Distance(currentPickupPoint.position, currentDropoffPoint.position);
         estimatedTime = (estimatedDistance / 10f) * timeMultiplier;
         tripStartTime = Time.time;
         isPickupActive = true;
-
-        // Update bean states
         SetBeanStates(true);
+        if (pickupIndicator != null) pickupIndicator.SetActive(true);
 
-        if (pickupIndicator != null)
-        {
-            pickupIndicator.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("Pickup Indicator is not assigned!");
-        }
-
-        // Show the job UI panel with animation
         if (jobUIPanel != null && jobUIAnimator != null)
         {
             jobUIPanel.SetActive(true);
-            jobUIAnimator.ResetTrigger("SlideOut"); // Reset the SlideOut trigger
-            jobUIAnimator.SetTrigger("SlideIn"); // Trigger the SlideIn animation
+            jobUIAnimator.ResetTrigger("SlideOut");
+            jobUIAnimator.SetTrigger("SlideIn");
+            if (destinationImageUI != null) destinationImageUI.sprite = pickupPoint.destinationImage;
+            if (destinationText != null) destinationText.text = "Destination: " + GetPointName(currentDropoffPoint);
 
-            // Set the destination image and text
-            if (destinationImageUI != null)
-            {
-                destinationImageUI.sprite = pickupPoint.destinationImage;
-            }
-            if (destinationText != null)
-            {
-                destinationText.text = "Destination: " + GetPointName(currentDropoffPoint);
-            }
+            // Add debug info about the passenger's personality
+            Debug.Log($"New passenger personality: {passengerPrefs.preset}");
         }
-
-        Debug.Log("Trip started! Pick-up: " + pickupPoint.pointName + ", Drop-off: " + GetPointName(currentDropoffPoint));
-        Debug.Log("Estimated Distance: " + estimatedDistance + ", Estimated Time: " + estimatedTime);
     }
 
     void DropOffPassenger()
     {
+        float tripTime = Time.time - tripStartTime;
+        NPCPref passenger = GetCurrentPassengerPreferences();
 
-        bool controllerNorthPressed = Gamepad.current != null && Gamepad.current.buttonNorth.wasPressedThisFrame;
-
-        // Additional safety checks
-        if (!isInDropoffTrigger ||
-            playerRigidbody.linearVelocity.magnitude >= maxSpeedForDropoff ||
-            (!Input.GetKeyDown(KeyCode.E) && !controllerNorthPressed))
+        if (passenger != null && scoreManager != null)
         {
-            Debug.Log("Can't drop off - not in trigger, moving too fast, or no input detected!");
-            return;
+            // Create simplified journey stats (adjust based on your actual gameplay factors)
+            PreferenceSettings journeyStats = new PreferenceSettings
+            {
+                npcFast = tripTime < estimatedTime - 10f,  // Fast delivery
+                npcDriveBy = false,                         // Not used in scoring
+                npcDestruction = false,                     // Not used in scoring
+                npcRamps = false                            // Ramp bonuses handled separately
+            };
+
+            // Calculate delivery speed
+            ScoreManager.DeliverySpeed deliverySpeed = GetDeliverySpeed(tripTime);
+
+            // Call the scoring method
+            scoreManager.ShowFinalScore(
+                passenger.GetPreferences(),
+                journeyStats,
+                deliverySpeed
+            );
         }
 
-
-        float tripTime = Time.time - tripStartTime;
-        float payment = CalculatePayment(tripTime);
-        Debug.Log("Passenger dropped off! Trip Time: " + tripTime + ", Payment: " + payment);
-        RepScript.AddScore(1);
-
+        // Reset UI and state
+        ResetDropOffState();
+        StartCooldown();
+    }
+    private void ResetDropOffState()
+    {
+        // Reset UI elements
         if (DropOffText != null)
         {
             DropOffText.text = "";
             DropOffText.alpha = 0f;
         }
 
-        if (popupSystem != null)
-        {
-            popupSystem.owned_cash += (int)payment;
-            popupSystem.mypopup.textMeshPro.text = "Cash gained: " + payment.ToString("F2");
-            popupSystem.amount.text = "Money: " + popupSystem.owned_cash.ToString();
-            popupSystem.mypopup.animator.SetTrigger("fadein");
-            popupSystem.timerIsRunning = true;
-            popupSystem.onscreen = true;
-        }
-        else
-        {
-            Debug.LogError("Popup System is not assigned!");
-        }
-
+        // Reset pickup state
         isPickupActive = false;
-
+        isInDropoffTrigger = false;
         SetBeanStates(false);
 
         if (pickupIndicator != null)
-        {
             pickupIndicator.SetActive(false);
-        }
-        else
-        {
-            Debug.LogError("Pickup Indicator is not assigned!");
-        }
 
+        // Slide out job UI panel
         if (jobUIPanel != null && jobUIAnimator != null)
         {
             jobUIAnimator.SetTrigger("SlideOut");
             StartCoroutine(DeactivateJobUIPanelAfterAnimation());
         }
-
-        StartCooldown();
     }
-    System.Collections.IEnumerator DeactivateJobUIPanelAfterAnimation()
+    private ScoreManager.DeliverySpeed GetDeliverySpeed(float tripTime)
     {
-        yield return new WaitForSeconds(1.5f); // Wait for the SlideOut animation to finish
+        float timeDifference = tripTime - estimatedTime;
+
+        if (timeDifference < -10f)
+        {
+            Debug.Log("Fast delivery bonus!");
+            return ScoreManager.DeliverySpeed.Fast;
+        }
+        if (timeDifference <= 10f)
+        {
+            Debug.Log("On-time delivery");
+            return ScoreManager.DeliverySpeed.Medium;
+        }
+
+        Debug.Log("Late delivery penalty");
+        return ScoreManager.DeliverySpeed.Slow;
+    }
+
+    IEnumerator DeactivateJobUIPanelAfterAnimation()
+    {
+        yield return new WaitForSeconds(1.5f);
         jobUIPanel.SetActive(false);
     }
 
@@ -356,40 +304,41 @@ public class PickUpSystem : MonoBehaviour
     {
         isOnCooldown = true;
         cooldownEndTime = Time.time + cooldownTime;
-        Debug.Log("Cooldown started. Next job available in " + cooldownTime + " seconds.");
     }
 
     float CalculatePayment(float tripTime)
     {
         float timeDifference = tripTime - estimatedTime;
-        float speedMultiplier;
+        float speedMultiplier = timeDifference < -10f ? speedMultiplierFast :
+                                timeDifference <= 10f ? speedMultiplierNormal :
+                                speedMultiplierSlow;
+        return baseFare * speedMultiplier;
+    }
+    float CalculateTimeMultiplier(float tripTime)
+    {
+        float timeDifference = tripTime - estimatedTime;
 
         if (timeDifference < -10f)
         {
-            speedMultiplier = speedMultiplierFast;
-            Debug.Log("Trip completed faster than estimated time!");
+            Debug.Log("Fast delivery bonus applied!");
+            return speedMultiplierFast;
         }
-        else if (timeDifference >= -10f && timeDifference <= 10f)
+        else if (timeDifference <= 10f)
         {
-            speedMultiplier = speedMultiplierNormal;
-            Debug.Log("Trip completed within estimated time!");
+            Debug.Log("On-time delivery.");
+            return speedMultiplierNormal;
         }
         else
         {
-            speedMultiplier = speedMultiplierSlow;
-            Debug.Log("Trip completed slower than estimated time!");
+            Debug.Log("Slow delivery penalty applied.");
+            return speedMultiplierSlow;
         }
-
-        return baseFare * speedMultiplier * comfortMultiplier * looksMultiplier;
     }
+
 
     Transform GetRandomDropoffPoint(Transform pickupPoint)
     {
-        if (pickupDropoffPoints.Count < 2)
-        {
-            Debug.LogError("Not enough pick-up/drop-off points assigned!");
-            return null;
-        }
+        if (pickupDropoffPoints.Count < 2) return null;
 
         Transform dropoffPoint;
         do
@@ -406,22 +355,40 @@ public class PickUpSystem : MonoBehaviour
         foreach (var point in pickupDropoffPoints)
         {
             if (point.pointTransform == pointTransform)
-            {
                 return point.pointName;
-            }
         }
         return "Unknown Point";
     }
 
-    public void SetComfortMultiplier(float multiplier)
+    private NPCPref GetCurrentPassengerPreferences()
     {
-        comfortMultiplier = multiplier;
-        Debug.Log("Comfort Multiplier set to: " + comfortMultiplier);
+        foreach (var point in pickupDropoffPoints)
+        {
+            if (point.pointTransform == currentPickupPoint)
+            {
+                // Ensure preferences are properly initialized
+                if (point.passengerPreferences == null)
+                {
+                    point.passengerPreferences = point.pointTransform.gameObject.AddComponent<NPCPref>();
+                    point.passengerPreferences.preset = (NPCPref.PersonalityPreset)Random.Range(1, System.Enum.GetValues(typeof(NPCPref.PersonalityPreset)).Length);
+                    point.passengerPreferences.ApplySelectedPreset();
+                }
+                return point.passengerPreferences;
+            }
+        }
+        return null;
     }
 
-    public void SetLooksMultiplier(float multiplier)
+    public void PlayerUsedRamp(int rampHeight)
     {
-        looksMultiplier = multiplier;
-        Debug.Log("Looks Multiplier set to: " + looksMultiplier);
+        if (!isPickupActive || scoreManager == null) return;
+
+        NPCPref passenger = GetCurrentPassengerPreferences();
+        if (passenger != null)
+        {
+            scoreManager.HandleRampUsed(rampHeight, passenger.GetPreferences());
+            Debug.Log($"Ramp used! Height: {rampHeight}");
+        }
     }
+
 }
