@@ -47594,6 +47594,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pedestrian:
   - {fileID: 7138546115399205683, guid: a5b6d7e90e6e72542b68efb0470c3551, type: 3}
+  - {fileID: 3270436977389467921, guid: 8af2034600e2fb744bd970d271c1fa42, type: 3}
+  - {fileID: 6645701956113250619, guid: 790aad05d10ae1546a50f5400ea9fbfb, type: 3}
+  - {fileID: 2752452488401072760, guid: d068f8b410da5af4984e27e0a4a21f6a, type: 3}
+  - {fileID: 2560450817752938078, guid: 27011d66341a9e44c8b4e8215177979a, type: 3}
+  - {fileID: 3275770851972625538, guid: 71ea04776b0cb084ab721bd3325cae98, type: 3}
+  - {fileID: 1575799184213967897, guid: bd980552dd3ba424cac5b57233b16f9c, type: 3}
+  - {fileID: 2470739748203510983, guid: 09bd34a2df18fa545aacb61e6a1b4593, type: 3}
   pedestrianAmount: 50
 --- !u!1001 &616280088
 PrefabInstance:
@@ -69711,7 +69718,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 1212317422}
   nextWaypoint: {fileID: 1783304406}
-  width: 5.84
+  width: 7.93
   branches: []
   branchRatio: 0.5
 --- !u!4 &896209671
@@ -69723,7 +69730,7 @@ Transform:
   m_GameObject: {fileID: 896209669}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.4395262, z: -0, w: 0.8982298}
-  m_LocalPosition: {x: -70.58, y: -1, z: -162.36}
+  m_LocalPosition: {x: -70.04, y: -1, z: -163.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -76766,7 +76773,7 @@ Transform:
   m_GameObject: {fileID: 941275794}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.04075722, z: -0, w: 0.99916905}
-  m_LocalPosition: {x: 8.700012, y: -0.83, z: -74.20001}
+  m_LocalPosition: {x: 10.1, y: -0.83, z: -74.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -101412,7 +101419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 1824844194}
   nextWaypoint: {fileID: 896209670}
-  width: 4.64
+  width: 7.31
   branches: []
   branchRatio: 0.15
 --- !u!4 &1212317423
@@ -101424,7 +101431,7 @@ Transform:
   m_GameObject: {fileID: 1212317421}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.43952614, z: -0, w: 0.89822984}
-  m_LocalPosition: {x: -67.12, y: -1, z: -159.65}
+  m_LocalPosition: {x: -66.03, y: -1, z: -161.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -121898,6 +121905,59 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc2ebcfb5963704448e67f92b57f0edf, type: 3}
+--- !u!1 &1546574759
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1546574760}
+  - component: {fileID: 1546574761}
+  m_Layer: 21
+  m_Name: Wagon-Ragdoll_Collider
+  m_TagString: Player
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1546574760
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546574759}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0.702}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1079536969609412906}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!65 &1546574761
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546574759}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 1089503807
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.0283346, y: 3.814841, z: 1.7043043}
+  m_Center: {x: 0.020992957, y: 0.25446564, z: 0.35215154}
 --- !u!1 &1548880342
 GameObject:
   m_ObjectHideFlags: 0
@@ -138068,7 +138128,7 @@ Transform:
   m_GameObject: {fileID: 1817321664}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.33647552, z: -0, w: 0.94169223}
-  m_LocalPosition: {x: -4.5, y: -0.96, z: -124.6}
+  m_LocalPosition: {x: -3.77, y: -0.96, z: -125.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -172315,6 +172375,7 @@ Transform:
   - {fileID: 1784995576881942868}
   - {fileID: 8509974852282488532}
   - {fileID: 8519030157732111427}
+  - {fileID: 1546574760}
   m_Father: {fileID: 8804958170267155064}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1079985268497578555
@@ -184281,7 +184342,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -98.9, y: -42.42}
+  m_AnchoredPosition: {x: -98.900024, y: -42.420044}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2974502038728331876
@@ -204150,7 +204211,7 @@ GameObject:
   - component: {fileID: 6668806747222048924}
   - component: {fileID: 6740219290060791424}
   m_Layer: 21
-  m_Name: Colliders
+  m_Name: Horse-Ragdoll_Collider
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -212485,13 +212546,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5403246613591522392}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.7359815, y: -0, z: -0.000000029802315, w: 0.6770016}
+  m_LocalPosition: {x: -0, y: 1.04, z: 0.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 431281922922402908}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -94.78, y: 0, z: 0}
 --- !u!208 &6670001466132788602
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -213034,16 +213095,16 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1089503807
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.35238647
+  m_Radius: 0.5158932
   m_Height: 2.2168884
   m_Direction: 1
-  m_Center: {x: 0, y: 1.1066856, z: 2.2639465}
+  m_Center: {x: -0.0000000074394144, y: 0.0000000071136173, z: 0.16350685}
 --- !u!23 &6744778446210519525
 MeshRenderer:
   m_ObjectHideFlags: 0
