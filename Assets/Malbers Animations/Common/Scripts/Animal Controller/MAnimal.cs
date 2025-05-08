@@ -103,13 +103,13 @@ namespace MalbersAnimations.Controller
             speedSets = new List<MSpeedSet>(1)
             {
                 new MSpeedSet()
-            {
-                name = "Ground",
-                    StartVerticalIndex = new(1),
-                    TopIndex = new(3),
-                    states =  new  List<StateID>(2) { MTools.GetInstance<StateID>("Idle") , MTools.GetInstance<StateID>("Locomotion")},
-                    Speeds =  new  List<MSpeed>(3) { new ("Walk",1,4,4) , new ("Trot", 2, 4, 4), new ("Run", 3, 4, 4) }
-            }
+                {
+                    name = "Ground",
+                        StartVerticalIndex = new(1),
+                        TopIndex = new(3),
+                        states =  new  List<StateID>(2) { MTools.GetInstance<StateID>("Idle") , MTools.GetInstance<StateID>("Locomotion")},
+                        Speeds =  new  List<MSpeed>(3) { new ("Walk",1,4,4) , new ("Trot", 2, 4, 4), new ("Run", 3, 4, 4) }
+                }
             };
 
             BoolVar useCameraInp = MTools.GetInstance<BoolVar>("Global Camera Input");
