@@ -754,7 +754,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.23666666
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: de3781a4b0c211249b27d55be9883787, type: 2}
   m_BuildHeightMesh: 0
@@ -5076,7 +5076,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.23666666
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 022dabc9140ab314f827a1c052abf901, type: 2}
   m_BuildHeightMesh: 0
@@ -5190,11 +5190,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 388729221}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &402127831 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4274469598919461528, guid: 5796680ce10fd6e44a30b2f36f7d58e7, type: 3}
-  m_PrefabInstance: {fileID: 979024688728222572}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &410400589
 GameObject:
   m_ObjectHideFlags: 0
@@ -8514,7 +8509,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fb691dc683db8d459b3e02024bfb8bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pedestrian: {fileID: 402127831}
+  pedestrian:
+  - {fileID: 0}
   pedestrianAmount: 1000
 --- !u!1 &689774180
 GameObject:
@@ -9905,7 +9901,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.23666666
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: e1d9149c354708b4bbe473453ba70bb9, type: 2}
   m_BuildHeightMesh: 0
