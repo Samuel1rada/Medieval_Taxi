@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2225494513924937301}
   - component: {fileID: 5452197651843213338}
   - component: {fileID: 1253840470035600388}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Mud
   m_TagString: Slippery
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6140650800331011096}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -88, y: -8.1, z: -14}
   m_LocalScale: {x: 10, y: 0.5, z: 10}
   m_ConstrainProportionsScale: 0
@@ -103,7 +103,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -140,6 +140,45 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 1399314417768202326
+      type: {class: SpeedReaction, ns: MalbersAnimations.Reactions, asm: MalbersAnimations}
+      data:
+        Active: 1
+        localComponent:
+          useLocal: 0
+          component: {fileID: 0}
+        delay: 0
+        type: 5
+        SpeedSet: Ground
+        Index: 1
+        Value: 0
+        animatorSpeed: 1
+    - rid: 1399314507096916058
+      type: {class: SpeedReaction, ns: MalbersAnimations.Reactions, asm: MalbersAnimations}
+      data:
+        Active: 1
+        localComponent:
+          useLocal: 0
+          component: {fileID: 0}
+        delay: 0
+        type: 5
+        SpeedSet: Ground
+        Index: 6
+        Value: 1
+        animatorSpeed: 1
+    - rid: 1399314507096916061
+      type: {class: SpeedReaction, ns: MalbersAnimations.Reactions, asm: MalbersAnimations}
+      data:
+        Active: 1
+        localComponent:
+          useLocal: 0
+          component: {fileID: 0}
+        delay: 0
+        type: 0
+        SpeedSet: Ground
+        Index: 2
+        Value: 1
+        animatorSpeed: 1
     - rid: 5679847778121941092
       type: {class: ListReaction, ns: MalbersAnimations.Reactions, asm: MalbersAnimations}
       data:
@@ -149,35 +188,7 @@ MonoBehaviour:
           component: {fileID: 0}
         delay: 0
         reactions:
-        - rid: 5679847778121941113
-        - rid: 5679847778121941118
-        - rid: 5679847799578689640
-    - rid: 5679847778121941113
-      type: {class: SpeedReaction, ns: MalbersAnimations.Reactions, asm: MalbersAnimations}
-      data:
-        Active: 1
-        localComponent:
-          useLocal: 0
-          component: {fileID: 0}
-        delay: 0
-        type: 2
-        SpeedSet: Ground
-        Index: 1
-        Value: 1
-        animatorSpeed: 1
-    - rid: 5679847778121941118
-      type: {class: SpeedReaction, ns: MalbersAnimations.Reactions, asm: MalbersAnimations}
-      data:
-        Active: 1
-        localComponent:
-          useLocal: 0
-          component: {fileID: 0}
-        delay: 0
-        type: 4
-        SpeedSet: Ground
-        Index: 1
-        Value: 1
-        animatorSpeed: 1
+        - rid: 1399314417768202326
     - rid: 5679847778121941121
       type: {class: ListReaction, ns: MalbersAnimations.Reactions, asm: MalbersAnimations}
       data:
@@ -187,33 +198,5 @@ MonoBehaviour:
           component: {fileID: 0}
         delay: 0
         reactions:
-        - rid: 5679847778121941122
-    - rid: 5679847778121941122
-      type: {class: SpeedReaction, ns: MalbersAnimations.Reactions, asm: MalbersAnimations}
-      data:
-        Active: 1
-        localComponent:
-          useLocal: 0
-          component: {fileID: 0}
-        delay: 0
-        type: 1
-        SpeedSet: Ground
-        Index: 1
-        Value: 1
-        animatorSpeed: 1
-    - rid: 5679847799578689640
-      type: {class: ModeReaction, ns: MalbersAnimations.Reactions, asm: MalbersAnimations}
-      data:
-        Active: 1
-        localComponent:
-          useLocal: 0
-          component: {fileID: 0}
-        delay: 0
-        type: 0
-        ID: {fileID: 0}
-        Ability: -99
-        HasCoolDown: 1
-        coolDown: 0
-        abilityStatus: 0
-        AbilityTime: 3
-        ModePower: 0
+        - rid: 1399314507096916058
+        - rid: 1399314507096916061

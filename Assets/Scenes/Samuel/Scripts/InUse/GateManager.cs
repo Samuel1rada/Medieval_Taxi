@@ -3,19 +3,24 @@ using UnityEngine;
 public class GateManager : MonoBehaviour
 {
     [SerializeField] private Animator gateOpen;
-    [SerializeField] private BoxCollider collider;
-
-    private void Start()
+    private Collider gateCollider;
+    private void Awake()
     {
-        collider = GetComponent<BoxCollider>();
-        collider.enabled = true;
+        if (gateCollider == null)
+        {
+            gateCollider = GetComponent<Collider>();
+        }
+            
+
+        gateCollider.enabled = false;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.N))
         {
-            collider.enabled = true;
+            Debug.Log("N was pressed");
+            gateCollider.enabled = true;
         }
     }
     void OnTriggerEnter(Collider other)
