@@ -6,8 +6,8 @@ public class MainMenu : MonoBehaviour
 
     public void Play()
     {
-        //SceneManager.LoadSceneAsync("Prototype");
-        SceneManager.LoadSceneAsync("pause");
+        SceneManager.LoadSceneAsync("Prototype");
+        //SceneManager.LoadSceneAsync("pause");
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

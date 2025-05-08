@@ -53,7 +53,7 @@ public class pause : MonoBehaviour
 
     public void Restart()
     {
-        SceneManager.LoadScene("pause");
+        SceneManager.LoadScene("prototype");
     }
 
     public void Quitgame()
