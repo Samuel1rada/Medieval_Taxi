@@ -9,6 +9,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 50ef6aa2db9987b409bc880aa84509e1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.72305
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 50ef6aa2db9987b409bc880aa84509e1, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.72305
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 50ef6aa2db9987b409bc880aa84509e1, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.72305
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 50ef6aa2db9987b409bc880aa84509e1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10.952
       objectReference: {fileID: 0}
@@ -156,7 +168,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   brokenVersion: {fileID: 8356875940268193643, guid: a64ac03975e394e45918295e8b15e34b, type: 3}
-  effects: {fileID: 0}
-  spawnPos: {fileID: 0}
   destroyDelay: 6
   explosionForce: 0.00008
