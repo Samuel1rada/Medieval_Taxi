@@ -21430,11 +21430,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8998204081757248891, guid: f1252c5b0a14d9b459c1502d3fcb08c9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.8
+      value: -2.29
       objectReference: {fileID: 0}
     - target: {fileID: 8998204081757248891, guid: f1252c5b0a14d9b459c1502d3fcb08c9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.87
+      value: 3.4
       objectReference: {fileID: 0}
     - target: {fileID: 9166329765016242355, guid: f1252c5b0a14d9b459c1502d3fcb08c9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21442,6 +21442,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9166329765016242355, guid: f1252c5b0a14d9b459c1502d3fcb08c9, type: 3}
       propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9166329765016242355, guid: f1252c5b0a14d9b459c1502d3fcb08c9, type: 3}
+      propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -21481,6 +21485,10 @@ MonoBehaviour:
     npcDestruction: 1
     npcRamps: 1
     npcRampHeight: 8
+    likesPlayerFast: 0
+    likesPlayerDriveBy: 0
+    playerFast: 0
+    playerDriveBy: 0
 --- !u!1001 &316140653
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -60294,7 +60302,7 @@ GameObject:
   - component: {fileID: 933766703}
   - component: {fileID: 933766704}
   m_Layer: 0
-  m_Name: RepScore
+  m_Name: TotalScore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72114,11 +72122,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8998204081757248891, guid: f1252c5b0a14d9b459c1502d3fcb08c9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.45
+      value: -3.2
       objectReference: {fileID: 0}
     - target: {fileID: 8998204081757248891, guid: f1252c5b0a14d9b459c1502d3fcb08c9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.59
+      value: 2.77
       objectReference: {fileID: 0}
     - target: {fileID: 9166329765016242355, guid: f1252c5b0a14d9b459c1502d3fcb08c9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -72126,6 +72134,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9166329765016242355, guid: f1252c5b0a14d9b459c1502d3fcb08c9, type: 3}
       propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9166329765016242355, guid: f1252c5b0a14d9b459c1502d3fcb08c9, type: 3}
+      propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -72165,6 +72177,10 @@ MonoBehaviour:
     npcDestruction: 1
     npcRamps: 1
     npcRampHeight: 6
+    likesPlayerFast: 0
+    likesPlayerDriveBy: 0
+    playerFast: 0
+    playerDriveBy: 0
 --- !u!4 &985089882 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 947143121299653647, guid: 95b159ef51f1fcb4480e8885fd067272, type: 3}
@@ -81906,11 +81922,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5888619317951921644, guid: 8f1e4c60fc5c43441bfb19f3598ad03a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1479.27
+      value: 1479.28
       objectReference: {fileID: 0}
     - target: {fileID: 5888619317951921644, guid: 8f1e4c60fc5c43441bfb19f3598ad03a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 81.97
+      value: 81.54
       objectReference: {fileID: 0}
     - target: {fileID: 5888619317951921644, guid: 8f1e4c60fc5c43441bfb19f3598ad03a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -81918,23 +81934,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5888619317951921644, guid: 8f1e4c60fc5c43441bfb19f3598ad03a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.42125583
+      value: -0.45920452
       objectReference: {fileID: 0}
     - target: {fileID: 5888619317951921644, guid: 8f1e4c60fc5c43441bfb19f3598ad03a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.55408007
+      value: 0.5221478
       objectReference: {fileID: 0}
     - target: {fileID: 5888619317951921644, guid: 8f1e4c60fc5c43441bfb19f3598ad03a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.44562507
+      value: -0.47960958
       objectReference: {fileID: 0}
     - target: {fileID: 5888619317951921644, guid: 8f1e4c60fc5c43441bfb19f3598ad03a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.5629894
+      value: -0.53522664
       objectReference: {fileID: 0}
     - target: {fileID: 5888619317951921644, guid: 8f1e4c60fc5c43441bfb19f3598ad03a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 284.4
+      value: 276.81
       objectReference: {fileID: 0}
     - target: {fileID: 5888619317951921644, guid: 8f1e4c60fc5c43441bfb19f3598ad03a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -113499,6 +113515,11 @@ CapsuleCollider:
   m_Height: 0.4861315
   m_Direction: 1
   m_Center: {x: 0, y: 0.24306574, z: 0}
+--- !u!4 &1668874216 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 617964708990473708, guid: 82931821843abfa4b8ac5f67e485089a, type: 3}
+  m_PrefabInstance: {fileID: 1881300425}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1670616974
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -125766,6 +125787,10 @@ PrefabInstance:
       propertyPath: destinationText
       value: 
       objectReference: {fileID: 1452336803}
+    - target: {fileID: 1246766991411246765, guid: 82931821843abfa4b8ac5f67e485089a, type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 1668874216}
     - target: {fileID: 1246766991411246765, guid: 82931821843abfa4b8ac5f67e485089a, type: 3}
       propertyPath: destinationImageUI
       value: 
@@ -142013,6 +142038,8 @@ MonoBehaviour:
   preferenceMultiplier: 1.5
   rampHeightWeight: 2
   perfectHeightBonus: 25
+  scoreCountDuration: 1.5
+  totalScoreText: {fileID: 263050501}
   scorePopupPrefab: {fileID: 1148122089}
   popupParent: {fileID: 1148122090}
   popupStartPosition: {x: 0, y: -100}
@@ -142020,6 +142047,11 @@ MonoBehaviour:
   popupRiseDistance: 100
   positiveColor: {r: 0, g: 1, b: 0, a: 1}
   negativeColor: {r: 1, g: 0, b: 0, a: 1}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  maxRampHeight: 343.7
+  testScoreAmount: 100
 --- !u!4 &2009802389
 Transform:
   m_ObjectHideFlags: 0
@@ -149869,6 +149901,10 @@ PrefabInstance:
     - target: {fileID: 4687799107723879637, guid: d11fbe1fdd57bd1438df67e09fe6fee7, type: 3}
       propertyPath: m_Name
       value: Damian Map test
+      objectReference: {fileID: 0}
+    - target: {fileID: 9064963293651438518, guid: d11fbe1fdd57bd1438df67e09fe6fee7, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -206819,6 +206855,10 @@ MonoBehaviour:
     npcDestruction: 0
     npcRamps: 0
     npcRampHeight: 5
+    likesPlayerFast: 0
+    likesPlayerDriveBy: 0
+    playerFast: 0
+    playerDriveBy: 0
 --- !u!65 &9098540675162327577
 BoxCollider:
   m_ObjectHideFlags: 0

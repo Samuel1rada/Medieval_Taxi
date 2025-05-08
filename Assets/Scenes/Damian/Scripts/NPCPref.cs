@@ -3,21 +3,27 @@ using UnityEngine;
 [System.Serializable]
 public class PreferenceSettings
 {
-    [Header("Movement Preferences")]
-    public bool likesFast = false;
-    public bool likesDriveBy = false;
-
-    [Header("Action Preferences")]
-    public bool likesDestruction = false;
-    public bool likesRamps = false;
+    [Header("Passenger Preferences")]
+    public bool likesFast;
+    public bool likesDriveBy;
+    public bool likesDestruction;
+    public bool likesRamps;
     [Range(0, 10)] public int preferredRampHeight = 3;
 
-    [Header("NPC Compatibility")]
-    public bool npcFast = false;
-    public bool npcDriveBy = false;
-    public bool npcDestruction = false;
-    public bool npcRamps = false;
+    [Header("NPC Characteristics")]
+    public bool npcFast;
+    public bool npcDriveBy;
+    public bool npcDestruction;
+    public bool npcRamps;
     [Range(0, 10)] public int npcRampHeight = 5;
+
+    [Header("NPC Preferences About Player")]
+    public bool likesPlayerFast;    // NPC prefers fast driving
+    public bool likesPlayerDriveBy; // NPC prefers drive-by actions
+
+    [Header("Player Characteristics")]
+    public bool playerFast;         // Whether player is driving fast
+    public bool playerDriveBy;      // Whether player does drive-bys
 }
 
 public class NPCPref : MonoBehaviour

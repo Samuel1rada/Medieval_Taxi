@@ -16,6 +16,7 @@ public class PickupDropoffPoint
 
 public class PickUpSystem : MonoBehaviour
 {
+    [SerializeField] private Transform playerTransform;
     public List<PickupDropoffPoint> pickupDropoffPoints;
     public GameObject pickupIndicator;
     public float baseFare = 10f;
@@ -122,6 +123,7 @@ public class PickUpSystem : MonoBehaviour
             isOnCooldown = false;
             Debug.Log("Cooldown ended. Ready for a new job!");
         }
+
     }
 
     void UpdateDropOffText()
@@ -386,7 +388,8 @@ public class PickUpSystem : MonoBehaviour
         NPCPref passenger = GetCurrentPassengerPreferences();
         if (passenger != null)
         {
-            scoreManager.HandleRampUsed(rampHeight, passenger.GetPreferences());
+            // New version (passing player transform)
+            scoreManager.HandleRampUsed(playerTransform, passenger.GetPreferences());
             Debug.Log($"Ramp used! Height: {rampHeight}");
         }
     }

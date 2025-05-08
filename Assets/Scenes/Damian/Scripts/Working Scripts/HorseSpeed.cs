@@ -35,4 +35,5 @@ public class HorseSpeedController : MonoBehaviour
             Debug.LogError("Horse reference is missing!");
         }
     }
+    
 }
