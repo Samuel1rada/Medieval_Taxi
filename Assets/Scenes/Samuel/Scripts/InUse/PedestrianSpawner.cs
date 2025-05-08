@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.AI;
 
 public class PedestrianSpawner : MonoBehaviour
 {
@@ -22,16 +23,27 @@ public class PedestrianSpawner : MonoBehaviour
     IEnumerator Spawn()
     {
         int count = 0;
-        while(count < pedestrianAmount)
+        while (count < pedestrianAmount)
         {
-            GameObject obj = Instantiate(pedestrian[Random.Range(0, pedestrian.Count)]);
-            Transform child = transform.GetChild(Random.Range(0, transform.childCount - 1));
-            obj.GetComponent<WaypintNavigator>().currenwaypoint = child.GetComponent<Waypoint>();
-            obj.transform.position = child.position;
+            // Pick a random child waypoint
+            Transform child = transform.GetChild(Random.Range(0, transform.childCount));
+
+            // Try to find nearest point on NavMesh within 1 unit
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(child.position, out hit, 1.0f, NavMesh.AllAreas))
+            {
+                // Instantiate at a valid NavMesh position
+                GameObject obj = Instantiate(pedestrian[Random.Range(0, pedestrian.Count)], hit.position, Quaternion.identity);
+                obj.GetComponent<WaypintNavigator>().currenwaypoint = child.GetComponent<Waypoint>();
+
+                count++; // Only count successful spawns
+            }
+            else
+            {
+                Debug.LogWarning("Could not find NavMesh near waypoint: " + child.name);
+            }
 
             yield return new WaitForEndOfFrame();
-
-            count++;
         }
     }
 }
