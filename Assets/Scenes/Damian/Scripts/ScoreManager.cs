@@ -53,7 +53,7 @@ public class ScoreManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             InitializeComponents();
-            LoadScore();
+            ResetScore();
         }
         else
         {
