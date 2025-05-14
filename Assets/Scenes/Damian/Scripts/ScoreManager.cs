@@ -6,12 +6,8 @@ public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance;
 
-
     [Header("Score Settings")]
     [SerializeField] private float baseScore = 50f;
-    [SerializeField] private float preferenceMultiplier = 1.5f;
-    [SerializeField] private float rampHeightWeight = 2f;
-    [SerializeField] private float perfectHeightBonus = 25f;
     [SerializeField] private float scoreCountDuration = 1.5f;
 
     [Header("UI References")]
@@ -25,10 +21,6 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private float popupRiseDistance = 100f;
     [SerializeField] private Color positiveColor = Color.green;
     [SerializeField] private Color negativeColor = Color.red;
-
-    [Header("Ramp Settings")]
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private float maxRampHeight = 10f;
 
     private float _currentScore = 0f;
     private float _displayedScore = 0f;
@@ -84,6 +76,7 @@ public class ScoreManager : MonoBehaviour
         }
         _scoreCountingCoroutine = StartCoroutine(CountToScore());
     }
+
     private IEnumerator CountToScore()
     {
         float startValue = _displayedScore;
@@ -101,6 +94,7 @@ public class ScoreManager : MonoBehaviour
         _displayedScore = endValue;
         UpdateTotalScoreDisplay();
     }
+
     private void LoadScore()
     {
         CurrentScore = PlayerPrefs.GetFloat("TotalScore", 0f);
@@ -175,14 +169,12 @@ public class ScoreManager : MonoBehaviour
             timer += Time.deltaTime;
             float progress = timer / popupLifetime;
 
-            // Animate movement
             rect.anchoredPosition = Vector2.Lerp(
                 startPos,
                 startPos + (Vector2.up * popupRiseDistance),
                 progress
             );
 
-            // Animate fade
             if (progress > 0.6f)
             {
                 text.color = new Color(
@@ -197,100 +189,6 @@ public class ScoreManager : MonoBehaviour
         }
 
         Destroy(popup);
-    }
-
-    public float CalculateCompatibilityScore(PreferenceSettings passenger, PreferenceSettings npc)
-    {
-        float score = baseScore;
-
-        // Passenger preferences vs NPC characteristics
-        if (passenger.likesFast && npc.npcFast)
-            score *= ApplyPreferenceMultiplier("Speed", passenger.likesFast, npc.npcFast);
-
-        if (passenger.likesDriveBy && npc.npcDriveBy)
-            score *= ApplyPreferenceMultiplier("DriveBy", passenger.likesDriveBy, npc.npcDriveBy);
-
-        if (passenger.likesDestruction && npc.npcDestruction)
-            score *= ApplyPreferenceMultiplier("Destruction", passenger.likesDestruction, npc.npcDestruction);
-
-        if (passenger.likesRamps && npc.npcRamps)
-        {
-            score *= ApplyPreferenceMultiplier("Ramps", passenger.likesRamps, npc.npcRamps);
-            score += CalculateRampBonus(passenger.preferredRampHeight, npc.npcRampHeight);
-        }
-
-        // NPC preference bonus (NEW)
-        if (npc.likesFast && passenger.playerFast)
-            score *= ApplyPreferenceMultiplier("NPC Speed Preference", npc.likesFast, passenger.playerFast);
-
-        if (npc.likesDriveBy && passenger.playerDriveBy)
-            score *= ApplyPreferenceMultiplier("NPC DriveBy Preference", npc.likesDriveBy, passenger.playerDriveBy);
-
-        return Mathf.Max(0, score);
-    }
-
-    private float ApplyPreferenceMultiplier(string preferenceName, bool passengerLikes, bool npcHas)
-    {
-        if (passengerLikes && npcHas)
-        {
-            Debug.Log($"Positive match for {preferenceName}");
-            return preferenceMultiplier;
-        }
-        return 1f;
-    }
-
-    private float CalculateRampBonus(int passengerHeight, int npcHeight)
-    {
-        float heightDifference = Mathf.Abs(passengerHeight - npcHeight);
-        float heightSimilarity = 1f - (heightDifference / 10f);
-
-        if (heightDifference == 0)
-        {
-            Debug.Log("Perfect ramp height match!");
-            return perfectHeightBonus;
-        }
-
-        return heightSimilarity * rampHeightWeight;
-    }
-
-    public void ShowFinalScore(PreferenceSettings passengerPrefs, PreferenceSettings journeyStats, DeliverySpeed speed)
-    {
-        float baseScore = CalculateCompatibilityScore(passengerPrefs, journeyStats);
-        float speedMultiplier = GetSpeedMultiplier(speed);
-        float finalScore = baseScore * speedMultiplier;
-
-        AddScore(finalScore);
-    }
-
-    private float GetSpeedMultiplier(DeliverySpeed speed)
-    {
-        switch (speed)
-        {
-            case DeliverySpeed.Fast: return 1.5f;
-            case DeliverySpeed.Medium: return 1.0f;
-            case DeliverySpeed.Slow: return 0.7f;
-            default: return 1.0f;
-        }
-    }
-    public float CalculateRampBonusFromPlayerHeight(Transform playerTransform)
-    {
-        if (Physics.Raycast(playerTransform.position, Vector3.down, out RaycastHit hit, maxRampHeight, groundLayer))
-        {
-            float heightAboveGround = hit.distance;
-            float normalizedHeight = Mathf.Clamp01(heightAboveGround / maxRampHeight);
-            return normalizedHeight * perfectHeightBonus;
-        }
-        return 0f;
-    }
-    public void HandleRampUsed(Transform playerTransform, PreferenceSettings passenger)
-    {
-        float rampHeight = CalculateRampBonusFromPlayerHeight(playerTransform);
-        float scoreChange = passenger.likesRamps
-            ? rampHeight * rampHeightWeight
-            : -rampHeightWeight * 2f;
-
-        AddScore(scoreChange);
-        Debug.Log($"Ramp bonus: {scoreChange} (Height: {rampHeight:F1})");
     }
 
     public enum DeliverySpeed { Slow, Medium, Fast }
