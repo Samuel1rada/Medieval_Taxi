@@ -35,14 +35,14 @@ MonoBehaviour:
     UseConstant: 1
     ConstantValue: 0
     Variable: {fileID: 0}
-  Priority: 1
+  Priority: 0
   resetInputOnFailed: 0
-  ResetLastState: 0
+  ResetLastState: 1
   General:
-    modify: 11391
+    modify: -1
     RootMotion: 1
-    RootMotionRotation: 1
-    Sprint: 1
+    RootMotionRotation: 0
+    Sprint: 0
     Gravity: 0
     Grounded: 1
     OrientToGround: 1
@@ -102,16 +102,16 @@ MonoBehaviour:
   ExitOnMain: 1
   EnterCooldown:
     UseConstant: 1
-    ConstantValue: 0.1
+    ConstantValue: 0
     Variable: {fileID: 0}
   ExitCooldown:
     UseConstant: 1
     ConstantValue: 0
     Variable: {fileID: 0}
-  CanStrafe: 1
+  CanStrafe: 0
   StrafeAnimations: 1
   MovementStrafe: 1
-  IdleStrafe: 0.1
+  IdleStrafe: 1
   m_debug: 1
   Editor_Tabs1: 0
   SpeedSets: []

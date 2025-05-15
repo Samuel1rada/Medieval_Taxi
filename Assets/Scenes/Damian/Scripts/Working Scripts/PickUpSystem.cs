@@ -80,6 +80,8 @@ public class PickUpSystem : MonoBehaviour
     private bool currentLikesDriveBy;
     private bool currentLikesDestruction;
 
+
+
     void Start()
     {
         if (pickupIndicator != null)
@@ -101,7 +103,6 @@ public class PickUpSystem : MonoBehaviour
             Debug.Log("Gamepad detected: " + Gamepad.current.name);
 
         SetBeanStates(false);
-        malbersInput = FindObjectOfType<MInputLink>();
     }
 
     void SetBeanStates(bool jobActive)
