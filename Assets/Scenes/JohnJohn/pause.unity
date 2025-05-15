@@ -7868,6 +7868,7 @@ GameObject:
   - component: {fileID: 1720005876}
   - component: {fileID: 1720005875}
   - component: {fileID: 1720005874}
+  - component: {fileID: 1720005883}
   m_Layer: 20
   m_Name: Main Horse Carriage
   m_TagString: Animal
@@ -10031,7 +10032,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1720005869}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05dabdaed03c68e43acb921c24e2858e, type: 3}
   m_Name: 
@@ -10093,6 +10094,9 @@ MonoBehaviour:
   - {fileID: 0}
   passengerBean: {fileID: 1905633630}
   scoreManager: {fileID: 0}
+  cameraAnimator: {fileID: 0}
+  malbersInput: {fileID: 0}
+  cameraAnimationCooldown: 10
 --- !u!114 &1720005876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11608,6 +11612,22 @@ MonoBehaviour:
   MovementEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1720005883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1720005869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05a0bd50ae2675f4e801780c357f7f5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whipSound: {fileID: 8300000, guid: 3dc0d27563fcf3e499f2d8c9e7310f20, type: 3}
+  cooldownDuration: 0
+  movementThreshold: 0.2
+  whipKey: 304
 --- !u!1 &1747549257
 GameObject:
   m_ObjectHideFlags: 0
