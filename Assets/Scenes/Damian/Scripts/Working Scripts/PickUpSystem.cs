@@ -12,7 +12,13 @@ public class PickupDropoffPoint
     public string pointName;
     public Transform pointTransform;
     public Sprite destinationImage;
-    public NPCPref passengerPreferences;
+    public bool likesDriveBy;
+    public bool likesDestruction;
+    [Tooltip("Score penalty when passenger dislikes this action")]
+    public float driveByBonus = 25f;  // Renamed for clarity
+    public float driveByPenalty = 20f;
+    public float destructionBonus = 30f;  // Renamed for clarity
+    public float destructionPenalty = 25f;
 }
 
 public class PickUpSystem : MonoBehaviour
@@ -23,7 +29,7 @@ public class PickUpSystem : MonoBehaviour
     public List<PickupDropoffPoint> pickupDropoffPoints;
     private PickupDropoffPoint currentPickupPointData;
     public GameObject pickupIndicator;
-    public float baseFare = 10f;
+    public float baseFare = 100f;
     public float speedMultiplierFast = 1.5f;
     public float speedMultiplierNormal = 1f;
     public float speedMultiplierSlow = 0.5f;
@@ -66,7 +72,12 @@ public class PickUpSystem : MonoBehaviour
     [Header("Animation Cooldown")]
     public float cameraAnimationCooldown = 10f; // Time in seconds between animations
     private float lastCameraAnimationTime = -10f; // Initialize to allow first animation
+    [Header("Preference Scoring")]
+    public string driveByTag = "DriveByPoint";
+    public string destructionTag = "Destructible";
 
+    private bool currentLikesDriveBy;
+    private bool currentLikesDestruction;
 
     void Start()
     {
@@ -89,8 +100,7 @@ public class PickUpSystem : MonoBehaviour
             Debug.Log("Gamepad detected: " + Gamepad.current.name);
 
         SetBeanStates(false);
-        malbersInput = FindObjectOfType<MInput>(); // Make sure only one exists or find it on the player
-
+        malbersInput = FindObjectOfType<MInput>();
     }
 
     void SetBeanStates(bool jobActive)
@@ -173,6 +183,7 @@ public class PickUpSystem : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        // Original pickup/dropoff logic
         if (!isPickupActive && !isOnCooldown &&
             playerRigidbody.linearVelocity.magnitude < maxSpeedForJobActivation)
         {
@@ -189,7 +200,23 @@ public class PickUpSystem : MonoBehaviour
         {
             isInDropoffTrigger = true;
         }
+
+        // Handle drive-by events with penalties
+        if (isPickupActive && other.CompareTag(driveByTag))
+        {
+            if (currentLikesDriveBy)
+            {
+                scoreManager.AddScore(currentPickupPointData.driveByBonus);
+                Debug.Log($"Drive-by bonus: +{currentPickupPointData.driveByBonus}");
+            }
+            else
+            {
+                scoreManager.AddScore(-currentPickupPointData.driveByPenalty);
+                Debug.Log($"Drive-by penalty: -{currentPickupPointData.driveByPenalty}");
+            }
+        }
     }
+
 
     void OnTriggerExit(Collider other)
     {
@@ -199,37 +226,17 @@ public class PickUpSystem : MonoBehaviour
 
     void StartTrip(PickupDropoffPoint pickupPoint)
     {
-        // Store the ENTIRE pickup point data, not just the transform
-        currentPickupPointData = pickupPoint;
         currentPickupPoint = pickupPoint.pointTransform;
         currentDropoffPoint = GetRandomDropoffPoint(pickupPoint.pointTransform);
-
         if (currentDropoffPoint == null) return;
 
-        // Set NPC personality and preferences
-        NPCPref passengerPrefs = pickupPoint.pointTransform.GetComponent<NPCPref>();
-        if (passengerPrefs == null)
-            passengerPrefs = pickupPoint.pointTransform.gameObject.AddComponent<NPCPref>();
-
-        passengerPrefs.preset = (NPCPref.PersonalityPreset)Random.Range(1, System.Enum.GetValues(typeof(NPCPref.PersonalityPreset)).Length);
-        passengerPrefs.ApplySelectedPreset();
-        pickupPoint.passengerPreferences = passengerPrefs;
-
-        // Disable player input
+        currentPickupPointData = pickupPoint;
         malbersInput.SetInput("All", false);
 
-        // Check if camera animation is off cooldown
-        bool playAnimation = Time.time - lastCameraAnimationTime >= cameraAnimationCooldown;
-
-        if (playAnimation && cameraAnimator != null)
+        if (Time.time - lastCameraAnimationTime >= cameraAnimationCooldown && cameraAnimator != null)
         {
             cameraAnimator.SetTrigger("StartCameraIntro");
             lastCameraAnimationTime = Time.time;
-        }
-
-        // Start the job immediately if no animation, or wait for animation if playing
-        if (playAnimation)
-        {
             StartCoroutine(WaitForCameraIntroThenStartJob(pickupPoint));
         }
         else
@@ -238,32 +245,53 @@ public class PickUpSystem : MonoBehaviour
         }
     }
 
+    IEnumerator WaitForCameraIntroThenStartJob(PickupDropoffPoint pickupPoint)
+    {
+        yield return new WaitForSeconds(2f);
+        FinalizeJobStart(pickupPoint);
+    }
+
+    void FinalizeJobStart(PickupDropoffPoint pickupPoint)
+    {
+        estimatedDistance = Vector3.Distance(currentPickupPoint.position, currentDropoffPoint.position);
+        estimatedTime = (estimatedDistance / 10f) * timeMultiplier;
+        tripStartTime = Time.time;
+        isPickupActive = true;
+
+        // Set current passenger preferences
+        currentLikesDriveBy = pickupPoint.likesDriveBy;
+        currentLikesDestruction = pickupPoint.likesDestruction;
+
+        SetBeanStates(true);
+        if (pickupIndicator != null) pickupIndicator.SetActive(true);
+        malbersInput.SetInput("All", true);
+
+        SetupJobUI();
+
+        // Update destination text with preferences
+        if (destinationText != null)
+        {
+            string prefText = "";
+            if (currentLikesDriveBy) prefText += "Likes Drive Bys\n";
+            if (currentLikesDestruction) prefText += "Likes Destruction";
+            destinationText.text = $"Destination: {GetPointName(currentDropoffPoint)}\n{prefText}";
+        }
+    }
     void DropOffPassenger()
     {
+        if (!CanDropOff()) return;
+
         float tripTime = Time.time - tripStartTime;
-        NPCPref passenger = GetCurrentPassengerPreferences();
-
-        if (passenger != null && scoreManager != null)
-        {
-            PreferenceSettings journeyStats = new PreferenceSettings
-            {
-                npcFast = tripTime < estimatedTime - 10f,
-                npcDriveBy = false,
-                npcDestruction = false,
-                npcRamps = false
-            };
-
-            ScoreManager.DeliverySpeed deliverySpeed = GetDeliverySpeed(tripTime);
-
-            scoreManager.ShowFinalScore(
-                passenger.GetPreferences(),
-                journeyStats,
-                deliverySpeed
-            );
-        }
-
+        CalculateAndApplyScore(tripTime);
         ResetDropOffState();
         StartCooldown();
+    }
+
+    private bool CanDropOff()
+    {
+        bool isSlowEnough = playerRigidbody.linearVelocity.magnitude < maxSpeedForDropoff;
+        bool controllerNorthPressed = Gamepad.current != null && Gamepad.current.buttonNorth.wasPressedThisFrame;
+        return isInDropoffTrigger && isSlowEnough && (Input.GetKeyDown(KeyCode.E) || controllerNorthPressed);
     }
 
     private void ResetDropOffState()
@@ -309,32 +337,10 @@ public class PickUpSystem : MonoBehaviour
         cooldownEndTime = Time.time + cooldownTime;
     }
 
-    float CalculatePayment(float tripTime)
-    {
-        float timeDifference = tripTime - estimatedTime;
-        float speedMultiplier = timeDifference < -10f ? speedMultiplierFast :
-                                timeDifference <= 10f ? speedMultiplierNormal :
-                                speedMultiplierSlow;
-        return baseFare * speedMultiplier;
-    }
-
-    float CalculateTimeMultiplier(float tripTime)
-    {
-        float timeDifference = tripTime - estimatedTime;
-        if (timeDifference < -10f) return speedMultiplierFast;
-        if (timeDifference <= 10f) return speedMultiplierNormal;
-        return speedMultiplierSlow;
-    }
-
     Transform GetRandomDropoffPoint(Transform pickupPoint)
     {
         if (pickupDropoffPoints.Count < 2) return null;
 
-        // Find the pickup point in the list to get its data
-        PickupDropoffPoint pickupData = pickupDropoffPoints.Find(p => p.pointTransform == pickupPoint);
-        if (pickupData == null) return null;
-
-        // Get a random dropoff point (excluding the pickup point)
         List<PickupDropoffPoint> possibleDropoffs = pickupDropoffPoints.FindAll(p => p.pointTransform != pickupPoint);
         if (possibleDropoffs.Count == 0) return null;
 
@@ -352,68 +358,58 @@ public class PickUpSystem : MonoBehaviour
         return "Unknown Point";
     }
 
-    private NPCPref GetCurrentPassengerPreferences()
+    private void SetupJobUI()
     {
-        foreach (var point in pickupDropoffPoints)
-        {
-            if (point.pointTransform == currentPickupPoint)
-            {
-                if (point.passengerPreferences == null)
-                {
-                    point.passengerPreferences = point.pointTransform.gameObject.AddComponent<NPCPref>();
-                    point.passengerPreferences.preset = (NPCPref.PersonalityPreset)Random.Range(1, System.Enum.GetValues(typeof(NPCPref.PersonalityPreset)).Length);
-                    point.passengerPreferences.ApplySelectedPreset();
-                }
-                return point.passengerPreferences;
-            }
-        }
-        return null;
-    }
-
-    public void PlayerUsedRamp(int rampHeight)
-    {
-        if (!isPickupActive || scoreManager == null) return;
-
-        NPCPref passenger = GetCurrentPassengerPreferences();
-        if (passenger != null)
-        {
-            scoreManager.HandleRampUsed(playerTransform, passenger.GetPreferences());
-            Debug.Log($"Ramp used! Height: {rampHeight}");
-        }
-    }
-
-    IEnumerator WaitForCameraIntroThenStartJob(PickupDropoffPoint pickupPoint)
-    {
-        // Wait for animation duration (you might want to make this exact)
-        yield return new WaitForSeconds(2f);
-        FinalizeJobStart(pickupPoint);
-    }
-
-    void FinalizeJobStart(PickupDropoffPoint pickupPoint)
-    {
-        estimatedDistance = Vector3.Distance(currentPickupPoint.position, currentDropoffPoint.position);
-        estimatedTime = (estimatedDistance / 10f) * timeMultiplier;
-        tripStartTime = Time.time;
-        isPickupActive = true;
-
-        SetBeanStates(true);
-        if (pickupIndicator != null) pickupIndicator.SetActive(true);
-        malbersInput.SetInput("All", true);
-
         if (jobUIPanel != null && jobUIAnimator != null)
         {
             jobUIPanel.SetActive(true);
             jobUIAnimator.ResetTrigger("SlideOut");
             jobUIAnimator.SetTrigger("SlideIn");
 
-            // Use the stored pickup point's destination image
             if (destinationImageUI != null)
                 destinationImageUI.sprite = currentPickupPointData.destinationImage;
 
             if (destinationText != null)
                 destinationText.text = "Destination: " + GetPointName(currentDropoffPoint);
         }
-
-        Debug.Log($"New passenger personality: {pickupPoint.passengerPreferences.preset}");
     }
+
+    void CalculateAndApplyScore(float tripTime)
+    {
+        if (scoreManager == null) return;
+
+        ScoreManager.DeliverySpeed deliverySpeed = GetDeliverySpeed(tripTime);
+        float speedMultiplier = GetSpeedMultiplier(deliverySpeed);
+        float finalScore = baseFare * speedMultiplier;
+
+        scoreManager.AddScore(finalScore);
+    }
+
+    private float GetSpeedMultiplier(ScoreManager.DeliverySpeed speed)
+    {
+        switch (speed)
+        {
+            case ScoreManager.DeliverySpeed.Fast: return speedMultiplierFast;
+            case ScoreManager.DeliverySpeed.Medium: return speedMultiplierNormal;
+            case ScoreManager.DeliverySpeed.Slow: return speedMultiplierSlow;
+            default: return 1.0f;
+        }
+    }
+    void OnCollisionEnter(Collision collision)
+    {
+        if (isPickupActive && collision.gameObject.CompareTag(destructionTag))
+        {
+            if (currentLikesDestruction)
+            {
+                scoreManager.AddScore(currentPickupPointData.destructionBonus);
+                Debug.Log($"Destruction bonus: +{currentPickupPointData.destructionBonus}");
+            }
+            else
+            {
+                scoreManager.AddScore(-currentPickupPointData.destructionPenalty);
+                Debug.Log($"Destruction penalty: -{currentPickupPointData.destructionPenalty}");
+            }
+        }
+    }
+
 }
