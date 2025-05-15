@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.InputSystem;
 using MalbersAnimations;
+using MalbersAnimations.InputSystem;
 
 [System.Serializable]
 public class PickupDropoffPoint
@@ -67,7 +68,7 @@ public class PickUpSystem : MonoBehaviour
 
     [Header("Job Animation")]
     [SerializeField] private Animator cameraAnimator;
-    [SerializeField] private MInput malbersInput; // Drag in the Inspector
+    [SerializeField] private MInputLink malbersInput; // Drag in the Inspector
 
     [Header("Animation Cooldown")]
     public float cameraAnimationCooldown = 10f; // Time in seconds between animations
@@ -100,7 +101,7 @@ public class PickUpSystem : MonoBehaviour
             Debug.Log("Gamepad detected: " + Gamepad.current.name);
 
         SetBeanStates(false);
-        malbersInput = FindObjectOfType<MInput>();
+        malbersInput = FindObjectOfType<MInputLink>();
     }
 
     void SetBeanStates(bool jobActive)
