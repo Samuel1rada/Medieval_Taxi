@@ -3776,7 +3776,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 16, y: 85}
+  m_AnchoredPosition: {x: 15.3, y: 138.1}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &38199300
@@ -33620,7 +33620,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -33682,7 +33682,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15, y: -96.7}
+  m_AnchoredPosition: {x: 15, y: -160.5}
   m_SizeDelta: {x: 300, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &324173313
@@ -128026,6 +128026,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Oilbarreldark (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 2147133381558690533, guid: 5cabba32e2de61b40bd75283ca23ddd5, type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -165917,7 +165921,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 235, y: 0}
-  m_SizeDelta: {x: 1174.5, y: 507}
+  m_SizeDelta: {x: 1174.5, y: 730.85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1366059624
 MonoBehaviour:
@@ -174792,7 +174796,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 18.5, y: -45}
+  m_AnchoredPosition: {x: 15.3, y: -17.5}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1452336803
@@ -181116,6 +181120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animal: {fileID: 1516854466}
   delay: 2
+  minSpeedIndex: 1
 --- !u!114 &1516854466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183486,7 +183491,7 @@ MonoBehaviour:
   - pointName: Stable
     pointTransform: {fileID: 575454996}
     destinationImage: {fileID: 21300000, guid: 3263b09d53dfba6459fde0cd6bb50e45, type: 3}
-    likesDriveBy: 0
+    likesDriveBy: 1
     likesDestruction: 0
     driveByBonus: 10
     driveByPenalty: 5
@@ -183496,7 +183501,7 @@ MonoBehaviour:
     pointTransform: {fileID: 7983806556073001699}
     destinationImage: {fileID: 21300000, guid: 987167fc0a78e8f47a3c553a98eed762, type: 3}
     likesDriveBy: 0
-    likesDestruction: 0
+    likesDestruction: 1
     driveByBonus: 10
     driveByPenalty: 5
     destructionBonus: 10
@@ -183504,8 +183509,8 @@ MonoBehaviour:
   - pointName: Market
     pointTransform: {fileID: 1347364826}
     destinationImage: {fileID: 21300000, guid: ba4b28178bea70349befeb2a820a3a1e, type: 3}
-    likesDriveBy: 0
-    likesDestruction: 0
+    likesDriveBy: 1
+    likesDestruction: 1
     driveByBonus: 10
     driveByPenalty: 5
     destructionBonus: 10
@@ -183553,6 +183558,7 @@ MonoBehaviour:
   driveByTag: NPC
   destructionTag: Obstacle
   globalDestructionScoreCooldown: 0.5
+  driveByScoreCooldown: 0.5
 --- !u!114 &1516854470
 MonoBehaviour:
   m_ObjectHideFlags: 0
