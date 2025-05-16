@@ -12,6 +12,7 @@ public class MAnimalEventHelper : MonoBehaviour
     private bool isSprinting = false;
     private bool isSlowingDown = false;
     private float timer = 0f;
+    public int minSpeedIndex = 1;
 
     private void Update()
     {
@@ -31,11 +32,14 @@ public class MAnimalEventHelper : MonoBehaviour
         }
         if(isSlowingDown)
         {
-            timer += Time.deltaTime;
-            if (timer >= delay)
+            if (animal.CurrentSpeedIndex > minSpeedIndex)
             {
-                animal.SpeedDown();
-                timer = 0f;
+                timer += Time.deltaTime;
+                if (timer >= delay)
+                {
+                    animal.SpeedDown();
+                    timer = 0f;
+                }
             }
         }
     }
