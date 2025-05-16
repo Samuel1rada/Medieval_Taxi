@@ -186,6 +186,9 @@ public class PickUpSystem : MonoBehaviour
         }
     }
 
+    private float lastDriveByScoreTime = -1f;
+    public float driveByScoreCooldown = 0.5f;
+
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("Entered trigger: " + other.name);
@@ -208,22 +211,28 @@ public class PickUpSystem : MonoBehaviour
             isInDropoffTrigger = true;
         }
 
-        // Handle drive-by events with penalties
+        // Handle drive-by events with penalties (with cooldown)
         if (isPickupActive && other.CompareTag(driveByTag))
         {
+            if (Time.time - lastDriveByScoreTime < driveByScoreCooldown)
+                return;
+
+            lastDriveByScoreTime = Time.time;
+
             if (currentLikesDriveBy)
             {
-                scoreManager.AddScore(currentPickupPointData.driveByBonus);
+                if (scoreManager != null)
+                    scoreManager.AddScore(currentPickupPointData.driveByBonus);
                 Debug.Log($"Drive-by bonus: +{currentPickupPointData.driveByBonus}");
             }
             else
             {
-                scoreManager.AddScore(-currentPickupPointData.driveByPenalty);
+                if (scoreManager != null)
+                    scoreManager.AddScore(-currentPickupPointData.driveByPenalty);
                 Debug.Log($"Drive-by penalty: -{currentPickupPointData.driveByPenalty}");
             }
         }
     }
-
 
     void OnTriggerExit(Collider other)
     {
