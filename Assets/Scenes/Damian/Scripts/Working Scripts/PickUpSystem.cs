@@ -68,7 +68,7 @@ public class PickUpSystem : MonoBehaviour
 
     [Header("Job Animation")]
     [SerializeField] private Animator cameraAnimator;
-    [SerializeField] private MInputLink malbersInput; // Drag in the Inspector
+    [SerializeField] private MInput malbersInput; // Drag in the Inspector
 
     [Header("Animation Cooldown")]
     public float cameraAnimationCooldown = 10f; // Time in seconds between animations
