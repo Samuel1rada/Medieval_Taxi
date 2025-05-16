@@ -9,6 +9,7 @@ public class pause : MonoBehaviour
     public bool isPaused = false;
     public Canvas pause_menu;
     [SerializeField] private Animator PauseUi;
+    public Canvas options_ui;
 
     void Start()
     {
@@ -55,5 +56,17 @@ public class pause : MonoBehaviour
         Time.timeScale = 1f; 
         SceneManager.LoadSceneAsync("main_menu");
         Debug.Log("Quit game to main menu");
+    }
+
+    public void Options()
+    {
+        pause_menu.gameObject.SetActive(false);
+        options_ui.gameObject.SetActive(true);
+    }
+
+    public void Backoptions()
+    {
+        pause_menu.gameObject.SetActive(true);
+        options_ui.gameObject.SetActive(false);
     }
 }
