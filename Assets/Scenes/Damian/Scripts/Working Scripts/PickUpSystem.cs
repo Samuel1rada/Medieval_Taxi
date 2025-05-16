@@ -79,6 +79,9 @@ public class PickUpSystem : MonoBehaviour
 
     private bool currentLikesDriveBy;
     private bool currentLikesDestruction;
+    private float lastDestructionScoreTime = -1f;
+    public float globalDestructionScoreCooldown = 0.5f;
+
 
 
 
@@ -185,6 +188,8 @@ public class PickUpSystem : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Entered trigger: " + other.name);
+
         // Original pickup/dropoff logic
         if (!isPickupActive && !isOnCooldown &&
             playerRigidbody.linearVelocity.magnitude < maxSpeedForJobActivation)
@@ -399,19 +404,26 @@ public class PickUpSystem : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
-        if (isPickupActive && collision.gameObject.CompareTag(destructionTag))
+        if (!isPickupActive) return;
+        if (!collision.gameObject.CompareTag(destructionTag)) return;
+
+        // Global cooldown: applies to *any* destruction hit
+        if (Time.time - lastDestructionScoreTime < globalDestructionScoreCooldown)
+            return;
+
+        lastDestructionScoreTime = Time.time;
+
+        if (currentLikesDestruction)
         {
-            if (currentLikesDestruction)
-            {
-                scoreManager.AddScore(currentPickupPointData.destructionBonus);
-                Debug.Log($"Destruction bonus: +{currentPickupPointData.destructionBonus}");
-            }
-            else
-            {
-                scoreManager.AddScore(-currentPickupPointData.destructionPenalty);
-                Debug.Log($"Destruction penalty: -{currentPickupPointData.destructionPenalty}");
-            }
+            scoreManager.AddScore(currentPickupPointData.destructionBonus);
+            Debug.Log($"Destruction bonus: +{currentPickupPointData.destructionBonus}");
+        }
+        else
+        {
+            scoreManager.AddScore(-currentPickupPointData.destructionPenalty);
+            Debug.Log($"Destruction penalty: -{currentPickupPointData.destructionPenalty}");
         }
     }
+
 
 }
