@@ -33,4 +33,9 @@ public class MainMenu : MonoBehaviour
     {
         menu.gameObject.SetActive(false);
     }
+
+    public void Back()
+    {
+        menu.gameObject.SetActive(true);
+    }
 }
