@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
 
+    public Canvas menu;
+
     public void Play()
     {
         SceneManager.LoadSceneAsync("Prototype");
@@ -25,5 +27,10 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
         Debug.Log("quit game");
+    }
+
+    public void Options()
+    {
+        menu.gameObject.SetActive(false);
     }
 }
