@@ -10447,6 +10447,7 @@ MonoBehaviour:
   driveByTag: DriveByPoint
   destructionTag: Destructible
   globalDestructionScoreCooldown: 0.5
+  driveByScoreCooldown: 0.5
 --- !u!114 &159630142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10461,7 +10462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animal: {fileID: 159630148}
   delay: 2
-  minSpeedIndex: 1
+  minSpeedIndex: 2
 --- !u!114 &159630143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10581,8 +10582,8 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 159630148}
           m_TargetAssemblyTypeName: MalbersAnimations.Controller.MAnimal, MalbersAnimations
-          m_MethodName: SpeedDown
-          m_Mode: 1
+          m_MethodName: Speed_CurrentIndex_Set
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10596,8 +10597,8 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 159630148}
           m_TargetAssemblyTypeName: MalbersAnimations.Controller.MAnimal, MalbersAnimations
-          m_MethodName: SpeedUp
-          m_Mode: 1
+          m_MethodName: Speed_CurrentIndex_Set
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10668,12 +10669,12 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 159630148}
           m_TargetAssemblyTypeName: MalbersAnimations.Controller.MAnimal, MalbersAnimations
-          m_MethodName: SpeedDown
-          m_Mode: 1
+          m_MethodName: Speed_CurrentIndex_Set
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 2
+            m_IntArgument: 1
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
@@ -10714,7 +10715,7 @@ MonoBehaviour:
       ConstantValue: New Map
       Variable: {fileID: 0}
     inputs: []
-    selectedIndex: 0
+    selectedIndex: 2
   ActiveMap:
     name:
       UseConstant: 1
@@ -42219,7 +42220,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &575060552
 Transform:
   m_ObjectHideFlags: 0
@@ -95645,11 +95646,12 @@ MonoBehaviour:
   passengerBean: {fileID: 836353330}
   scoreManager: {fileID: 0}
   cameraAnimator: {fileID: 1815782995}
-  malbersInput: {fileID: 1262290422}
+  malbersInput: {fileID: 0}
   cameraAnimationCooldown: 10
   driveByTag: DriveByPoint
   destructionTag: Destructible
   globalDestructionScoreCooldown: 0.5
+  driveByScoreCooldown: 0.5
 --- !u!114 &1262290428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110629,6 +110631,7 @@ MonoBehaviour:
   driveByTag: DriveByPoint
   destructionTag: Destructible
   globalDestructionScoreCooldown: 0.5
+  driveByScoreCooldown: 0.5
 --- !u!114 &1549384286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153854,7 +153857,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2147146449
 Transform:
   m_ObjectHideFlags: 0

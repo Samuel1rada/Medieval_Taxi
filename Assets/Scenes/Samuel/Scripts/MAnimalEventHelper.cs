@@ -6,40 +6,58 @@ using UnityEngine;
 public class MAnimalEventHelper : MonoBehaviour
 {
 
-    [SerializeField] MAnimal animal;
-    [SerializeField] float delay = 1f;
+    [SerializeField] private MAnimal animal;
+    [SerializeField] private float delay = 1f;
+    [SerializeField] private int minSpeedIndex = 2;
 
     private bool isSprinting = false;
     private bool isSlowingDown = false;
     private float timer = 0f;
-    public int minSpeedIndex = 1;
 
     private void Update()
     {
-        if(isSprinting)
+        if (isSprinting)
         {
             timer += Time.deltaTime;
+
             if (animal.CurrentSpeedIndex == 2)
             {
                 animal.SpeedUp();
                 timer = 0f;
             }
-            else if(timer >= delay && animal.CurrentSpeedIndex == 3)
+            else if (timer >= delay && animal.CurrentSpeedIndex == 3)
             {
                 animal.SpeedUp();
                 timer = 0f;
             }
         }
-        if(isSlowingDown)
+        if (isSlowingDown)
         {
             if (animal.CurrentSpeedIndex > minSpeedIndex)
             {
                 timer += Time.deltaTime;
+
                 if (timer >= delay)
                 {
-                    animal.SpeedDown();
                     timer = 0f;
+
+                    if (animal.CurrentSpeedIndex <= minSpeedIndex)
+                    {
+                        isSlowingDown = false;
+                        Debug.Log("Reached minimum speed index. Stopping slowdown.");
+                        return;
+                    }
+
+                    animal.SpeedDown();
+
                 }
+                Debug.Log("Slowing down: Current Speed Index = " + animal.CurrentSpeedIndex);
+            }
+            else
+            {
+                isSlowingDown = false;
+                timer = 0f;
+                Debug.Log("Already at or below minimum speed index. No slowdown needed.");
             }
         }
     }
@@ -49,13 +67,15 @@ public class MAnimalEventHelper : MonoBehaviour
         isSprinting = true;
         isSlowingDown = false;
         timer = 0f;
+        Debug.Log("Sprint started.");
     }
+
     public void OnIsSprintReleased()
     {
         isSprinting = false;
         isSlowingDown = true;
-        animal.SpeedDown();
         timer = 0f;
+        Debug.Log("Sprint released — slowing down initiated.");
     }
 }
 
