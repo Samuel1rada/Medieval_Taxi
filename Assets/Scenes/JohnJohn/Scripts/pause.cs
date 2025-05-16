@@ -21,20 +21,15 @@ public class pause : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-    }
-
-    private void OnPause()
-    {
-        if (isPaused == false)
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
             Stop();
+            isPaused = true;
         }
         else
         {
             Go();
         }
-        
     }
 
     public void Stop()

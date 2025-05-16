@@ -2,42 +2,50 @@ using UnityEngine;
 
 public class GateManager : MonoBehaviour
 {
-    [SerializeField] private Animator gateOpen;
-    private Collider gateCollider;
-    private void Awake()
+    public Transform gateTransform;
+    public Transform openPos;
+    public float liftSpeed;
+
+    private Vector3 initialPosition;
+    private Vector3 targetPosition;
+    private Vector3 posOpen;
+
+    private bool playerInside = false;
+
+    void Start()
     {
-        if (gateCollider == null)
+        if (gateTransform == null)
         {
-            gateCollider = GetComponent<Collider>();
+            gateTransform = transform; 
         }
             
 
-        gateCollider.enabled = false;
+        initialPosition = gateTransform.position;
+        posOpen = openPos.transform.position;
+        targetPosition = initialPosition;
     }
 
-    private void Update()
+    void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            Debug.Log("N was pressed");
-            gateCollider.enabled = true;
-        }
+        Debug.DrawLine(gateTransform.position, targetPosition);
+        gateTransform.position = Vector3.MoveTowards(gateTransform.position, targetPosition, liftSpeed * Time.deltaTime);
     }
-    void OnTriggerEnter(Collider other)
-    {
-        if(other.CompareTag("Player"))
-        {
-            gateOpen.SetBool("GateOpen", true);
-        }
-       
-    }
-    void OnTriggerExit(Collider other)
+
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            gateOpen.SetBool("GateOpen", false);
+            playerInside = true;
+            targetPosition = posOpen;
         }
-
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInside = false;
+            targetPosition = initialPosition;
+        }
+    }
 }

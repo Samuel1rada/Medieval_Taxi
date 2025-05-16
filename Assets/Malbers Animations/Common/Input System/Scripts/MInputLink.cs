@@ -950,7 +950,7 @@ namespace MalbersAnimations.InputSystem
 #endif
     }
 
-    public enum MInputInteraction { Press = 0, Down = 1, Up = 2, LongPress = 3, DoubleTap = 4, Toggle = 5, Float = 6, Vector2 = 7 }
+    public enum MInputInteraction { Press = 0, Down = 1, Up = 2, LongPress = 3, DoubleTap = 4, Toggle = 5, Float = 6, Vector2 = 7, TripleTap = 8}
     //public enum InputStatus { started, performed, canceled }
     //public enum MInputActionType { Value, Button }
     //public enum MInputActionValueType { Double, Vector2 }
@@ -1018,6 +1018,7 @@ namespace MalbersAnimations.InputSystem
         // public bool ShowEvents = false;
 
         #region LONG PRESS and Double Tap
+        public FloatReference TripleTapTime = new(0.5f); // Adjust as needed
         public FloatReference DoubleTapTime = new(0.3f);                          //Double Tap Time
         public FloatReference LongPressTime = new(0.5f);
         public FloatReference PressThreshold = new(0.5f);
@@ -1027,6 +1028,8 @@ namespace MalbersAnimations.InputSystem
         private bool InputCompleted = false;
         private float InputStartTime;
 
+        private int tapCount = 0;
+        private float lastTapTime = 0f;
 
 
         public bool debug;
@@ -1101,6 +1104,7 @@ namespace MalbersAnimations.InputSystem
         public UnityEvent OnInputUp = new();
         public UnityEvent OnLongPress = new();
         public UnityEvent OnDoubleTap = new();
+        public UnityEvent OnTripleTap = new();
         public BoolEvent OnInputChanged = new();
         public UnityEvent OnInputPressed = new();
         public FloatEvent OnInputFloatValue = new();
@@ -1253,6 +1257,39 @@ namespace MalbersAnimations.InputSystem
 
                 #endregion
 
+                #region Triple Tap
+                case MInputInteraction.TripleTap:
+                    InputValue = NewValue;
+
+                    if (OldValue != InputValue)
+                    {
+                        OnInputChanged.Invoke(InputValue);
+
+                        if (InputValue)
+                        {
+                            if (Time.time - lastTapTime > TripleTapTime)
+                            {
+                                tapCount = 0; // Reset if taps are too slow
+                            }
+
+                            tapCount++;
+                            lastTapTime = Time.time;
+
+                            if (tapCount == 1)
+                            {
+                                OnInputDown.Invoke(); // First tap
+                            }
+
+                            if (tapCount == 3)
+                            {
+                                OnTripleTap.Invoke(); // Triple tap success
+                                tapCount = 0;         // Reset counter
+                            }
+                        }
+                    }
+                    break;
+                #endregion
+
                 #region Toggle
                 //-------------------------------------------------------------------------------------------------------
                 case MInputInteraction.Toggle:
@@ -1273,6 +1310,8 @@ namespace MalbersAnimations.InputSystem
 
                 #endregion
 
+                #region Float
+                //--------------------------------------------------------------------------------------------------------
                 case MInputInteraction.Float:
                     {
                         var value = context.action.ReadValue<float>();
@@ -1302,8 +1341,10 @@ namespace MalbersAnimations.InputSystem
                         OnInputFloatValue.Invoke(value);
                     }
                     break;
+                #endregion
 
-
+                #region Vector2
+                //---------------------------------------------------------------------------------------------------
                 case MInputInteraction.Vector2:
 
                     var v2 = context.action.ReadValue<Vector2>();
@@ -1332,6 +1373,7 @@ namespace MalbersAnimations.InputSystem
 
                     OnInputV2Value.Invoke(v2 * Vector2Mult);
                     break;
+                #endregion
 
                 default: break;
             }
@@ -1961,6 +2003,13 @@ namespace MalbersAnimations.InputSystem
                             EditorGUILayout.PropertyField(OnInputChanged);
                             break;
                         default:
+                            EditorGUILayout.PropertyField(OnInputChanged);
+                            break;
+                        case MInputInteraction.TripleTap:
+                            EditorGUILayout.PropertyField(Element.FindPropertyRelative("TripleTapTime"));
+                            EditorGUILayout.Space();
+                            EditorGUILayout.PropertyField(OnInputDown, new GUIContent("On First Tap"));
+                            EditorGUILayout.PropertyField(Element.FindPropertyRelative("OnTripleTap"), new GUIContent("On Triple Tap"));
                             EditorGUILayout.PropertyField(OnInputChanged);
                             break;
                     }

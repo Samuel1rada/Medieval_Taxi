@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.InputSystem;
 using MalbersAnimations;
+using MalbersAnimations.InputSystem;
 
 [System.Serializable]
 public class PickupDropoffPoint
@@ -78,6 +79,11 @@ public class PickUpSystem : MonoBehaviour
 
     private bool currentLikesDriveBy;
     private bool currentLikesDestruction;
+    private float lastDestructionScoreTime = -1f;
+    public float globalDestructionScoreCooldown = 0.5f;
+
+
+
 
     void Start()
     {
@@ -100,7 +106,6 @@ public class PickUpSystem : MonoBehaviour
             Debug.Log("Gamepad detected: " + Gamepad.current.name);
 
         SetBeanStates(false);
-        malbersInput = FindObjectOfType<MInput>();
     }
 
     void SetBeanStates(bool jobActive)
@@ -181,8 +186,13 @@ public class PickUpSystem : MonoBehaviour
         }
     }
 
+    private float lastDriveByScoreTime = -1f;
+    public float driveByScoreCooldown = 0.5f;
+
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Entered trigger: " + other.name);
+
         // Original pickup/dropoff logic
         if (!isPickupActive && !isOnCooldown &&
             playerRigidbody.linearVelocity.magnitude < maxSpeedForJobActivation)
@@ -201,22 +211,28 @@ public class PickUpSystem : MonoBehaviour
             isInDropoffTrigger = true;
         }
 
-        // Handle drive-by events with penalties
+        // Handle drive-by events with penalties (with cooldown)
         if (isPickupActive && other.CompareTag(driveByTag))
         {
+            if (Time.time - lastDriveByScoreTime < driveByScoreCooldown)
+                return;
+
+            lastDriveByScoreTime = Time.time;
+
             if (currentLikesDriveBy)
             {
-                scoreManager.AddScore(currentPickupPointData.driveByBonus);
+                if (scoreManager != null)
+                    scoreManager.AddScore(currentPickupPointData.driveByBonus);
                 Debug.Log($"Drive-by bonus: +{currentPickupPointData.driveByBonus}");
             }
             else
             {
-                scoreManager.AddScore(-currentPickupPointData.driveByPenalty);
+                if (scoreManager != null)
+                    scoreManager.AddScore(-currentPickupPointData.driveByPenalty);
                 Debug.Log($"Drive-by penalty: -{currentPickupPointData.driveByPenalty}");
             }
         }
     }
-
 
     void OnTriggerExit(Collider other)
     {
@@ -397,19 +413,26 @@ public class PickUpSystem : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
-        if (isPickupActive && collision.gameObject.CompareTag(destructionTag))
+        if (!isPickupActive) return;
+        if (!collision.gameObject.CompareTag(destructionTag)) return;
+
+        // Global cooldown: applies to *any* destruction hit
+        if (Time.time - lastDestructionScoreTime < globalDestructionScoreCooldown)
+            return;
+
+        lastDestructionScoreTime = Time.time;
+
+        if (currentLikesDestruction)
         {
-            if (currentLikesDestruction)
-            {
-                scoreManager.AddScore(currentPickupPointData.destructionBonus);
-                Debug.Log($"Destruction bonus: +{currentPickupPointData.destructionBonus}");
-            }
-            else
-            {
-                scoreManager.AddScore(-currentPickupPointData.destructionPenalty);
-                Debug.Log($"Destruction penalty: -{currentPickupPointData.destructionPenalty}");
-            }
+            scoreManager.AddScore(currentPickupPointData.destructionBonus);
+            Debug.Log($"Destruction bonus: +{currentPickupPointData.destructionBonus}");
+        }
+        else
+        {
+            scoreManager.AddScore(-currentPickupPointData.destructionPenalty);
+            Debug.Log($"Destruction penalty: -{currentPickupPointData.destructionPenalty}");
         }
     }
+
 
 }

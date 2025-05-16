@@ -7,7 +7,6 @@ namespace MalbersAnimations.Reactions
 {
     [System.Serializable]
     [AddTypeMenu("Malbers/Animal/Add Force to Animal")]
-
     public class ForceReaction : MReaction
     {
         public enum DirectionType { Local, World, TargetPush, TargetPull }
@@ -26,16 +25,25 @@ namespace MalbersAnimations.Reactions
 
         [Tooltip("Time to Apply the force")]
         public FloatReference time = new(1f);
+
         [Tooltip("Amount of force to apply")]
         public FloatReference force = new(10f);
-        [Tooltip("Aceleration to apply to the force")]
+
+        [Tooltip("Acceleration to apply to the force")]
         public FloatReference Aceleration = new(2f);
-        [Tooltip("Drag to Decrease the Force after the Force time has pass")]
+
+        [Tooltip("Drag to Decrease the Force after the Force time has passed")]
         public FloatReference ExitDrag = new(2f);
+
         [Tooltip("Set if the Animal is grounded when adding a force")]
         public BoolReference ResetGravity = new(false);
 
 
+        [Tooltip("Toggle to apply Directional Force")]
+        public bool applyForce = true;
+
+        [Tooltip("Toggle to apply Torque")]
+        public bool applyTorque = false;
 
         protected override bool _TryReact(Component component)
         {
@@ -44,7 +52,6 @@ namespace MalbersAnimations.Reactions
             if (animal.enabled && animal.gameObject.activeInHierarchy)
             {
                 animal.StartCoroutine(IForceC(animal));
-
                 return true;
             }
 
@@ -53,6 +60,7 @@ namespace MalbersAnimations.Reactions
 
         IEnumerator IForceC(MAnimal animal)
         {
+            
             Vector3 dir = Mode switch
             {
                 DirectionType.Local => animal.transform.TransformDirection(Direction),
@@ -63,11 +71,24 @@ namespace MalbersAnimations.Reactions
             };
             dir.Normalize();
 
-            animal.Force_Add(dir, force, Aceleration, ResetGravity);
+            
+            if (applyForce)
+            {
+                animal.Force_Add(dir, force, Aceleration, ResetGravity);
+            }
+
+          
+            if (applyTorque)
+            {
+            
+                Vector3 torqueDirection = Vector3.Cross(animal.transform.up, dir); 
+                animal.GetComponent<Rigidbody>().AddTorque(torqueDirection * force, ForceMode.Impulse);
+            }
 
             yield return new WaitForSeconds(time);
 
             animal.Force_Remove(ExitDrag);
         }
+
     }
 }

@@ -31016,7 +31016,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4092c416594a88f49be61ac8b10794df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gateOpen: {fileID: 444812654}
+  gateTransform: {fileID: 0}
+  openPos: {fileID: 0}
+  liftSpeed: 0
 --- !u!65 &444812659
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -167666,28 +167668,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d7ac5540b10dbf4692019cf53a59ac3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RepScript: {fileID: 1996109936}
+  playerTransform: {fileID: 0}
   pickupDropoffPoints:
   - pointName: Forrest
     pointTransform: {fileID: 575454996}
     destinationImage: {fileID: 21300000, guid: 987167fc0a78e8f47a3c553a98eed762, type: 3}
+    passengerPreferences: {fileID: 0}
   - pointName: Gate Entry
     pointTransform: {fileID: 7983806556073001699}
     destinationImage: {fileID: 21300000, guid: 44b8718bcaa1de44b9ad74ac28c11467, type: 3}
+    passengerPreferences: {fileID: 0}
   pickupIndicator: {fileID: 5326911292798042203}
   baseFare: 10
   speedMultiplierFast: 1.5
   speedMultiplierNormal: 1
   speedMultiplierSlow: 0.5
-  comfortMultiplier: 1
-  looksMultiplier: 1
   cooldownTime: 5
   timeMultiplier: 2
   maxSpeedForJobActivation: 8
   maxSpeedForDropoff: 0.5
   DropOffText: {fileID: 861140421}
   dropOffFade: 2
-  popupSystem: {fileID: 3993705100401918123}
   jobUIPanel: {fileID: 1366059621}
   destinationImageUI: {fileID: 38199301}
   destinationText: {fileID: 1452336803}
@@ -167697,6 +167698,10 @@ MonoBehaviour:
   - {fileID: 1788427433}
   - {fileID: 1593995210}
   passengerBean: {fileID: 7019720167512114917}
+  scoreManager: {fileID: 0}
+  cameraAnimator: {fileID: 0}
+  malberinput: {fileID: 0}
+  cameraAnimationCooldown: 10
 --- !u!1 &4193373326159828147
 GameObject:
   m_ObjectHideFlags: 0
