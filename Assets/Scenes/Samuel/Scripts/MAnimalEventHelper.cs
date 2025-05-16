@@ -18,12 +18,12 @@ public class MAnimalEventHelper : MonoBehaviour
         if(isSprinting)
         {
             timer += Time.deltaTime;
-            if (animal.CurrentSpeedIndex == 1)
+            if (animal.CurrentSpeedIndex == 2)
             {
                 animal.SpeedUp();
                 timer = 0f;
             }
-            else if(timer >= delay && animal.CurrentSpeedIndex == 2)
+            else if(timer >= delay && animal.CurrentSpeedIndex == 3)
             {
                 animal.SpeedUp();
                 timer = 0f;
