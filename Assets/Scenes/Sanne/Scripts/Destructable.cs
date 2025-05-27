@@ -5,8 +5,6 @@ using MalbersAnimations.Utilities;
 public class Destructable : MonoBehaviour
 {
     public GameObject brokenVersion;
-    //public GameObject effects;
-    //public GameObject spawnPos;
     public float destroyDelay = 6f;
     public float explosionForce = 0.00008f;
 
@@ -17,7 +15,7 @@ public class Destructable : MonoBehaviour
         {
             // Instantiate the broken version of the object
             GameObject brokenInstance = Instantiate(brokenVersion, transform.position, new Quaternion(transform.rotation.x, transform.rotation.y + 90, transform.rotation.z, transform.rotation.w));
-            //GameObject InsideEffect = Instantiate(effects, spawnPos.transform.position, new Quaternion(0, 90, 0 , transform.rotation.w));
+           
 
             // Apply random forces to each piece of the broken object
             foreach (Rigidbody rb in brokenInstance.GetComponentsInChildren<Rigidbody>())
@@ -29,7 +27,6 @@ public class Destructable : MonoBehaviour
             // Destroy the original object and the broken instance after a delay
             Destroy(gameObject);
             Destroy(brokenInstance, destroyDelay);
-            //Destroy(InsideEffect, destroyDelay);
         }
     }
 }
