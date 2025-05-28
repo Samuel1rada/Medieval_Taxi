@@ -10,11 +10,16 @@ public class AudioManager : MonoBehaviour
     [Header("---------- Audio Clips ----------")]
     public AudioClip button;
     public AudioClip boost;
-    public AudioClip forest;
-    public AudioClip city;
     public AudioClip score;
     public AudioClip cratedestruction;
     public AudioClip witch;
 
-
+    [Header("---------- Ambient ----------")]
+    public AudioSource forest;
+    public AudioSource city;
 }
+
+//audio manager swap
+
+
+//swap ambientSource with forest and city in the inspector to change the ambient sound
