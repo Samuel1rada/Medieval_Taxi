@@ -15,7 +15,7 @@ public class test : MonoBehaviour
 
     [SerializeField] public popup mypopup;
 
-    public PickUpSystem pickUpSystem;
+    // public SimplePickUpSystem pickUpSystem;
 
     void Start()
     {
