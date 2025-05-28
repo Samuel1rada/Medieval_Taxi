@@ -7,6 +7,7 @@ public class pause : MonoBehaviour
 {
 
     public bool isPaused = false;
+    public bool pausable = true;
     public Canvas pause_menu;
     [SerializeField] private Animator PauseUi;
     public Canvas options_ui;
@@ -22,10 +23,14 @@ public class pause : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isPaused)
-                Resume();
-            else
-                Pause();
+            if (pausable)
+            {
+                if (isPaused)
+                    Resume();
+                else
+                    Pause();
+            }
+
         }
     }
 

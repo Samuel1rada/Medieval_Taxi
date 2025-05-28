@@ -7155,6 +7155,51 @@ Transform:
   - {fileID: 846511734}
   m_Father: {fileID: 1720005873}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1591477391
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1591477393}
+  - component: {fileID: 1591477392}
+  m_Layer: 0
+  m_Name: timer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1591477392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1591477391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a947e690e949a544baffe4dabb4b6d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTime: 5
+--- !u!4 &1591477393
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1591477391}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 756.9885, y: 27.914295, z: -173.70538}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1595822553
 GameObject:
   m_ObjectHideFlags: 0
@@ -10058,19 +10103,39 @@ MonoBehaviour:
   - pointName: Stables
     pointTransform: {fileID: 0}
     destinationImage: {fileID: 21300000, guid: 3263b09d53dfba6459fde0cd6bb50e45, type: 3}
-    passengerPreferences: {fileID: 0}
+    likesDriveBy: 0
+    likesDestruction: 0
+    driveByBonus: 25
+    driveByPenalty: 20
+    destructionBonus: 30
+    destructionPenalty: 25
   - pointName: Gate Entry
     pointTransform: {fileID: 0}
     destinationImage: {fileID: 21300000, guid: 987167fc0a78e8f47a3c553a98eed762, type: 3}
-    passengerPreferences: {fileID: 0}
+    likesDriveBy: 0
+    likesDestruction: 0
+    driveByBonus: 25
+    driveByPenalty: 20
+    destructionBonus: 30
+    destructionPenalty: 25
   - pointName: Market Place
     pointTransform: {fileID: 0}
     destinationImage: {fileID: 21300000, guid: ba4b28178bea70349befeb2a820a3a1e, type: 3}
-    passengerPreferences: {fileID: 0}
+    likesDriveBy: 0
+    likesDestruction: 0
+    driveByBonus: 25
+    driveByPenalty: 20
+    destructionBonus: 30
+    destructionPenalty: 25
   - pointName: The Tower
     pointTransform: {fileID: 0}
     destinationImage: {fileID: 21300000, guid: 4e90483c63ab4e84ab2ba882ef19cbdc, type: 3}
-    passengerPreferences: {fileID: 0}
+    likesDriveBy: 0
+    likesDestruction: 0
+    driveByBonus: 25
+    driveByPenalty: 20
+    destructionBonus: 30
+    destructionPenalty: 25
   pickupIndicator: {fileID: 1063812335}
   baseFare: 10
   speedMultiplierFast: 1.5
@@ -10097,6 +10162,10 @@ MonoBehaviour:
   cameraAnimator: {fileID: 0}
   malbersInput: {fileID: 0}
   cameraAnimationCooldown: 10
+  driveByTag: DriveByPoint
+  destructionTag: Destructible
+  globalDestructionScoreCooldown: 0.5
+  driveByScoreCooldown: 0.5
 --- !u!114 &1720005876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11628,6 +11697,7 @@ MonoBehaviour:
   cooldownDuration: 0
   movementThreshold: 0.2
   whipKey: 304
+  whipsoundplayed: 0
 --- !u!1 &1747549257
 GameObject:
   m_ObjectHideFlags: 0
@@ -13338,3 +13408,4 @@ SceneRoots:
   - {fileID: 685114460}
   - {fileID: 1088218275}
   - {fileID: 567607967600876119}
+  - {fileID: 1591477393}
