@@ -40,12 +40,22 @@ public class SimplifiedPickUpSystem : MonoBehaviour
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI dropOffHint;
     public GameObject pickupIndicator;
+    public Image destinationImage; // Assign in inspector
     [Header("Score Manager")]
     public ScoreManager scoreManager;
+
+    [Header("Timer Thresholds (multipliers)")]
+    public float goldMultiplier = 1.3f;    // Gold: baseTime * goldMultiplier
+    public float silverMultiplier = 2.6f;  // Silver: baseTime * silverMultiplier
+    public float bronzeMultiplier = 3.9f;  // Bronze: baseTime * bronzeMultiplier
+
+    public float baseTime = 10f; // Base time in seconds for gold (edit in inspector)
+    public float averageSpeed = 10f; // Units per second, edit in inspector
 
     private bool isOnTrip = false;
     private bool isInDropoffZone = false;
     private float tripStartTime;
+    private float estimatedTime = 10f; // Calculated per trip
     private float cooldownEndTime = 0f;
     private float lastDriveByTime = -1f;
     private float lastDestructionTime = -1f;
@@ -87,18 +97,8 @@ public class SimplifiedPickUpSystem : MonoBehaviour
 
     void Update()
     {
-        // Automatically lock/unlock input based on animation state
-        if (passengerAnimationController != null && passengerAnimationController.IsAnimating)
-        {
-            LockPlayerInput();
-        }
-        else if (inputLocked)
-        {
-            UnlockPlayerInput();
-        }
-
         // Trip initiation
-        if (!isOnTrip && isInPickupZone && Time.time >= cooldownEndTime)
+        if (!isOnTrip && isInPickupZone)
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -115,13 +115,38 @@ public class SimplifiedPickUpSystem : MonoBehaviour
             float elapsedTime = Time.time - tripStartTime;
 
             if (timerText != null)
-                timerText.text = $"{FormatTime(elapsedTime)}";
+            {
+                timerText.text = FormatTime(elapsedTime);
 
+                // Use estimatedTime for thresholds
+                float goldTime = estimatedTime * goldMultiplier;
+                float silverTime = estimatedTime * silverMultiplier;
+                float bronzeTime = estimatedTime * bronzeMultiplier;
+
+                if (elapsedTime < goldTime)
+                    timerText.color = new Color32(255, 215, 0, 255); // Gold
+                else if (elapsedTime < silverTime)
+                    timerText.color = new Color32(192, 192, 192, 255); // Silver
+                else if (elapsedTime < bronzeTime)
+                    timerText.color = new Color32(205, 127, 50, 255); // Bronze
+                else
+                    timerText.color = Color.black;
+            }
+
+            // Pickup indicator image logic (support UI Image and SpriteRenderer)
             if (pickupIndicator != null && activePoint != null)
             {
                 Vector3 direction = (activePoint.pointTransform.position - transform.position).normalized;
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
                 pickupIndicator.transform.rotation = Quaternion.Euler(90f, targetRotation.eulerAngles.y, 0f);
+
+                // Enable UI Image if present
+                var img = pickupIndicator.GetComponent<UnityEngine.UI.Image>();
+                if (img != null) img.enabled = true;
+
+                // Enable SpriteRenderer if present (for worldspace indicators)
+                var sprite = pickupIndicator.GetComponent<SpriteRenderer>();
+                if (sprite != null) sprite.enabled = true;
             }
 
             if (isInDropoffZone && rb.linearVelocity.magnitude < dropoffSpeedThreshold)
@@ -139,35 +164,8 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         }
     }
 
-    void LockPlayerInput()
-    {
-        if (!inputLocked && malbersInputComponent != null)
-        {
-            var prop = malbersInputComponent.GetType().GetProperty("InputEnabled");
-            if (prop != null && prop.CanWrite)
-            {
-                prop.SetValue(malbersInputComponent, false, null);
-            }
-            inputLocked = true;
-        }
-    }
-
-    void UnlockPlayerInput()
-    {
-        if (inputLocked && malbersInputComponent != null)
-        {
-            var prop = malbersInputComponent.GetType().GetProperty("InputEnabled");
-            if (prop != null && prop.CanWrite)
-            {
-                prop.SetValue(malbersInputComponent, true, null);
-            }
-            inputLocked = false;
-        }
-    }
-
     void OnPassengerAnimationComplete()
     {
-        UnlockPlayerInput();
         if (passengerAnimationController != null)
         {
             passengerAnimationController.SpawnSmokeAtPassenger();
@@ -184,10 +182,13 @@ public class SimplifiedPickUpSystem : MonoBehaviour
 
     void StartTrip(PickupDropoffPoint pickupPoint)
     {
-        // Randomly select a dropoff point that isn't the pickup point
-        List<PickupDropoffPoint> possibleDropoffs = new List<PickupDropoffPoint>(pickupPoints);
-        possibleDropoffs.Remove(pickupPoint);
-        activePoint = possibleDropoffs[Random.Range(0, possibleDropoffs.Count)];
+        // Sequentially select the next dropoff point in the list (wrap around)
+        int nextIndex = (currentPointIndex + 1) % pickupPoints.Count;
+        activePoint = pickupPoints[nextIndex];
+
+        // Calculate estimated time based on distance and averageSpeed
+        float distance = Vector3.Distance(pickupPoint.pointTransform.position, activePoint.pointTransform.position);
+        estimatedTime = (averageSpeed > 0f) ? distance / averageSpeed : baseTime;
 
         isOnTrip = true;
         tripStartTime = Time.time;
@@ -196,16 +197,24 @@ public class SimplifiedPickUpSystem : MonoBehaviour
             jobPanel.SetActive(true);
 
         if (pickupIndicator != null)
+        {
             pickupIndicator.SetActive(true);
+            var img = pickupIndicator.GetComponent<UnityEngine.UI.Image>();
+            if (img != null) img.enabled = true;
+            var sprite = pickupIndicator.GetComponent<SpriteRenderer>();
+            if (sprite != null) sprite.enabled = true;
+        }
 
         if (destinationText != null)
             destinationText.text = $"Next Stop: {activePoint.pointName}";
 
+        // Set the destination image sprite from the next dropoff point
+        if (destinationImage != null && activePoint.pointSprite != null)
+            destinationImage.sprite = activePoint.pointSprite;
+
         if (pickupPoint.passengerAnimation != null)
         {
             pickupPoint.passengerAnimation.StartPickupAnimation(transform);
-            // Lock input immediately
-            LockPlayerInput();
         }
 
         Passenger.SetActive(true);
@@ -222,11 +231,20 @@ public class SimplifiedPickUpSystem : MonoBehaviour
 
         isOnTrip = false;
         isInDropoffZone = false;
-        cooldownEndTime = Time.time + jobCooldown;
+        // cooldownEndTime = Time.time + jobCooldown; // Remove cooldown
 
         if (jobPanel != null) jobPanel.SetActive(false);
         if (dropOffHint != null) dropOffHint.text = "";
-        if (pickupIndicator != null) pickupIndicator.SetActive(false);
+        if (pickupIndicator != null)
+        {
+            pickupIndicator.SetActive(false);
+            // Disable UI Image if present
+            var img = pickupIndicator.GetComponent<UnityEngine.UI.Image>();
+            if (img != null) img.enabled = false;
+            // Disable SpriteRenderer if present
+            var sprite = pickupIndicator.GetComponent<SpriteRenderer>();
+            if (sprite != null) sprite.enabled = false;
+        }
 
         // ✅ Call reset logic if assigned
         if (pickupPoints[currentPointIndex].passengerAnimation != null)
@@ -235,6 +253,9 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         }
 
         Passenger.SetActive(false);
+
+        // Move to the next pickup point in sequence (wrap around)
+        currentPointIndex = (currentPointIndex + 1) % pickupPoints.Count;
     }
 
     void OnTriggerEnter(Collider other)
@@ -300,6 +321,7 @@ public class SimplifiedPickUpSystem : MonoBehaviour
     {
         int mins = Mathf.FloorToInt(seconds / 60);
         int secs = Mathf.FloorToInt(seconds % 60);
-        return $"{mins:D2}:{secs:D2}";
+        int millis = Mathf.FloorToInt((seconds - mins * 60 - secs) * 1000);
+        return $"{mins}:{secs:00}:{millis:000}";
     }
 }

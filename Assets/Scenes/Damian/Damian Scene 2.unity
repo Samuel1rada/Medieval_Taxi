@@ -144486,7 +144486,7 @@ GameObject:
   - component: {fileID: 1120580818}
   - component: {fileID: 1120580817}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: WaypointIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -202333,6 +202333,10 @@ PrefabInstance:
       propertyPath: startingRotation.y
       value: 170
       objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: smokeEffectDuration
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -248394,7 +248398,7 @@ Transform:
   m_GameObject: {fileID: 2086890384}
   serializedVersion: 2
   m_LocalRotation: {x: 0.12218326, y: 0, z: 0, w: 0.9925076}
-  m_LocalPosition: {x: 0, y: 2.040001, z: -3.3900146}
+  m_LocalPosition: {x: 0, y: 5.09, z: -3.3900146}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
