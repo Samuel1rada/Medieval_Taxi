@@ -7,8 +7,8 @@ using System.IO;
 public class SplatmapNavmesh : MonoBehaviour
 {
     public Terrain terrain;
-    public int textureIndex = 1; 
-    public float textureThreshold = 0.1f; 
+    public int textureIndex = 1;
+    public float textureThreshold = 0.1f;
     private Mesh generatedMesh;
     /*public string savePath = Application.dataPath + "/Splatmap.png ;*/
     void Start()
@@ -37,7 +37,7 @@ public class SplatmapNavmesh : MonoBehaviour
         int[,] vertexIndices = new int[width, height];
 
         int vertexCount = 0;
-      
+
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -50,7 +50,7 @@ public class SplatmapNavmesh : MonoBehaviour
                     Vector3 worldPos = terrain.transform.position;
                     float worldX = worldPos.x + ((float)x / width) * terrainData.size.x;
                     float worldZ = worldPos.z + ((float)y / height) * terrainData.size.z;
-                    float worldY = terrain.terrainData.GetHeight(x, y); 
+                    float worldY = terrain.terrainData.GetHeight(x, y);
 
                     Vector3 vertexPosition = new Vector3(worldX, worldY, worldZ);
                     vertices.Add(vertexPosition);
@@ -62,7 +62,7 @@ public class SplatmapNavmesh : MonoBehaviour
                 }
                 else
                 {
-                    vertexIndices[x, y] = -1; 
+                    vertexIndices[x, y] = -1;
                 }
             }
         }

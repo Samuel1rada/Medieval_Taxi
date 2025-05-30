@@ -31,7 +31,7 @@ public class CloudSpawner : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        
+
         if (timer >= spawnInterval)
         {
             for (int i = 0; i < burstSpawnCount; i++)
@@ -49,14 +49,14 @@ public class CloudSpawner : MonoBehaviour
         // Random selection and position
         GameObject cloudPrefab = cloudPrefabs[Random.Range(0, cloudPrefabs.Count)];
         Vector3 spawnPosition = transform.position + new Vector3(
-            Random.Range(-spawnAreaSize.x/2f, spawnAreaSize.x/2f),
-            Random.Range(-spawnAreaSize.y/2f, spawnAreaSize.y/2f),
-            Random.Range(-spawnAreaSize.z/2f, spawnAreaSize.z/2f)
+            Random.Range(-spawnAreaSize.x / 2f, spawnAreaSize.x / 2f),
+            Random.Range(-spawnAreaSize.y / 2f, spawnAreaSize.y / 2f),
+            Random.Range(-spawnAreaSize.z / 2f, spawnAreaSize.z / 2f)
         );
 
         // Instantiate and apply random scale
         GameObject cloud = Instantiate(cloudPrefab, spawnPosition, Quaternion.identity);
-        
+
         Vector3 newScale = cloud.transform.localScale;
         if (uniformScaling)
         {
@@ -97,13 +97,13 @@ public class MinMaxSliderDrawer : UnityEditor.PropertyDrawer
         {
             UnityEditor.EditorGUI.BeginProperty(position, label, property);
             position = UnityEditor.EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
-            
+
             var min = property.vector2Value.x;
             var max = property.vector2Value.y;
-            
+
             UnityEditor.EditorGUI.MinMaxSlider(position, ref min, ref max, attr.min, attr.max);
             property.vector2Value = new Vector2(min, max);
-                
+
             UnityEditor.EditorGUI.EndProperty();
         }
     }
@@ -113,7 +113,7 @@ public class MinMaxSliderAttribute : PropertyAttribute
 {
     public float min;
     public float max;
-    
+
     public MinMaxSliderAttribute(float min, float max)
     {
         this.min = min;

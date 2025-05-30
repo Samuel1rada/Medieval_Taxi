@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
-using MalbersAnimations.InputSystem;
 
 public class SimplifiedPickUpSystem : MonoBehaviour
 {
