@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 2414563061490705089}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.014}
+  m_LocalPosition: {x: 0, y: 0, z: -0.0163}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -179,7 +179,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   brokenVersion: {fileID: 1783250788101587043, guid: ebf1d13c183ee3448b7ba5b853a8b0e3, type: 3}
   destroyDelay: 16
-  explosionForce: 0.00008
+  explosionForce: 0.1
+  speedThreshold: 5
 --- !u!114 &6422234497840989124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,4 +195,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effects: {fileID: 2531412388801911155, guid: e885f8f565356064b88c7f67c45074b7, type: 3}
   spawnPos: {fileID: 2414563061490705089}
-  destroyEffect: 30
+  destroyEffect: 60
