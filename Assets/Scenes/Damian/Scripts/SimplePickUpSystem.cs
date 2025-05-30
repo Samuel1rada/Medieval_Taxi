@@ -143,8 +143,11 @@ public class SimplifiedPickUpSystem : MonoBehaviour
     {
         if (!inputLocked && malbersInputComponent != null)
         {
-            // Use dynamic to set InputEnabled if it exists
-            try { ((dynamic)malbersInputComponent).InputEnabled = false; } catch { }
+            var prop = malbersInputComponent.GetType().GetProperty("InputEnabled");
+            if (prop != null && prop.CanWrite)
+            {
+                prop.SetValue(malbersInputComponent, false, null);
+            }
             inputLocked = true;
         }
     }
@@ -153,7 +156,11 @@ public class SimplifiedPickUpSystem : MonoBehaviour
     {
         if (inputLocked && malbersInputComponent != null)
         {
-            try { ((dynamic)malbersInputComponent).InputEnabled = true; } catch { }
+            var prop = malbersInputComponent.GetType().GetProperty("InputEnabled");
+            if (prop != null && prop.CanWrite)
+            {
+                prop.SetValue(malbersInputComponent, true, null);
+            }
             inputLocked = false;
         }
     }
