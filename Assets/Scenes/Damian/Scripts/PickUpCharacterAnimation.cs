@@ -20,8 +20,23 @@ public class PickUpCharacterAnimation : MonoBehaviour
     private Transform cartTarget;
     private Coroutine pickupCoroutine;
 
+    private Vector3 originalPosition;
+    private Quaternion originalRotation;
+    private Vector3 characterOriginalScale;
+    [SerializeField] private Transform playerTransform; // Assign this in inspector to the player
+    private Coroutine resetScaleCoroutine; // To track cooldown coroutine
+
     void Update()
     {
+        // Always look at player if assigned
+        if (playerTransform != null)
+        {
+            Vector3 lookPos = playerTransform.position - transform.position;
+            lookPos.y = 0;
+            if (lookPos != Vector3.zero)
+                transform.rotation = Quaternion.LookRotation(lookPos);
+        }
+
         if (debugReset == true)
         {
             if (Input.GetKeyDown(KeyCode.R)) ResetPassenger();
@@ -38,17 +53,23 @@ public class PickUpCharacterAnimation : MonoBehaviour
         pickupCoroutine = StartCoroutine(AnimatePickupSequence());
     }
 
-    private Vector3 originalPosition;
-    private Quaternion originalRotation;
-
     private void Awake()
     {
         // Store the original position and rotation
         originalPosition = transform.position;
         originalRotation = transform.rotation;
+        // Store original scale for character model
+        if (characterModel != null)
+            characterOriginalScale = characterModel.transform.localScale;
         // Ensure models are in correct initial state
-        if (characterModel != null) characterModel.SetActive(true);
+        if (characterModel != null)
+        {
+            characterModel.SetActive(true);
+            characterModel.transform.localScale = characterOriginalScale;
+        }
         if (cartPassengerModel != null) cartPassengerModel.SetActive(false);
+
+        // Remove startingRotation logic
     }
 
     public bool IsAnimating => isAnimating;
@@ -145,11 +166,25 @@ public class PickUpCharacterAnimation : MonoBehaviour
             smoke.Play();
             Destroy(smoke.gameObject, smoke.main.duration + smoke.main.startLifetime.constantMax);
             yield return new WaitForSeconds(smokeEffectDuration * 0.5f);
+
+            // After passenger smoke, spawn smoke at cart passenger position and scale cart passenger to 1
+            if (cartPassengerModel != null)
+            {
+                // Spawn smoke at cart passenger position
+                ParticleSystem cartSmoke = Instantiate(smokeEffect, cartPassengerModel.transform.position, Quaternion.identity);
+                cartSmoke.Play();
+                Destroy(cartSmoke.gameObject, cartSmoke.main.duration + cartSmoke.main.startLifetime.constantMax);
+
+                // Scale cart passenger to 1
+                cartPassengerModel.transform.localScale = Vector3.one;
+            }
         }
 
-        // Model swap
-        if (characterModel != null) characterModel.SetActive(false);
-        if (cartPassengerModel != null) cartPassengerModel.SetActive(true);
+        // Model swap (scale character down instead of disabling)
+        if (characterModel != null)
+            characterModel.transform.localScale = Vector3.one * 0.001f;
+        if (cartPassengerModel != null)
+            cartPassengerModel.SetActive(true);
 
         // Optional: Smoke effect at cart position
         if (smokeEffect != null && cartTarget != null)
@@ -190,10 +225,25 @@ public class PickUpCharacterAnimation : MonoBehaviour
         else
         {
             transform.position = originalPosition;
-            transform.rotation = originalRotation;
+            // Look at player if assigned
+            if (playerTransform != null)
+            {
+                Vector3 lookPos = playerTransform.position - transform.position;
+                lookPos.y = 0;
+                if (lookPos != Vector3.zero)
+                    transform.rotation = Quaternion.LookRotation(lookPos);
+            }
+            // else keep current rotation
         }
 
-        if (characterModel != null) characterModel.SetActive(true);
+        if (characterModel != null)
+        {
+            characterModel.SetActive(true);
+            // Start cooldown coroutine to scale back after 10 seconds
+            if (resetScaleCoroutine != null)
+                StopCoroutine(resetScaleCoroutine);
+            resetScaleCoroutine = StartCoroutine(ScaleBackAfterCooldown());
+        }
         if (cartPassengerModel != null) cartPassengerModel.SetActive(false);
 
         isAnimating = false;
@@ -204,5 +254,12 @@ public class PickUpCharacterAnimation : MonoBehaviour
             animator.ResetTrigger("Spin");
             animator.Play("Idle", 0); // Optionally force Idle state
         }
+    }
+
+    private IEnumerator ScaleBackAfterCooldown()
+    {
+        yield return new WaitForSeconds(10f);
+        if (characterModel != null)
+            characterModel.transform.localScale = characterOriginalScale;
     }
 }

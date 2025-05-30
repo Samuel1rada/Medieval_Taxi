@@ -185475,7 +185475,6 @@ MonoBehaviour:
   pickupIndicator: {fileID: 1120580816}
   scoreManager: {fileID: 745963005}
   passengerAnimationController: {fileID: 0}
-  playerObject: {fileID: 1516854463}
   malbersInputComponent: {fileID: 1516854472}
 --- !u!1 &1518241203
 GameObject:
@@ -202216,19 +202215,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4330087673648394, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.3814851
+      value: 0.08715588
       objectReference: {fileID: 0}
     - target: {fileID: 4330087673648394, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4330087673648394, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.924375
+      value: 0.9961947
       objectReference: {fileID: 0}
     - target: {fileID: 4330087673648394, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4330087673648394, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -202236,7 +202235,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4330087673648394, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -224.851
+      value: 170
       objectReference: {fileID: 0}
     - target: {fileID: 4330087673648394, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -202319,13 +202318,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1758460711}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 1516854472}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: arrivalThreshold
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: cartPassengerModel
       value: 
       objectReference: {fileID: 257096691}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: startingRotation.y
+      value: 170
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
