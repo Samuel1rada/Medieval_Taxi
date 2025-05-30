@@ -26,3 +26,5 @@ public class AmbienceSound : MonoBehaviour
     }
 
 }
+
+// set sound 1  Variabele die aangeeft 

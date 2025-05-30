@@ -9,6 +9,8 @@ public class Destructable : MonoBehaviour
     public float explosionForce = 0f;
     public float speedThreshold = 5f;
 
+    public AudioClip destroySound; //Add an audio clip for the destruction sound
+    public float destroySoundVolume = 1f; //Volume for the destruction sound
 
     void OnCollisionEnter(Collision collision)
     {
@@ -20,6 +22,12 @@ public class Destructable : MonoBehaviour
 
             if (collision.gameObject.CompareTag("Animal") || collision.gameObject.CompareTag("Wagon"))
             {
+                //Play the destruction sound if it exists
+                if (destroySound != null)
+                {
+                    AudioSource.PlayClipAtPoint(destroySound, hitPoint, destroySoundVolume);
+                }
+
                 // Instantiate the broken version of the object
                 GameObject brokenInstance = Instantiate(brokenVersion, transform.position, new Quaternion(transform.rotation.x, transform.rotation.y + 90, transform.rotation.z, transform.rotation.w));
 
