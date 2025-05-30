@@ -6,27 +6,35 @@ public class Destructable : MonoBehaviour
 {
     public GameObject brokenVersion;
     public float destroyDelay = 6f;
-    public float explosionForce = 0.00008f;
+    public float explosionForce = 0f;
+    public float speedThreshold = 5f;
 
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Animal") || collision.gameObject.CompareTag("Wagon"))
+        float impactSpeed = collision.relativeVelocity.magnitude;
+
+        if (impactSpeed > speedThreshold)
         {
-            // Instantiate the broken version of the object
-            GameObject brokenInstance = Instantiate(brokenVersion, transform.position, new Quaternion(transform.rotation.x, transform.rotation.y + 90, transform.rotation.z, transform.rotation.w));
-           
+            Vector3 hitPoint = collision.contacts[0].point;
 
-            // Apply random forces to each piece of the broken object
-            foreach (Rigidbody rb in brokenInstance.GetComponentsInChildren<Rigidbody>())
+            if (collision.gameObject.CompareTag("Animal") || collision.gameObject.CompareTag("Wagon"))
             {
-                Vector3 randomDirection = Random.insideUnitSphere;
-                rb.AddForce(randomDirection * explosionForce);
-            }
+                // Instantiate the broken version of the object
+                GameObject brokenInstance = Instantiate(brokenVersion, transform.position, new Quaternion(transform.rotation.x, transform.rotation.y + 90, transform.rotation.z, transform.rotation.w));
 
-            // Destroy the original object and the broken instance after a delay
-            Destroy(gameObject);
-            Destroy(brokenInstance, destroyDelay);
+
+                // Apply random forces to each piece of the broken object
+                foreach (Rigidbody rb in brokenInstance.GetComponentsInChildren<Rigidbody>())
+                {
+                    Vector3 direction = (rb.transform.position - hitPoint).normalized;
+                    rb.AddForce(direction * explosionForce / 70000, ForceMode.Impulse);
+                }
+
+                // Destroy the original object and the broken instance after a delay
+                Destroy(gameObject);
+                Destroy(brokenInstance, destroyDelay);
+            }
         }
     }
 }
