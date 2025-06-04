@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 public class pause : MonoBehaviour
 {
 
-    public bool isPaused = false;
-    public bool pausable = true;
+    public static bool isPaused = false;
+    public static bool pausable = true;
     public Canvas pause_menu;
     [SerializeField] private Animator PauseUi;
     public Canvas options_ui;
@@ -16,6 +16,7 @@ public class pause : MonoBehaviour
         pause_menu.gameObject.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
+        pausable = true;
     }
 
     void Update()

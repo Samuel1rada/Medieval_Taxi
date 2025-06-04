@@ -22,13 +22,13 @@ public class Options : MonoBehaviour
 
     public void SetVolume(float volume)
     {
-        audioMixer.SetFloat("volume", volume);
+        audioMixer.SetFloat("volume_music", volume);
         //Debug.Log(volume);
     }
 
     public void SetVolumeSfx(float volume)
     {
-        audioMixerSfx.SetFloat("volume", volume);
+        audioMixer.SetFloat("volume_sfx", volume);
         //Debug.Log(volume);
     }
 
@@ -41,6 +41,7 @@ public class Options : MonoBehaviour
     {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        Debug.Log(resolution);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
