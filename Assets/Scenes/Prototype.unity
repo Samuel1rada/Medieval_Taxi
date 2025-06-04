@@ -30509,7 +30509,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 259793752}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: be4b31c66674d2a4f9b054f30077d768, type: 3}
@@ -30517,7 +30517,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -108928,6 +108928,10 @@ PrefabInstance:
       propertyPath: destroyEffect
       value: 60
       objectReference: {fileID: 0}
+    - target: {fileID: 7440602948143486074, guid: 5cabba32e2de61b40bd75283ca23ddd5, type: 3}
+      propertyPath: destroySound
+      value: 
+      objectReference: {fileID: 8300000, guid: 764d34d9b76d17e469c07f6c189fa477, type: 3}
     - target: {fileID: 7440602948143486074, guid: 5cabba32e2de61b40bd75283ca23ddd5, type: 3}
       propertyPath: explosionForce
       value: 0.1
@@ -208968,7 +208972,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
