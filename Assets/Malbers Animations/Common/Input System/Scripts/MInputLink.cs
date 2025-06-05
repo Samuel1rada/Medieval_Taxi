@@ -127,7 +127,7 @@ namespace MalbersAnimations.InputSystem
         {
 #if UNITY_EDITOR
             if (debug)
-                Debug.Log($" <color=cyan><B>{playerInput.name}</B> </color> - Control Changed: <B>[{input.currentControlScheme}]</B>");
+                Debug.Log($" <color=cyan><B>{playerInput.name}</B> </color> - Control Changed: <B>[{input.currentControlScheme}]</B>");     
 #endif
             OnControlsChanged.Invoke(input);
         }
