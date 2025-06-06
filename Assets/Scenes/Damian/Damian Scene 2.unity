@@ -33998,10 +33998,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0:00,0
+  m_text: 0:00,000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a5937705af2114f488a4ae45e4a1c1bf, type: 2}
-  m_sharedMaterial: {fileID: -7467478625917920066, guid: a5937705af2114f488a4ae45e4a1c1bf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4e31ecdd0999a8940b0856a79645a55d, type: 2}
+  m_sharedMaterial: {fileID: -7467478625917920066, guid: 4e31ecdd0999a8940b0856a79645a55d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -34025,15 +34025,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
-  m_fontSizeBase: 60
+  m_fontSize: 92.6
+  m_fontSizeBase: 92.6
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 4096
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -34063,7 +34063,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -123.92552, y: 0, z: -122.819, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -34093,8 +34093,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15, y: -160.5}
-  m_SizeDelta: {x: 300, y: 75}
+  m_AnchoredPosition: {x: 20.7734, y: -141.2}
+  m_SizeDelta: {x: 299.1112, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &324173313
 PrefabInstance:
@@ -185437,19 +185437,19 @@ MonoBehaviour:
   pickupPoints:
   - pointName: Stable
     pointTransform: {fileID: 575454996}
-    destinationImage: {fileID: 21300000, guid: 3263b09d53dfba6459fde0cd6bb50e45, type: 3}
+    pointSprite: {fileID: 0}
     likesDriveBy: 1
     likesDestruction: 1
     passengerAnimation: {fileID: 2075503456}
   - pointName: Gate Entry
     pointTransform: {fileID: 7983806556073001699}
-    destinationImage: {fileID: 21300000, guid: 987167fc0a78e8f47a3c553a98eed762, type: 3}
+    pointSprite: {fileID: 0}
     likesDriveBy: 0
     likesDestruction: 0
     passengerAnimation: {fileID: 1396213877}
   - pointName: Tavern
     pointTransform: {fileID: 34628887}
-    destinationImage: {fileID: 21300000, guid: 2b2f40b31a6d4df4985d1af4dc3baa2e, type: 3}
+    pointSprite: {fileID: 0}
     likesDriveBy: 0
     likesDestruction: 1
     passengerAnimation: {fileID: 2094832540}
@@ -185473,9 +185473,15 @@ MonoBehaviour:
   timerText: {fileID: 322266995}
   dropOffHint: {fileID: 861140421}
   pickupIndicator: {fileID: 1120580816}
+  destinationImage: {fileID: 38199301}
   scoreManager: {fileID: 745963005}
+  goldMultiplier: 1.3
+  silverMultiplier: 2.6
+  bronzeMultiplier: 3.9
+  baseTime: 10
+  averageSpeed: 10
   passengerAnimationController: {fileID: 0}
-  malbersInputComponent: {fileID: 1516854472}
+  MInput: {fileID: 1516854466}
 --- !u!1 &1518241203
 GameObject:
   m_ObjectHideFlags: 0
@@ -248398,7 +248404,7 @@ Transform:
   m_GameObject: {fileID: 2086890384}
   serializedVersion: 2
   m_LocalRotation: {x: 0.12218326, y: 0, z: 0, w: 0.9925076}
-  m_LocalPosition: {x: 0, y: 5.09, z: -3.3900146}
+  m_LocalPosition: {x: 0, y: 2.040001, z: -3.3900146}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

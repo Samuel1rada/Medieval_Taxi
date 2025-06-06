@@ -4,6 +4,7 @@ using System;
 
 public class PickUpCharacterAnimation : MonoBehaviour
 {
+    // Serialized fields for Unity Inspector
     [SerializeField] private Animator animator;
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float arrivalThreshold = 0.5f;
@@ -14,19 +15,23 @@ public class PickUpCharacterAnimation : MonoBehaviour
     [SerializeField] private Transform rootPosition;
     [SerializeField] private bool debugReset = false;
 
+    // Private state variables
     private bool isSpinning = false;
     private bool isAnimating = false;
     private Transform cartTarget;
     private Coroutine pickupCoroutine;
 
+    // Original transform data for reset
     private Vector3 originalPosition;
     private Quaternion originalRotation;
     private Vector3 characterOriginalScale;
     [SerializeField] private Transform playerTransform;
     private Coroutine resetScaleCoroutine;
 
+    // Unity Update loop
     void Update()
     {
+        // Rotate to face player if not walking or spinning
         if (playerTransform != null && animator != null && !animator.GetBool("IsWalking") && !isSpinning)
         {
             Vector3 lookPos = playerTransform.position - transform.position;
@@ -35,12 +40,14 @@ public class PickUpCharacterAnimation : MonoBehaviour
                 transform.rotation = Quaternion.LookRotation(lookPos);
         }
 
+        // Debug reset functionality
         if (debugReset == true)
         {
             if (Input.GetKeyDown(KeyCode.R)) ResetPassenger();
         }
     }
 
+    // Public method to start pickup animation
     public void StartPickupAnimation(Transform cartTargetPos)
     {
         if (isAnimating || cartTargetPos == null) return;
@@ -49,6 +56,7 @@ public class PickUpCharacterAnimation : MonoBehaviour
         pickupCoroutine = StartCoroutine(AnimatePickupSequence());
     }
 
+    // Initialization
     private void Awake()
     {
         originalPosition = transform.position;
@@ -63,10 +71,13 @@ public class PickUpCharacterAnimation : MonoBehaviour
         if (cartPassengerModel != null) cartPassengerModel.SetActive(false);
     }
 
+    // Property to check if animation is running
     public bool IsAnimating => isAnimating;
 
+    // Event for animation completion
     public event Action OnPickupAnimationComplete;
 
+    // Spawn smoke effect at passenger location
     public void SpawnSmokeAtPassenger()
     {
         if (smokeEffect != null)
@@ -77,6 +88,7 @@ public class PickUpCharacterAnimation : MonoBehaviour
         }
     }
 
+    // Main pickup animation coroutine
     private IEnumerator AnimatePickupSequence()
     {
         isAnimating = true;
@@ -88,6 +100,7 @@ public class PickUpCharacterAnimation : MonoBehaviour
 
         animator.SetBool("IsWalking", true);
 
+        // Move towards cart target
         while (cartTarget != null && Vector3.Distance(transform.position, cartTarget.position) > arrivalThreshold)
         {
             Vector3 direction = (cartTarget.position - transform.position).normalized;
@@ -104,9 +117,11 @@ public class PickUpCharacterAnimation : MonoBehaviour
 
         animator.SetBool("IsWalking", false);
 
+        // Trigger spin animation
         isSpinning = true;
         animator.SetTrigger("Spin");
 
+        // Wait for spin animation to start
         bool spinStarted = false;
         float spinTimeout = 2f;
         while (!spinStarted && spinTimeout > 0f)
@@ -125,12 +140,14 @@ public class PickUpCharacterAnimation : MonoBehaviour
             yield return null;
         }
 
+        // Wait for spin animation to finish
         while (animator.GetCurrentAnimatorStateInfo(0).IsName("Spin") || animator.GetCurrentAnimatorStateInfo(0).IsTag("Spin"))
         {
             yield return null;
         }
         isSpinning = false;
 
+        // Handle smoke and model switching
         if (smokeEffect != null)
         {
             ParticleSystem smoke = Instantiate(smokeEffect, transform.position, Quaternion.identity);
@@ -170,12 +187,15 @@ public class PickUpCharacterAnimation : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        // Reset passenger after animation
         ResetPassenger();
 
+        // Invoke completion event
         if (OnPickupAnimationComplete != null)
             OnPickupAnimationComplete.Invoke();
     }
 
+    // Reset passenger to original state
     public void ResetPassenger()
     {
         if (pickupCoroutine != null)
@@ -185,6 +205,7 @@ public class PickUpCharacterAnimation : MonoBehaviour
         }
         isSpinning = false;
 
+        // Reset position and rotation
         if (rootPosition != null)
         {
             transform.position = rootPosition.position;
@@ -202,6 +223,7 @@ public class PickUpCharacterAnimation : MonoBehaviour
             }
         }
 
+        // Reset models and scale
         if (characterModel != null)
         {
             characterModel.SetActive(true);
@@ -220,6 +242,7 @@ public class PickUpCharacterAnimation : MonoBehaviour
         }
     }
 
+    // Coroutine to scale character back after cooldown
     private IEnumerator ScaleBackAfterCooldown()
     {
         yield return new WaitForSeconds(10f);

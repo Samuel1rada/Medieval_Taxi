@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using MalbersAnimations.Controller;
 
 public class SimplifiedPickUpSystem : MonoBehaviour
 {
@@ -64,8 +65,7 @@ public class SimplifiedPickUpSystem : MonoBehaviour
     public PickUpCharacterAnimation passengerAnimationController;
 
     // Reference to Malbers Input component (assign in inspector or auto-find)
-    public Component malbersInputComponent; // Assign your Malbers Input component in the inspector
-    private bool inputLocked = false;
+    public MAnimal MInput; // Reference to Malbers Input component
 
     void Start()
     {
@@ -75,18 +75,15 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         if (pickupIndicator != null) pickupIndicator.SetActive(false);
         Passenger.SetActive(false);
 
-        // Auto-detect Malbers input component if not set
-        // Ensure it's assigned in the Inspector.
-        if (malbersInputComponent == null)
+        // Auto-assign MInput if not set
+        if (MInput == null)
         {
-            // Try to find a component with InputEnabled property
-            malbersInputComponent = GetComponent("MInput") ?? GetComponent("InputController") ?? GetComponent("MalbersInput");
-            if (malbersInputComponent == null)
+            MInput = GetComponent<MAnimal>();
+            if (MInput == null)
             {
-                Debug.LogWarning("Malbers Input Component not assigned or found on this GameObject! Please assign it in the inspector.");
+                Debug.LogWarning("MAnimal (MInput) not assigned or found on this GameObject! Please assign it in the inspector.");
             }
         }
-
 
         if (passengerAnimationController != null)
         {
@@ -165,9 +162,21 @@ public class SimplifiedPickUpSystem : MonoBehaviour
 
     void OnPassengerAnimationComplete()
     {
+        Debug.Log("Passenger animation complete - attempting to re-enable controls");
+
         if (passengerAnimationController != null)
         {
             passengerAnimationController.SpawnSmokeAtPassenger();
+        }
+
+        if (MInput != null)
+        {
+            MInput.enabled = true;
+            Debug.Log("Controls should be re-enabled now");
+        }
+        else
+        {
+            Debug.LogError("MInput reference is null!");
         }
     }
 
@@ -181,6 +190,7 @@ public class SimplifiedPickUpSystem : MonoBehaviour
 
     void StartTrip(PickupDropoffPoint pickupPoint)
     {
+        MInput.enabled = false;
         // Sequentially select the next dropoff point in the list (wrap around)
         int nextIndex = (currentPointIndex + 1) % pickupPoints.Count;
         activePoint = pickupPoints[nextIndex];
@@ -217,6 +227,8 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         }
 
         Passenger.SetActive(true);
+        Invoke("OnPassengerAnimationComplete", 6f);
+
     }
 
     void CompleteTrip()
