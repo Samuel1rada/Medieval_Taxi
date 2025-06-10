@@ -9,4 +9,7 @@ public class PickupDropoffPoint
     public bool likesDriveBy;
     public bool likesDestruction;
     public PickUpCharacterAnimation passengerAnimation;  // Assign in inspector
+
+    public Sprite driveByPreferenceSprite;      // Assign in inspector: neutral/like/dislike
+    public Sprite destructionPreferenceSprite;  // Assign in inspector: neutral/like/dislike
 }

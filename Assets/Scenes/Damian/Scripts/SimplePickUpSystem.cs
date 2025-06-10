@@ -41,13 +41,24 @@ public class SimplifiedPickUpSystem : MonoBehaviour
     public TextMeshProUGUI dropOffHint;
     public GameObject pickupIndicator;
     public Image destinationImage; // Assign in inspector
+    public Image driveByPreferenceImage;      // Assign in inspector
+    public Image destructionPreferenceImage;  // Assign in inspector
+
+    [Header("Preference Sprites")]
+    public Sprite driveByLikedSprite;
+    public Sprite driveByDislikedSprite;
+    public Sprite driveByNeutralSprite;
+    public Sprite destructionLikedSprite;
+    public Sprite destructionDislikedSprite;
+    public Sprite destructionNeutralSprite;
+
     [Header("Score Manager")]
     public ScoreManager scoreManager;
 
     [Header("Timer Thresholds (multipliers)")]
     public float goldMultiplier = 1.3f;    // Gold: baseTime * goldMultiplier
-    public float silverMultiplier = 2.6f;  // Silver: baseTime * silverMultiplier
-    public float bronzeMultiplier = 3.9f;  // Bronze: baseTime * bronzeMultiplier
+    public float silverMultiplier = 2f;  // Silver: baseTime * silverMultiplier
+    public float bronzeMultiplier = 2.7f;  // Bronze: baseTime * bronzeMultiplier
 
     public float baseTime = 10f; // Base time in seconds for gold (edit in inspector)
     public float averageSpeed = 10f; // Units per second, edit in inspector
@@ -220,6 +231,28 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         // Set the destination image sprite from the next dropoff point
         if (destinationImage != null && activePoint.pointSprite != null)
             destinationImage.sprite = activePoint.pointSprite;
+
+        // Set the drive-by preference image based on likesDriveBy
+        if (driveByPreferenceImage != null)
+        {
+            if (activePoint.likesDriveBy)
+                driveByPreferenceImage.sprite = driveByLikedSprite;
+            else if (!activePoint.likesDriveBy && !activePoint.likesDestruction) // Assuming neutral if both false
+                driveByPreferenceImage.sprite = driveByNeutralSprite;
+            else
+                driveByPreferenceImage.sprite = driveByDislikedSprite;
+        }
+
+        // Set the destruction preference image based on likesDestruction
+        if (destructionPreferenceImage != null)
+        {
+            if (activePoint.likesDestruction)
+                destructionPreferenceImage.sprite = destructionLikedSprite;
+            else if (!activePoint.likesDestruction && !activePoint.likesDriveBy) // Assuming neutral if both false
+                destructionPreferenceImage.sprite = destructionNeutralSprite;
+            else
+                destructionPreferenceImage.sprite = destructionDislikedSprite;
+        }
 
         if (pickupPoint.passengerAnimation != null)
         {
