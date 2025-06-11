@@ -22,8 +22,8 @@ public class score_system : MonoBehaviour
     [SerializeField] private Color positiveColor = Color.green;
     [SerializeField] private Color negativeColor = Color.red;
 
-    public static float _currentScore = 10f;
-    public static float _displayedScore = 5000f;
+    public static float _currentScore = 0f;
+    public static float _displayedScore = 0f;
     private Coroutine _scoreCountingCoroutine;
     private Animator _scoreAnimator;
 
