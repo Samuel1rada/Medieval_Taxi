@@ -78,6 +78,21 @@ public class SimplifiedPickUpSystem : MonoBehaviour
     // Reference to Malbers Input component (assign in inspector or auto-find)
     public MAnimal MInput; // Reference to Malbers Input component
 
+    [Header("Emoji & Audio")]
+    public Sprite likeEmojiSprite;          // Assign in inspector (sprite)
+    public Sprite dislikeEmojiSprite;       // Assign in inspector (sprite)
+    public AudioClip likeAudioClip;         // Assign in inspector
+    public AudioClip dislikeAudioClip;      // Assign in inspector
+    public Canvas uiCanvas;                 // Assign your main UI canvas here
+    public float emojiAnimDuration = 0.7f;
+    public Image emojiPopupImage;           // Assign in inspector: UI Image for emoji popup
+
+    private AudioSource audioSource;
+
+    // Emoji cooldown
+    private float lastEmojiTime = -1f;
+    public float emojiCooldown = 0.5f; // seconds
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -100,6 +115,10 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         {
             passengerAnimationController.OnPickupAnimationComplete += OnPassengerAnimationComplete;
         }
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     void Update()
@@ -119,25 +138,30 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         if (isOnTrip)
         {
             Passenger.SetActive(true);
-            float elapsedTime = Time.time - tripStartTime;
 
-            if (timerText != null)
+            // Only update timer if player input is enabled (MInput.enabled)
+            if (MInput != null && MInput.enabled)
             {
-                timerText.text = FormatTime(elapsedTime);
+                float elapsedTime = Time.time - tripStartTime;
 
-                // Use estimatedTime for thresholds
-                float goldTime = estimatedTime * goldMultiplier;
-                float silverTime = estimatedTime * silverMultiplier;
-                float bronzeTime = estimatedTime * bronzeMultiplier;
+                if (timerText != null)
+                {
+                    timerText.text = FormatTime(elapsedTime);
 
-                if (elapsedTime < goldTime)
-                    timerText.color = new Color32(255, 215, 0, 255); // Gold
-                else if (elapsedTime < silverTime)
-                    timerText.color = new Color32(192, 192, 192, 255); // Silver
-                else if (elapsedTime < bronzeTime)
-                    timerText.color = new Color32(205, 127, 50, 255); // Bronze
-                else
-                    timerText.color = Color.black;
+                    // Use estimatedTime for thresholds
+                    float goldTime = estimatedTime * goldMultiplier;
+                    float silverTime = estimatedTime * silverMultiplier;
+                    float bronzeTime = estimatedTime * bronzeMultiplier;
+
+                    if (elapsedTime < goldTime)
+                        timerText.color = new Color32(255, 215, 0, 255); // Gold
+                    else if (elapsedTime < silverTime)
+                        timerText.color = new Color32(192, 192, 192, 255); // Silver
+                    else if (elapsedTime < bronzeTime)
+                        timerText.color = new Color32(205, 127, 50, 255); // Bronze
+                    else
+                        timerText.color = Color.black;
+                }
             }
 
             // Pickup indicator image logic (support UI Image and SpriteRenderer)
@@ -171,6 +195,55 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         }
     }
 
+    void ShowEmoji(bool isLike)
+    {
+        // Emoji cooldown logic
+        if (Time.time - lastEmojiTime < emojiCooldown) return;
+        lastEmojiTime = Time.time;
+
+        // Use assigned Image component for popup
+        if (emojiPopupImage == null) return;
+        Sprite sprite = isLike ? likeEmojiSprite : dislikeEmojiSprite;
+        AudioClip clip = isLike ? likeAudioClip : dislikeAudioClip;
+        if (sprite == null) return;
+
+        emojiPopupImage.sprite = sprite;
+        emojiPopupImage.enabled = true;
+        emojiPopupImage.transform.localScale = Vector3.zero;
+
+        StartCoroutine(AnimateEmojiImage(emojiPopupImage, emojiAnimDuration));
+
+        // Play audio
+        if (clip != null && audioSource != null)
+            audioSource.PlayOneShot(clip);
+    }
+
+    private System.Collections.IEnumerator AnimateEmojiImage(Image img, float duration)
+    {
+        float half = duration * 0.5f;
+        float timer = 0f;
+        // Grow
+        while (timer < half)
+        {
+            float t = timer / half;
+            img.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        img.transform.localScale = Vector3.one;
+        // Shrink
+        timer = 0f;
+        while (timer < half)
+        {
+            float t = timer / half;
+            img.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        img.transform.localScale = Vector3.zero;
+        img.enabled = false;
+    }
+
     void OnPassengerAnimationComplete()
     {
         Debug.Log("Passenger animation complete - attempting to re-enable controls");
@@ -183,6 +256,10 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         if (MInput != null)
         {
             MInput.enabled = true;
+            // Reset and start timer when input is re-enabled
+            tripStartTime = Time.time;
+            if (timerText != null)
+                timerText.text = "0:00:000";
             Debug.Log("Controls should be re-enabled now");
         }
         else
@@ -211,7 +288,7 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         estimatedTime = (averageSpeed > 0f) ? distance / averageSpeed : baseTime;
 
         isOnTrip = true;
-        tripStartTime = Time.time;
+        // tripStartTime = Time.time; // <-- REMOVE this line, timer will start after animation
 
         if (jobPanel != null)
             jobPanel.SetActive(true);
@@ -253,6 +330,10 @@ public class SimplifiedPickUpSystem : MonoBehaviour
             else
                 destructionPreferenceImage.sprite = destructionDislikedSprite;
         }
+
+        // Reset timer display to zero at job start
+        if (timerText != null)
+            timerText.text = "0:00:000";
 
         if (pickupPoint.passengerAnimation != null)
         {
@@ -332,6 +413,12 @@ public class SimplifiedPickUpSystem : MonoBehaviour
                 float scoreChange = Random.value > 0.5f ? globalDriveByBonus : -globalDriveByPenalty;
                 scoreManager.AddScore(scoreChange);
                 Debug.Log($"DriveBy event. Score change: {scoreChange}");
+
+                // Show emoji if passenger likes/dislikes drive-by
+                if (activePoint.likesDriveBy)
+                    ShowEmoji(true);
+                else if (!activePoint.likesDriveBy)
+                    ShowEmoji(false);
             }
         }
     }
@@ -359,6 +446,12 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         float scoreChange = Random.value > 0.5f ? globalDestructionBonus : -globalDestructionPenalty;
         scoreManager.AddScore(scoreChange);
         Debug.Log($"Destruction event. Score change: {scoreChange}");
+
+        // Show emoji if passenger likes/dislikes destruction
+        if (activePoint.likesDestruction)
+            ShowEmoji(true);
+        else if (!activePoint.likesDestruction)
+            ShowEmoji(false);
     }
 
     string FormatTime(float seconds)
