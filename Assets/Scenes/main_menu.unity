@@ -416,6 +416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menu: {fileID: 963793502}
+  options: {fileID: 1648501841}
 --- !u!4 &488939616
 Transform:
   m_ObjectHideFlags: 0
@@ -1805,6 +1806,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!223 &1648501841 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 2071347607339790453, guid: 85a880cd05e57314b89ee6da3585d54f, type: 3}
+  m_PrefabInstance: {fileID: 1827546503}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1684048013
 GameObject:
   m_ObjectHideFlags: 0

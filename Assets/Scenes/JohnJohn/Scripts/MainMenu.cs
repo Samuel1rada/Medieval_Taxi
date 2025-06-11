@@ -5,6 +5,7 @@ public class MainMenu : MonoBehaviour
 {
 
     public Canvas menu;
+    public Canvas options;
 
     public void Play()
     {
@@ -14,7 +15,8 @@ public class MainMenu : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        options.gameObject.SetActive(false);
+        menu.gameObject.SetActive(true);
     }
 
     // Update is called once per frame
@@ -32,10 +34,12 @@ public class MainMenu : MonoBehaviour
     public void Options()
     {
         menu.gameObject.SetActive(false);
+        options.gameObject.SetActive(true);
     }
 
     public void Back()
     {
         menu.gameObject.SetActive(true);
+        options.gameObject.SetActive(false);
     }
 }
