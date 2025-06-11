@@ -85,6 +85,19 @@ public class CloudSpawner : MonoBehaviour
     }
 }
 
+// Move this class outside of the UNITY_EDITOR block so it's always available
+public class MinMaxSliderAttribute : PropertyAttribute
+{
+    public float min;
+    public float max;
+
+    public MinMaxSliderAttribute(float min, float max)
+    {
+        this.min = min;
+        this.max = max;
+    }
+}
+
 // Add this to Editor folder for MinMaxSlider
 #if UNITY_EDITOR
 [UnityEditor.CustomPropertyDrawer(typeof(MinMaxSliderAttribute))]
@@ -106,18 +119,6 @@ public class MinMaxSliderDrawer : UnityEditor.PropertyDrawer
 
             UnityEditor.EditorGUI.EndProperty();
         }
-    }
-}
-
-public class MinMaxSliderAttribute : PropertyAttribute
-{
-    public float min;
-    public float max;
-
-    public MinMaxSliderAttribute(float min, float max)
-    {
-        this.min = min;
-        this.max = max;
     }
 }
 #endif
