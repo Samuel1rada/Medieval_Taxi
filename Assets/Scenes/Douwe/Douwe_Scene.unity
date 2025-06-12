@@ -8611,6 +8611,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Well_01
       objectReference: {fileID: 0}
+    - target: {fileID: 8921493606110049843, guid: ece35f78a1fec9e4085a8b2a5f15148a, type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10988,40 +10992,30 @@ MonoBehaviour:
     likesDriveBy: 1
     likesDestruction: 1
     passengerAnimation: {fileID: 0}
-    driveByPreferenceSprite: {fileID: 0}
-    destructionPreferenceSprite: {fileID: 0}
   - pointName: Gate Entry
     pointTransform: {fileID: 0}
     pointSprite: {fileID: 21300000, guid: 987167fc0a78e8f47a3c553a98eed762, type: 3}
     likesDriveBy: 0
     likesDestruction: 0
     passengerAnimation: {fileID: 0}
-    driveByPreferenceSprite: {fileID: 0}
-    destructionPreferenceSprite: {fileID: 0}
   - pointName: Tavern
     pointTransform: {fileID: 0}
     pointSprite: {fileID: 21300000, guid: 2b2f40b31a6d4df4985d1af4dc3baa2e, type: 3}
     likesDriveBy: 1
     likesDestruction: 1
     passengerAnimation: {fileID: 0}
-    driveByPreferenceSprite: {fileID: 0}
-    destructionPreferenceSprite: {fileID: 0}
   - pointName: Witch Hut
     pointTransform: {fileID: 0}
     pointSprite: {fileID: 21300000, guid: 15126de69b8d4c240a633e2c04e01296, type: 3}
     likesDriveBy: 0
     likesDestruction: 1
     passengerAnimation: {fileID: 0}
-    driveByPreferenceSprite: {fileID: 0}
-    destructionPreferenceSprite: {fileID: 0}
   - pointName: Stable
     pointTransform: {fileID: 0}
     pointSprite: {fileID: 21300000, guid: 3263b09d53dfba6459fde0cd6bb50e45, type: 3}
     likesDriveBy: 1
     likesDestruction: 0
     passengerAnimation: {fileID: 0}
-    driveByPreferenceSprite: {fileID: 0}
-    destructionPreferenceSprite: {fileID: 0}
   Passenger: {fileID: 1552940864}
   baseFare: 100
   fastMultiplier: 1.5
@@ -11059,6 +11053,14 @@ MonoBehaviour:
   averageSpeed: 10
   passengerAnimationController: {fileID: 0}
   MInput: {fileID: 0}
+  likeEmojiSprite: {fileID: 0}
+  dislikeEmojiSprite: {fileID: 0}
+  likeAudioClip: {fileID: 0}
+  dislikeAudioClip: {fileID: 0}
+  uiCanvas: {fileID: 0}
+  emojiAnimDuration: 0.7
+  emojiPopupImage: {fileID: 0}
+  emojiCooldown: 0.5
 --- !u!114 &1622435653
 MonoBehaviour:
   m_ObjectHideFlags: 0
