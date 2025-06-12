@@ -1659,7 +1659,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9ae77a77f5b58e448a475c480ed4eccf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 10fad54ec27c43b44b74554b52b6f44e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1973,6 +1973,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 765872976163790261, guid: 85a880cd05e57314b89ee6da3585d54f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.0000076293945
+      objectReference: {fileID: 0}
     - target: {fileID: 889861061848874927, guid: 85a880cd05e57314b89ee6da3585d54f, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2036,6 +2040,14 @@ PrefabInstance:
     - target: {fileID: 4000813736138978611, guid: 85a880cd05e57314b89ee6da3585d54f, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetVolume
+      objectReference: {fileID: 0}
+    - target: {fileID: 5296939580295341781, guid: 85a880cd05e57314b89ee6da3585d54f, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5296939580295341781, guid: 85a880cd05e57314b89ee6da3585d54f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5616086626524562440, guid: 85a880cd05e57314b89ee6da3585d54f, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -2180,6 +2192,18 @@ PrefabInstance:
     - target: {fileID: 7287956857464421567, guid: 85a880cd05e57314b89ee6da3585d54f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: MainMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743865169147100847, guid: 85a880cd05e57314b89ee6da3585d54f, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743865169147100847, guid: 85a880cd05e57314b89ee6da3585d54f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743865169147100847, guid: 85a880cd05e57314b89ee6da3585d54f, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8242304837238852891, guid: 85a880cd05e57314b89ee6da3585d54f, type: 3}
       propertyPath: m_AnchorMax.x

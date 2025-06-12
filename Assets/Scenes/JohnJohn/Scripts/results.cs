@@ -15,6 +15,6 @@ public class results : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        totalScore.text = $"Final Score: {Mathf.RoundToInt(score_system._displayedScore)}";
+        totalScore.text = $"Final Score:" + score_system._currentScore;
     }
 }
