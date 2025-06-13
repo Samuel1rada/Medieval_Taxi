@@ -29639,8 +29639,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 0:00,0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a5937705af2114f488a4ae45e4a1c1bf, type: 2}
-  m_sharedMaterial: {fileID: -7467478625917920066, guid: a5937705af2114f488a4ae45e4a1c1bf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4e31ecdd0999a8940b0856a79645a55d, type: 2}
+  m_sharedMaterial: {fileID: -7467478625917920066, guid: 4e31ecdd0999a8940b0856a79645a55d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -93248,8 +93248,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a5937705af2114f488a4ae45e4a1c1bf, type: 2}
-  m_sharedMaterial: {fileID: -7467478625917920066, guid: a5937705af2114f488a4ae45e4a1c1bf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4e31ecdd0999a8940b0856a79645a55d, type: 2}
+  m_sharedMaterial: {fileID: -7467478625917920066, guid: 4e31ecdd0999a8940b0856a79645a55d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -166357,8 +166357,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: DESTINATION
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a5937705af2114f488a4ae45e4a1c1bf, type: 2}
-  m_sharedMaterial: {fileID: -7467478625917920066, guid: a5937705af2114f488a4ae45e4a1c1bf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4e31ecdd0999a8940b0856a79645a55d, type: 2}
+  m_sharedMaterial: {fileID: -7467478625917920066, guid: 4e31ecdd0999a8940b0856a79645a55d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -175522,13 +175522,13 @@ MonoBehaviour:
     pointTransform: {fileID: 7983806556073001699}
     pointSprite: {fileID: 21300000, guid: 2b2f40b31a6d4df4985d1af4dc3baa2e, type: 3}
     driveByPreference: 2
-    destructionPreference: 0
+    destructionPreference: 2
     passengerAnimation: {fileID: 1091300803}
   - pointName: Tower
     pointTransform: {fileID: 1081392807}
     pointSprite: {fileID: 21300000, guid: b8629bebbe7531145b82e2c392ff53ef, type: 3}
     driveByPreference: 2
-    destructionPreference: 1
+    destructionPreference: 0
     passengerAnimation: {fileID: 1976283299}
   - pointName: The High Wall
     pointTransform: {fileID: 1130193899}
@@ -175613,7 +175613,7 @@ MonoBehaviour:
   emojiCooldown: 0.5
   driveBySlider: {fileID: 0}
   destructionSlider: {fileID: 0}
-  driveByBonusCooldown: 0.5
+  driveByBonusCooldown: 0.94
   destructionBonusCooldown: 0.5
 --- !u!1 &1518241203
 GameObject:
