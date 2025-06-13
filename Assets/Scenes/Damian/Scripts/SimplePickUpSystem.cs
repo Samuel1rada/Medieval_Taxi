@@ -93,6 +93,16 @@ public class SimplifiedPickUpSystem : MonoBehaviour
     private float lastEmojiTime = -1f;
     public float emojiCooldown = 0.5f; // seconds
 
+    [Header("Preference Sliders")]
+    public Slider driveBySlider;        // Assign in inspector
+    public Slider destructionSlider;    // Assign in inspector
+
+    // Add separate cooldown trackers for bonuses
+    private float lastDriveByBonusTime = -1f;
+    private float lastDestructionBonusTime = -1f;
+    public float driveByBonusCooldown = 2f;      // seconds, set in inspector
+    public float destructionBonusCooldown = 2f;  // seconds, set in inspector
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -309,27 +319,31 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         if (destinationImage != null && activePoint.pointSprite != null)
             destinationImage.sprite = activePoint.pointSprite;
 
-        // Set the drive-by preference image based on likesDriveBy
+        // Set the drive-by preference image and slider
         if (driveByPreferenceImage != null)
         {
-            if (activePoint.likesDriveBy)
+            if (activePoint.driveByPreference == PreferenceLevel.Like)
                 driveByPreferenceImage.sprite = driveByLikedSprite;
-            else if (!activePoint.likesDriveBy && !activePoint.likesDestruction) // Assuming neutral if both false
+            else if (activePoint.driveByPreference == PreferenceLevel.Neutral)
                 driveByPreferenceImage.sprite = driveByNeutralSprite;
             else
                 driveByPreferenceImage.sprite = driveByDislikedSprite;
         }
+        if (driveBySlider != null)
+            driveBySlider.value = (int)activePoint.driveByPreference;
 
-        // Set the destruction preference image based on likesDestruction
+        // Set the destruction preference image and slider
         if (destructionPreferenceImage != null)
         {
-            if (activePoint.likesDestruction)
+            if (activePoint.destructionPreference == PreferenceLevel.Like)
                 destructionPreferenceImage.sprite = destructionLikedSprite;
-            else if (!activePoint.likesDestruction && !activePoint.likesDriveBy) // Assuming neutral if both false
+            else if (activePoint.destructionPreference == PreferenceLevel.Neutral)
                 destructionPreferenceImage.sprite = destructionNeutralSprite;
             else
                 destructionPreferenceImage.sprite = destructionDislikedSprite;
         }
+        if (destructionSlider != null)
+            destructionSlider.value = (int)activePoint.destructionPreference;
 
         // Reset timer display to zero at job start
         if (timerText != null)
@@ -410,15 +424,25 @@ public class SimplifiedPickUpSystem : MonoBehaviour
             if (other.CompareTag(driveByTag) && Time.time - lastDriveByTime >= driveByCooldown)
             {
                 lastDriveByTime = Time.time;
-                float scoreChange = Random.value > 0.5f ? globalDriveByBonus : -globalDriveByPenalty;
-                scoreManager.AddScore(scoreChange);
-                Debug.Log($"DriveBy event. Score change: {scoreChange}");
 
-                // Show emoji if passenger likes/dislikes drive-by
-                if (activePoint.likesDriveBy)
-                    ShowEmoji(true);
-                else if (!activePoint.likesDriveBy)
-                    ShowEmoji(false);
+                // Bonus/penalty cooldown logic
+                if (Time.time - lastDriveByBonusTime >= driveByBonusCooldown)
+                {
+                    float scoreChange = ScoreManager.GetScoreForPreference(activePoint.driveByPreference, globalDriveByBonus, globalDriveByPenalty);
+                    scoreManager.AddScore(scoreChange);
+
+                    if (activePoint.driveByPreference == PreferenceLevel.Like)
+                        ShowEmoji(true);
+                    else if (activePoint.driveByPreference == PreferenceLevel.Dislike)
+                        ShowEmoji(false);
+
+                    Debug.Log($"DriveBy event. Score change: {scoreChange}");
+                    lastDriveByBonusTime = Time.time;
+                }
+                else
+                {
+                    Debug.Log("DriveBy bonus/penalty on cooldown.");
+                }
             }
         }
     }
@@ -443,15 +467,25 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         if (Time.time - lastDestructionTime < destructionCooldown) return;
 
         lastDestructionTime = Time.time;
-        float scoreChange = Random.value > 0.5f ? globalDestructionBonus : -globalDestructionPenalty;
-        scoreManager.AddScore(scoreChange);
-        Debug.Log($"Destruction event. Score change: {scoreChange}");
 
-        // Show emoji if passenger likes/dislikes destruction
-        if (activePoint.likesDestruction)
-            ShowEmoji(true);
-        else if (!activePoint.likesDestruction)
-            ShowEmoji(false);
+        // Bonus/penalty cooldown logic
+        if (Time.time - lastDestructionBonusTime >= destructionBonusCooldown)
+        {
+            float scoreChange = ScoreManager.GetScoreForPreference(activePoint.destructionPreference, globalDestructionBonus, globalDestructionPenalty);
+            scoreManager.AddScore(scoreChange);
+
+            if (activePoint.destructionPreference == PreferenceLevel.Like)
+                ShowEmoji(true);
+            else if (activePoint.destructionPreference == PreferenceLevel.Dislike)
+                ShowEmoji(false);
+
+            Debug.Log($"Destruction event. Score change: {scoreChange}");
+            lastDestructionBonusTime = Time.time;
+        }
+        else
+        {
+            Debug.Log("Destruction bonus/penalty on cooldown.");
+        }
     }
 
     string FormatTime(float seconds)

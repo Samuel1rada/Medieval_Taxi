@@ -81,6 +81,11 @@ public class Ragdoll : MonoBehaviour
     {
         if (other.CompareTag(targetTag))
         {
+            // Only ragdoll if the player is moving
+            Rigidbody playerRb = other.attachedRigidbody;
+            if (playerRb != null && playerRb.linearVelocity.magnitude < 0.2f)
+                return;
+
             Vector3 impactDirection = (transform.position - other.transform.position).normalized;
             impactDirection = AddUpwardForce(impactDirection);
             
@@ -190,6 +195,11 @@ public class Ragdoll : MonoBehaviour
     {
         if (collision.gameObject.CompareTag(targetTag))
         {
+            // Only ragdoll if the player is moving
+            Rigidbody playerRb = collision.rigidbody;
+            if (playerRb != null && playerRb.linearVelocity.magnitude < 0.2f)
+                return;
+
             ContactPoint contact = collision.contacts[0];
             Vector3 impactDirection = (contact.normal + Vector3.up * UpwardsForceRatio).normalized;
             float randomForce = Random.Range(minImpactForce, maxImpactForce);

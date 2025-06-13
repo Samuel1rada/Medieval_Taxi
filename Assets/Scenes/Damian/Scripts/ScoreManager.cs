@@ -191,7 +191,18 @@ public class ScoreManager : MonoBehaviour
         Destroy(popup);
     }
 
-    public enum DeliverySpeed { Slow, Medium, Fast }
+    public static float GetScoreForPreference(PreferenceLevel preference, float bonus, float penalty)
+    {
+        switch (preference)
+        {
+            case PreferenceLevel.Like:
+                return bonus;
+            case PreferenceLevel.Dislike:
+                return -penalty;
+            default:
+                return 0f;
+        }
+    }
 
 #if UNITY_EDITOR
     [Header("Editor Tools")]
