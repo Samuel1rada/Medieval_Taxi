@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System;
+using Unity.Cinemachine;
 
 public class PickUpCharacterAnimation : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class PickUpCharacterAnimation : MonoBehaviour
     [SerializeField] private float smokeEffectDuration = 0.5f;
     [SerializeField] private Transform rootPosition;
     [SerializeField] private bool debugReset = false;
+    [SerializeField] private string idleStateName = "Idle"; // <-- Add this line
+
 
     // Private state variables
     private bool isSpinning = false;
@@ -27,6 +30,13 @@ public class PickUpCharacterAnimation : MonoBehaviour
     private Vector3 characterOriginalScale;
     [SerializeField] private Transform playerTransform;
     private Coroutine resetScaleCoroutine;
+
+    [Header("Cinemachine Camera Settings")]
+    [SerializeField] private CinemachineCamera mainCinemachineCamera;
+    [SerializeField] private Transform characterLookTarget; // usually characterModel.transform
+    [SerializeField] private float characterFOV = 40f;
+    private Transform originalLookAtTarget;
+    private float originalFOV;
 
     // Unity Update loop
     void Update()
@@ -52,6 +62,16 @@ public class PickUpCharacterAnimation : MonoBehaviour
     {
         if (isAnimating || cartTargetPos == null) return;
         cartTarget = cartTargetPos;
+
+        // Store original LookAt and FOV, then switch to character (do NOT change Follow)
+        if (mainCinemachineCamera != null)
+        {
+            originalLookAtTarget = mainCinemachineCamera.LookAt;
+            originalFOV = mainCinemachineCamera.Lens.FieldOfView;
+            mainCinemachineCamera.LookAt = characterLookTarget != null ? characterLookTarget : this.transform;
+            mainCinemachineCamera.Lens.FieldOfView = characterFOV;
+        }
+
         if (pickupCoroutine != null) StopCoroutine(pickupCoroutine);
         pickupCoroutine = StartCoroutine(AnimatePickupSequence());
     }
@@ -160,21 +180,38 @@ public class PickUpCharacterAnimation : MonoBehaviour
                 if (characterModel != null)
                     characterModel.transform.localScale = Vector3.one * 0.001f;
 
+                // === CAMERA CHANGE & CART PASSENGER ACTIVATION HERE ===
+                if (mainCinemachineCamera != null)
+                {
+                    originalLookAtTarget = mainCinemachineCamera.LookAt;
+                    originalFOV = mainCinemachineCamera.Lens.FieldOfView;
+                    mainCinemachineCamera.LookAt = characterLookTarget != null ? characterLookTarget : this.transform;
+                    mainCinemachineCamera.Lens.FieldOfView = characterFOV;
+                }
+                cartPassengerModel.transform.localScale = Vector3.one;
+                cartPassengerModel.SetActive(true);
+
                 ParticleSystem cartSmoke = Instantiate(smokeEffect, cartPassengerModel.transform.position, Quaternion.identity);
                 cartSmoke.Play();
                 Destroy(cartSmoke.gameObject, cartSmoke.main.duration + cartSmoke.main.startLifetime.constantMax);
 
                 yield return new WaitForSeconds(smokeEffectDuration * 0.5f);
                 yield return new WaitForSeconds(2f);
-
-                cartPassengerModel.transform.localScale = Vector3.one;
-                cartPassengerModel.SetActive(true);
             }
         }
         else
         {
             if (characterModel != null)
                 characterModel.transform.localScale = Vector3.one * 0.001f;
+
+            // === CAMERA CHANGE & CART PASSENGER ACTIVATION HERE ===
+            if (mainCinemachineCamera != null)
+            {
+                originalLookAtTarget = mainCinemachineCamera.LookAt;
+                originalFOV = mainCinemachineCamera.Lens.FieldOfView;
+                mainCinemachineCamera.LookAt = characterLookTarget != null ? characterLookTarget : this.transform;
+                mainCinemachineCamera.Lens.FieldOfView = characterFOV;
+            }
             if (cartPassengerModel != null)
             {
                 cartPassengerModel.transform.localScale = Vector3.one;
@@ -190,9 +227,26 @@ public class PickUpCharacterAnimation : MonoBehaviour
         // Reset passenger after animation
         ResetPassenger();
 
-        // Invoke completion event
-        if (OnPickupAnimationComplete != null)
-            OnPickupAnimationComplete.Invoke();
+        // Restore camera's original LookAt and FOV (do NOT change Follow)
+        if (mainCinemachineCamera != null)
+        {
+            mainCinemachineCamera.LookAt = originalLookAtTarget;
+            mainCinemachineCamera.Lens.FieldOfView = originalFOV;
+        }
+
+        // If using two Cinemachine cameras:
+        // if (npcCinemachineCamera != null && playerCinemachineCamera != null)
+        // {
+        //     npcCinemachineCamera.gameObject.SetActive(false);
+        //     playerCinemachineCamera.gameObject.SetActive(true);
+        //     // playerCinemachineCamera.FieldOfView = playerFOV;
+        // }
+        // If using only one virtual camera:
+        // if (mainVirtualCamera != null && cameraPlayerTarget != null)
+        // {
+        //     mainVirtualCamera.Follow = cameraPlayerTarget;
+        //     mainVirtualCamera.m_Lens.FieldOfView = playerFOV;
+        // }
     }
 
     // Reset passenger to original state
@@ -238,7 +292,9 @@ public class PickUpCharacterAnimation : MonoBehaviour
         {
             animator.SetBool("IsWalking", false);
             animator.ResetTrigger("Spin");
-            animator.Play("Idle", 0);
+            if (!string.IsNullOrEmpty(idleStateName) && AnimatorHasState(animator, 0, idleStateName))
+                animator.Play(idleStateName, 0);
+            // else: do not call Play if state doesn't exist
         }
     }
 
@@ -248,5 +304,11 @@ public class PickUpCharacterAnimation : MonoBehaviour
         yield return new WaitForSeconds(10f);
         if (characterModel != null)
             characterModel.transform.localScale = characterOriginalScale;
+    }
+
+    // Utility to check if animator has a state in a given layer
+    private bool AnimatorHasState(Animator anim, int layer, string stateName)
+    {
+        return anim.HasState(layer, Animator.StringToHash(stateName));
     }
 }
