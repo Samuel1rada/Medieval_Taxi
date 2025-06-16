@@ -75725,6 +75725,7 @@ MonoBehaviour:
   popupRiseDistance: 100
   positiveColor: {r: 0, g: 1, b: 0, a: 1}
   negativeColor: {r: 1, g: 0, b: 0, a: 1}
+  _currentScore: 500
   testScoreAmount: 0
 --- !u!4 &745963006
 Transform:
@@ -218567,7 +218568,7 @@ PrefabInstance:
       objectReference: {fileID: 6620833043177885341}
     - target: {fileID: 5947271455593403905, guid: 96005f961ae838c4089b7a3f67211ba3, type: 3}
       propertyPath: targetTime
-      value: 600
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 5947271455593403905, guid: 96005f961ae838c4089b7a3f67211ba3, type: 3}
       propertyPath: timeOutCanvas
