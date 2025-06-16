@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 64933661157973624}
   - component: {fileID: 68647787826800056}
   - component: {fileID: 8759907852635002014}
+  - component: {fileID: 4787187162227350095}
   m_Layer: 0
   m_Name: SM_Bld_Preset_House_08_Optimized
   m_TagString: Untagged
@@ -152,8 +153,31 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.8642263, y: 3.8418097, z: 3.7061758}
-  m_Center: {x: -2.5181112, y: -0.5911777, z: -0.21430683}
+  m_Size: {x: 1.8642263, y: 3.774919, z: 2.769707}
+  m_Center: {x: -2.5181112, y: -0.62462306, z: -0.68254125}
+--- !u!136 &4787187162227350095
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1107351626861436}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.0488974
+  m_Height: 4.7151995
+  m_Direction: 1
+  m_Center: {x: -2.5152168, y: -1.2139702, z: 0.5706204}
 --- !u!1 &1671324151703332
 GameObject:
   m_ObjectHideFlags: 0

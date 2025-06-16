@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7912976854103276369}
   - component: {fileID: 417318018042358126}
   - component: {fileID: 9111882044093022947}
-  - component: {fileID: 5650887222368962757}
+  - component: {fileID: 615732426729413717}
   m_Layer: 0
   m_Name: SM_Bld_Preset_Church_01_A_Optimized
   m_TagString: Untagged
@@ -177,8 +177,8 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.847918, y: 4.136423, z: 2.87122}
   m_Center: {x: -1.2122352, y: 7.1594296, z: -2.586468}
---- !u!65 &5650887222368962757
-BoxCollider:
+--- !u!136 &615732426729413717
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -195,9 +195,11 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.891211, y: 3.7335987, z: 1.9293613}
-  m_Center: {x: -1.2625883, y: -0.64528275, z: 0.6740999}
+  serializedVersion: 2
+  m_Radius: 0.9370511
+  m_Height: 5.040914
+  m_Direction: 1
+  m_Center: {x: -1.2752194, y: -1.2450202, z: 0.4737528}
 --- !u!1 &1768155363841784
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,6 +15,9 @@ GameObject:
   - component: {fileID: 5030338431743301806}
   - component: {fileID: 2892951895004419717}
   - component: {fileID: 4519818667741013324}
+  - component: {fileID: 565343922621163029}
+  - component: {fileID: 4439379941108753226}
+  - component: {fileID: 6716913047940041203}
   m_Layer: 0
   m_Name: SM_Bld_Preset_House_05_Optimized
   m_TagString: Untagged
@@ -174,8 +177,75 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.0420501, y: 4.9963646, z: 3.7709703}
-  m_Center: {x: 3.4956665, y: -0.0139017105, z: -0.41476202}
+  m_Size: {x: 1.8251543, y: 4.8334217, z: 3.7709703}
+  m_Center: {x: 3.9327703, y: -0.09537315, z: -0.41476202}
+--- !u!65 &565343922621163029
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925638959922780}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.5724382, y: 2.529756, z: 1.1465816}
+  m_Center: {x: 1.895441, y: -1.2472045, z: 0.8556824}
+--- !u!136 &4439379941108753226
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925638959922780}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.0652084
+  m_Height: 4.523669
+  m_Direction: 1
+  m_Center: {x: 2.9825554, y: -1.2393548, z: 0.37269878}
+--- !u!136 &6716913047940041203
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925638959922780}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.88974965
+  m_Height: 3.2678778
+  m_Direction: 1
+  m_Center: {x: 1.2555051, y: -1.7120968, z: 1.4920052}
 --- !u!1 &1938878248755964
 GameObject:
   m_ObjectHideFlags: 0

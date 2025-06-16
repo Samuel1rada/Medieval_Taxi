@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4798834163533362}
   - component: {fileID: 33204535887461928}
   - component: {fileID: 23060017543290114}
+  - component: {fileID: 4737743663688856080}
+  - component: {fileID: 3733651200097947349}
   m_Layer: 0
   m_Name: SM_Bld_Preset_Tower_01_Optimized_MeshPart0
   m_TagString: Untagged
@@ -86,6 +88,52 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &4737743663688856080
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1201407723912344}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3.1460662
+  m_Height: 20.825413
+  m_Direction: 1
+  m_Center: {x: 0.024931192, y: 6.6642017, z: -0.08834505}
+--- !u!136 &3733651200097947349
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1201407723912344}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.2412821
+  m_Height: 2.733703
+  m_Direction: 1
+  m_Center: {x: 0.025250435, y: -0.8419002, z: 3.313459}
 --- !u!1 &1539475987485874
 GameObject:
   m_ObjectHideFlags: 0
@@ -138,7 +186,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30

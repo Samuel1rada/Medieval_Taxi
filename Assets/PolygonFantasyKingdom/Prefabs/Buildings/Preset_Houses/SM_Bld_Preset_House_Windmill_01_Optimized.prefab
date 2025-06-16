@@ -189,6 +189,7 @@ GameObject:
   - component: {fileID: 515968134123137198}
   - component: {fileID: 229766556734649946}
   - component: {fileID: 4689267229654027028}
+  - component: {fileID: 4176285463259966726}
   m_Layer: 0
   m_Name: SM_Bld_Preset_House_Windmill_01_Optimized
   m_TagString: Untagged
@@ -394,6 +395,29 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5.6513577, y: 4.1551056, z: 9.03995}
   m_Center: {x: -1.1852016, y: 10.706648, z: -1.9172034}
+--- !u!136 &4176285463259966726
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706033077068076}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.1760304
+  m_Height: 4.8765574
+  m_Direction: 1
+  m_Center: {x: -1.2638118, y: -1.2391486, z: 0.45552945}
 --- !u!1 &1908442315000742
 GameObject:
   m_ObjectHideFlags: 0

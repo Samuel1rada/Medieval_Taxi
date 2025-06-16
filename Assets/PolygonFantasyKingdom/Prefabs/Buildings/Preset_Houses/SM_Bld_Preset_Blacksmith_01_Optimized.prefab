@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 586171353274057577}
   - component: {fileID: 3476661567886399689}
   - component: {fileID: 8584751331845996757}
-  - component: {fileID: 7729780215858139570}
+  - component: {fileID: 2068654094339181084}
   m_Layer: 0
   m_Name: SM_Bld_Preset_Blacksmith_01_Optimized
   m_TagString: Untagged
@@ -176,8 +176,8 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.6206923, y: 1.9160824, z: 3.1554165}
   m_Center: {x: 1.6729507, y: 4.2391243, z: -1.4134431}
---- !u!65 &7729780215858139570
-BoxCollider:
+--- !u!136 &2068654094339181084
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -194,6 +194,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.920979, y: 2.3822732, z: 2.4084544}
-  m_Center: {x: 5.027871, y: 0.015245676, z: 0.6537831}
+  serializedVersion: 2
+  m_Radius: 1.0283716
+  m_Height: 3.4109864
+  m_Direction: 1
+  m_Center: {x: 5.0027537, y: -0.5546353, z: 0.61306834}
