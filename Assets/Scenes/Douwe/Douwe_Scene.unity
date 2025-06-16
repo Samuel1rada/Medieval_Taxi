@@ -1592,7 +1592,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4424883678430596, guid: 84097ddad6d7241409e382738aae22bb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.845577
+      value: 14.69
       objectReference: {fileID: 0}
     - target: {fileID: 4424883678430596, guid: 84097ddad6d7241409e382738aae22bb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1846,7 +1846,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4699711432438094, guid: 06f1b1d319174e14e952d95159a15259, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.09558
+      value: 14.23
       objectReference: {fileID: 0}
     - target: {fileID: 4699711432438094, guid: 06f1b1d319174e14e952d95159a15259, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10925,7 +10925,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4503457832226144, guid: 044a867193d29504fa2a37be23d222de, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 13.096874
+      value: 14.11
       objectReference: {fileID: 0}
     - target: {fileID: 4503457832226144, guid: 044a867193d29504fa2a37be23d222de, type: 3}
       propertyPath: m_LocalPosition.z
@@ -11124,32 +11124,32 @@ MonoBehaviour:
   - pointName: Fountain
     pointTransform: {fileID: 0}
     pointSprite: {fileID: 21300000, guid: 1245485c0659fd74094b4caa7c8d7d7c, type: 3}
-    likesDriveBy: 1
-    likesDestruction: 1
+    driveByPreference: 0
+    destructionPreference: 0
     passengerAnimation: {fileID: 0}
   - pointName: Gate Entry
     pointTransform: {fileID: 0}
     pointSprite: {fileID: 21300000, guid: 987167fc0a78e8f47a3c553a98eed762, type: 3}
-    likesDriveBy: 0
-    likesDestruction: 0
+    driveByPreference: 0
+    destructionPreference: 0
     passengerAnimation: {fileID: 0}
   - pointName: Tavern
     pointTransform: {fileID: 0}
     pointSprite: {fileID: 21300000, guid: 2b2f40b31a6d4df4985d1af4dc3baa2e, type: 3}
-    likesDriveBy: 1
-    likesDestruction: 1
+    driveByPreference: 0
+    destructionPreference: 0
     passengerAnimation: {fileID: 0}
   - pointName: Witch Hut
     pointTransform: {fileID: 0}
     pointSprite: {fileID: 21300000, guid: 15126de69b8d4c240a633e2c04e01296, type: 3}
-    likesDriveBy: 0
-    likesDestruction: 1
+    driveByPreference: 0
+    destructionPreference: 0
     passengerAnimation: {fileID: 0}
   - pointName: Stable
     pointTransform: {fileID: 0}
     pointSprite: {fileID: 21300000, guid: 3263b09d53dfba6459fde0cd6bb50e45, type: 3}
-    likesDriveBy: 1
-    likesDestruction: 0
+    driveByPreference: 0
+    destructionPreference: 0
     passengerAnimation: {fileID: 0}
   Passenger: {fileID: 1552940864}
   baseFare: 100
@@ -11196,6 +11196,10 @@ MonoBehaviour:
   emojiAnimDuration: 0.7
   emojiPopupImage: {fileID: 0}
   emojiCooldown: 0.5
+  driveBySlider: {fileID: 0}
+  destructionSlider: {fileID: 0}
+  driveByBonusCooldown: 2
+  destructionBonusCooldown: 2
 --- !u!114 &1622435653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16374,7 +16378,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4873982673763222, guid: f3626ee6839141c4eb68cab2cd2fc161, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.845581
+      value: 14.97
       objectReference: {fileID: 0}
     - target: {fileID: 4873982673763222, guid: f3626ee6839141c4eb68cab2cd2fc161, type: 3}
       propertyPath: m_LocalPosition.z
@@ -17521,7 +17525,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8198491895963084940, guid: 793a881b4b891fb4db5afc245b09894a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.7620802
+      value: -0.85
       objectReference: {fileID: 0}
     - target: {fileID: 8198491895963084940, guid: 793a881b4b891fb4db5afc245b09894a, type: 3}
       propertyPath: m_LocalPosition.z

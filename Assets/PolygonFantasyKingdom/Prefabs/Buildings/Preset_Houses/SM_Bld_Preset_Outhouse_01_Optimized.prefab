@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33478782970038486}
   - component: {fileID: 23902744674345336}
   - component: {fileID: 64987973393462448}
+  - component: {fileID: 2680297989979336478}
   m_Layer: 0
   m_Name: SM_Bld_Preset_Outhouse_01_Optimized
   m_TagString: Untagged
@@ -104,8 +105,29 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 6f631a28f6695254ab7336e4f6e9d9d5, type: 3}
+--- !u!65 &2680297989979336478
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474906737303118}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.8482454, y: 4.084174, z: 2.8398414}
+  m_Center: {x: -1.2499999, y: 2.292087, z: -1.2619555}
