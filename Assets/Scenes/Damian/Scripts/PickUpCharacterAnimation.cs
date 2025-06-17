@@ -35,8 +35,15 @@ public class PickUpCharacterAnimation : MonoBehaviour
     [SerializeField] private CinemachineCamera mainCinemachineCamera;
     [SerializeField] private Transform characterLookTarget; // usually characterModel.transform
     [SerializeField] private float characterFOV = 40f;
+    [SerializeField] private float originalFOVValue = 60f; // <-- Add this line
     private Transform originalLookAtTarget;
     private float originalFOV;
+
+    [Header("Camera Return Target")]
+    [SerializeField] private Transform cameraReturnTarget; // <-- Add this line
+
+    // Add a coroutine reference for camera return
+    private Coroutine cameraReturnCoroutine;
 
     // Unity Update loop
     void Update()
@@ -67,7 +74,8 @@ public class PickUpCharacterAnimation : MonoBehaviour
         if (mainCinemachineCamera != null)
         {
             originalLookAtTarget = mainCinemachineCamera.LookAt;
-            originalFOV = mainCinemachineCamera.Lens.FieldOfView;
+            // Use the field value as fallback if not set
+            originalFOV = mainCinemachineCamera.Lens.FieldOfView != 0 ? mainCinemachineCamera.Lens.FieldOfView : originalFOVValue;
             mainCinemachineCamera.LookAt = characterLookTarget != null ? characterLookTarget : this.transform;
             mainCinemachineCamera.Lens.FieldOfView = characterFOV;
         }
@@ -167,56 +175,50 @@ public class PickUpCharacterAnimation : MonoBehaviour
         }
         isSpinning = false;
 
-        // Handle smoke and model switching
-        if (smokeEffect != null)
-        {
-            ParticleSystem smoke = Instantiate(smokeEffect, transform.position, Quaternion.identity);
-            smoke.Play();
-            Destroy(smoke.gameObject, smoke.main.duration + smoke.main.startLifetime.constantMax);
-            yield return new WaitForSeconds(smokeEffectDuration * 0.5f);
-
-            if (cartPassengerModel != null)
-            {
-                if (characterModel != null)
-                    characterModel.transform.localScale = Vector3.one * 0.001f;
-
-                // === CAMERA CHANGE & CART PASSENGER ACTIVATION HERE ===
-                if (mainCinemachineCamera != null)
-                {
-                    originalLookAtTarget = mainCinemachineCamera.LookAt;
-                    originalFOV = mainCinemachineCamera.Lens.FieldOfView;
-                    mainCinemachineCamera.LookAt = characterLookTarget != null ? characterLookTarget : this.transform;
-                    mainCinemachineCamera.Lens.FieldOfView = characterFOV;
-                }
-                cartPassengerModel.transform.localScale = Vector3.one;
-                cartPassengerModel.SetActive(true);
-
-                ParticleSystem cartSmoke = Instantiate(smokeEffect, cartPassengerModel.transform.position, Quaternion.identity);
-                cartSmoke.Play();
-                Destroy(cartSmoke.gameObject, cartSmoke.main.duration + cartSmoke.main.startLifetime.constantMax);
-
-                yield return new WaitForSeconds(smokeEffectDuration * 0.5f);
-                yield return new WaitForSeconds(2f);
-            }
-        }
-        else
+        // === Only after spin is finished, handle smoke, model switching, and camera ===
+        if (cartPassengerModel != null)
         {
             if (characterModel != null)
                 characterModel.transform.localScale = Vector3.one * 0.001f;
 
-            // === CAMERA CHANGE & CART PASSENGER ACTIVATION HERE ===
+            // Spawn smoke at NPC position
+            if (smokeEffect != null)
+            {
+                ParticleSystem smoke = Instantiate(smokeEffect, transform.position, Quaternion.identity);
+                smoke.Play();
+                Destroy(smoke.gameObject, smoke.main.duration + smoke.main.startLifetime.constantMax);
+                yield return new WaitForSeconds(smokeEffectDuration * 0.5f);
+            }
+
+            // Camera change to character (optional, can be removed if not needed)
             if (mainCinemachineCamera != null)
             {
                 originalLookAtTarget = mainCinemachineCamera.LookAt;
-                originalFOV = mainCinemachineCamera.Lens.FieldOfView;
+                originalFOV = mainCinemachineCamera.Lens.FieldOfView != 0 ? mainCinemachineCamera.Lens.FieldOfView : originalFOVValue;
                 mainCinemachineCamera.LookAt = characterLookTarget != null ? characterLookTarget : this.transform;
                 mainCinemachineCamera.Lens.FieldOfView = characterFOV;
             }
-            if (cartPassengerModel != null)
+
+            cartPassengerModel.transform.localScale = Vector3.one;
+            cartPassengerModel.SetActive(true);
+
+            // Immediately set camera to track cameraReturnTarget and FOV to originalFOV
+            if (mainCinemachineCamera != null && cameraReturnTarget != null)
             {
-                cartPassengerModel.transform.localScale = Vector3.one;
-                cartPassengerModel.SetActive(true);
+                mainCinemachineCamera.LookAt = cameraReturnTarget;
+                mainCinemachineCamera.Lens.FieldOfView = originalFOV;
             }
+
+            // Spawn smoke at cart passenger
+            if (smokeEffect != null)
+            {
+                ParticleSystem cartSmoke = Instantiate(smokeEffect, cartPassengerModel.transform.position, Quaternion.identity);
+                cartSmoke.Play();
+                Destroy(cartSmoke.gameObject, cartSmoke.main.duration + cartSmoke.main.startLifetime.constantMax);
+                yield return new WaitForSeconds(smokeEffectDuration * 0.5f);
+            }
+
+            yield return new WaitForSeconds(2f);
         }
 
         isAnimating = false;
@@ -227,26 +229,33 @@ public class PickUpCharacterAnimation : MonoBehaviour
         // Reset passenger after animation
         ResetPassenger();
 
-        // Restore camera's original LookAt and FOV (do NOT change Follow)
-        if (mainCinemachineCamera != null)
+        // Restore camera's LookAt and FOV smoothly to cameraReturnTarget (do NOT change Follow)
+        if (mainCinemachineCamera != null && cameraReturnTarget != null)
         {
-            mainCinemachineCamera.LookAt = originalLookAtTarget;
-            mainCinemachineCamera.Lens.FieldOfView = originalFOV;
+            if (cameraReturnCoroutine != null)
+                StopCoroutine(cameraReturnCoroutine);
+            cameraReturnCoroutine = StartCoroutine(SmoothReturnCamera(mainCinemachineCamera, cameraReturnTarget, originalFOV, 1f));
         }
+    }
 
-        // If using two Cinemachine cameras:
-        // if (npcCinemachineCamera != null && playerCinemachineCamera != null)
-        // {
-        //     npcCinemachineCamera.gameObject.SetActive(false);
-        //     playerCinemachineCamera.gameObject.SetActive(true);
-        //     // playerCinemachineCamera.FieldOfView = playerFOV;
-        // }
-        // If using only one virtual camera:
-        // if (mainVirtualCamera != null && cameraPlayerTarget != null)
-        // {
-        //     mainVirtualCamera.Follow = cameraPlayerTarget;
-        //     mainVirtualCamera.m_Lens.FieldOfView = playerFOV;
-        // }
+    // Smoothly return the camera to its original LookAt and FOV
+    private IEnumerator SmoothReturnCamera(CinemachineCamera cam, Transform target, float targetFOV, float duration)
+    {
+        if (cam == null) yield break;
+
+        Transform startLookAt = cam.LookAt;
+        float startFOV = cam.Lens.FieldOfView;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            // Only interpolate FOV, as LookAt is a Transform reference (snap at end)
+            cam.Lens.FieldOfView = Mathf.Lerp(startFOV, targetFOV, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        cam.Lens.FieldOfView = targetFOV;
+        cam.LookAt = target;
     }
 
     // Reset passenger to original state

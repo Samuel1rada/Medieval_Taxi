@@ -87709,6 +87709,7 @@ MonoBehaviour:
   popupRiseDistance: 100
   positiveColor: {r: 0, g: 1, b: 0, a: 1}
   negativeColor: {r: 1, g: 0, b: 0, a: 1}
+  _currentScore: 0
   testScoreAmount: 0
 --- !u!4 &745963006
 Transform:
@@ -202497,6 +202498,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: StableNPC
       objectReference: {fileID: 0}
+    - target: {fileID: 1145265774398612, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1287745031864272, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4147301092254476, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.9965206
@@ -202685,6 +202694,10 @@ PrefabInstance:
       propertyPath: arrivalThreshold
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: cameraReturnTarget
+      value: 
+      objectReference: {fileID: 1105511882}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: cartPassengerModel
       value: 
