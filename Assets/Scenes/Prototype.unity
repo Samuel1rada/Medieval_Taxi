@@ -7132,6 +7132,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6802312530146635822, guid: bfa0fe439f1d9e64b8be81bfe440bd35, type: 3}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: characterFOV
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: rootPosition
       value: 
       objectReference: {fileID: 1726140783}
@@ -7148,13 +7152,25 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: cameraReturnTarget
+      value: 
+      objectReference: {fileID: 1105511882}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: cartPassengerModel
       value: 
       objectReference: {fileID: 257096691}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: characterLookTarget
+      value: 
+      objectReference: {fileID: 63122073}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: smokeEffectDuration
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: mainCinemachineCamera
+      value: 
+      objectReference: {fileID: 1963063098}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -71348,12 +71364,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 46.15
+  m_fontSize: 43
+  m_fontSizeBase: 43
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
-  m_fontSizeMax: 50
+  m_fontSizeMax: 48.37
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -71364,7 +71380,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -71416,7 +71432,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 830.84973, y: 568.928}
+  m_AnchoredPosition: {x: 827.98, y: 643.8}
   m_SizeDelta: {x: 249.2766, y: 166.3948}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &659172305
@@ -107863,7 +107879,6 @@ RectTransform:
   - {fileID: 7836240603320985587}
   - {fileID: 740738301}
   - {fileID: 1366059623}
-  - {fileID: 2061031892}
   - {fileID: 861140423}
   - {fileID: 1996109937}
   - {fileID: 94332772}
@@ -140756,9 +140771,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6802312530146635822, guid: bfa0fe439f1d9e64b8be81bfe440bd35, type: 3}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: characterFOV
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: rootPosition
       value: 
       objectReference: {fileID: 1323843207}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: idleStateName
+      value: Waving
+      objectReference: {fileID: 0}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: characterModel
       value: 
@@ -140772,13 +140795,25 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: cameraReturnTarget
+      value: 
+      objectReference: {fileID: 1105511882}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: cartPassengerModel
       value: 
       objectReference: {fileID: 257096691}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: characterLookTarget
+      value: 
+      objectReference: {fileID: 1396213874}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: smokeEffectDuration
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: mainCinemachineCamera
+      value: 
+      objectReference: {fileID: 1963063098}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -150095,9 +150130,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6802312530146635822, guid: bfa0fe439f1d9e64b8be81bfe440bd35, type: 3}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: characterFOV
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: rootPosition
       value: 
       objectReference: {fileID: 1112251676}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: idleStateName
+      value: Waving
+      objectReference: {fileID: 0}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: characterModel
       value: 
@@ -150111,13 +150154,25 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: cameraReturnTarget
+      value: 
+      objectReference: {fileID: 1105511882}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: cartPassengerModel
       value: 
       objectReference: {fileID: 257096691}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: characterLookTarget
+      value: 
+      objectReference: {fileID: 1196880134}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: smokeEffectDuration
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: mainCinemachineCamera
+      value: 
+      objectReference: {fileID: 1963063098}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -162789,9 +162844,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6802312530146635822, guid: bfa0fe439f1d9e64b8be81bfe440bd35, type: 3}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: characterFOV
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: rootPosition
       value: 
       objectReference: {fileID: 838935178}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: idleStateName
+      value: Waving
+      objectReference: {fileID: 0}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: characterModel
       value: 
@@ -162805,13 +162868,25 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: cameraReturnTarget
+      value: 
+      objectReference: {fileID: 1105511882}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: cartPassengerModel
       value: 
       objectReference: {fileID: 257096691}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: characterLookTarget
+      value: 
+      objectReference: {fileID: 1329415421}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: smokeEffectDuration
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: mainCinemachineCamera
+      value: 
+      objectReference: {fileID: 1963063098}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -168905,9 +168980,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6802312530146635822, guid: bfa0fe439f1d9e64b8be81bfe440bd35, type: 3}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: characterFOV
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: rootPosition
       value: 
       objectReference: {fileID: 486903986}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: idleStateName
+      value: Waving
+      objectReference: {fileID: 0}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: characterModel
       value: 
@@ -168921,13 +169004,25 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: cameraReturnTarget
+      value: 
+      objectReference: {fileID: 1105511882}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: cartPassengerModel
       value: 
       objectReference: {fileID: 257096691}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: characterLookTarget
+      value: 
+      objectReference: {fileID: 740101958}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: smokeEffectDuration
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: mainCinemachineCamera
+      value: 
+      objectReference: {fileID: 1963063098}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -208878,6 +208973,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6802312530146635822, guid: bfa0fe439f1d9e64b8be81bfe440bd35, type: 3}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: characterFOV
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: rootPosition
       value: 
       objectReference: {fileID: 235509680}
@@ -208894,13 +208993,25 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: cameraReturnTarget
+      value: 
+      objectReference: {fileID: 1105511882}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: cartPassengerModel
       value: 
       objectReference: {fileID: 257096691}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: characterLookTarget
+      value: 
+      objectReference: {fileID: 2075503455}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: smokeEffectDuration
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: mainCinemachineCamera
+      value: 
+      objectReference: {fileID: 1963063098}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -211888,9 +211999,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6802312530146635822, guid: bfa0fe439f1d9e64b8be81bfe440bd35, type: 3}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: characterFOV
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: rootPosition
       value: 
       objectReference: {fileID: 1317606359}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: idleStateName
+      value: Waving
+      objectReference: {fileID: 0}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: characterModel
       value: 
@@ -211904,13 +212023,25 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: cameraReturnTarget
+      value: 
+      objectReference: {fileID: 1105511882}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: cartPassengerModel
       value: 
       objectReference: {fileID: 257096691}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: characterLookTarget
+      value: 
+      objectReference: {fileID: 1379888331}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: smokeEffectDuration
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: mainCinemachineCamera
+      value: 
+      objectReference: {fileID: 1963063098}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -256711,9 +256842,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6802312530146635822, guid: bfa0fe439f1d9e64b8be81bfe440bd35, type: 3}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: characterFOV
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: rootPosition
       value: 
       objectReference: {fileID: 1948370062}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: idleStateName
+      value: Waving
+      objectReference: {fileID: 0}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: characterModel
       value: 
@@ -256727,13 +256866,25 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: cameraReturnTarget
+      value: 
+      objectReference: {fileID: 1105511882}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: cartPassengerModel
       value: 
       objectReference: {fileID: 257096691}
     - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: characterLookTarget
+      value: 
+      objectReference: {fileID: 1976283296}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
       propertyPath: smokeEffectDuration
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2870759582354079728, guid: b3a21033f5e25ef47a403070d1d96983, type: 3}
+      propertyPath: mainCinemachineCamera
+      value: 
+      objectReference: {fileID: 1963063098}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -258491,6 +258642,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2061031892}
   - {fileID: 658645589}
   m_Father: {fileID: 905581653}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -265789,17 +265941,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2061031891}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3351993, y: 0.3351993, z: 0.3351993}
+  m_LocalScale: {x: 0.3351993, y: 0.2, z: 0.3351993}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 905581653}
+  m_Father: {fileID: 1996109937}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 641, y: 359.7}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 836, y: 634.50745}
+  m_SizeDelta: {x: 1920, y: 1107.1852}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2061031893
 MonoBehaviour:

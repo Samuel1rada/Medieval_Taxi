@@ -387,7 +387,8 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         if (pickupPoints[currentPointIndex].passengerAnimation != null)
         {
             pickupPoints[currentPointIndex].passengerAnimation.ResetPassenger();
-            pickupPoints[currentPointIndex].passengerAnimation.SetCartPassengerInactive(); // <-- Add this line
+            pickupPoints[currentPointIndex].passengerAnimation.SetCartPassengerInactive();
+            pickupPoints[currentPointIndex].passengerAnimation.SpawnSmokeAtCartPassenger(); // <-- Add this line
         }
 
         // Passenger.SetActive(false); // <-- Remove or comment out this line to keep the passenger active

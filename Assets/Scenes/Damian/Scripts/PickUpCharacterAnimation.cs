@@ -330,4 +330,15 @@ public class PickUpCharacterAnimation : MonoBehaviour
         if (cartPassengerModel != null)
             cartPassengerModel.SetActive(false);
     }
+
+    // Add this method at the end of the class
+    public void SpawnSmokeAtCartPassenger()
+    {
+        if (smokeEffect != null && cartPassengerModel != null)
+        {
+            ParticleSystem smoke = Instantiate(smokeEffect, cartPassengerModel.transform.position, Quaternion.identity);
+            smoke.Play();
+            Destroy(smoke.gameObject, smoke.main.duration + smoke.main.startLifetime.constantMax);
+        }
+    }
 }
