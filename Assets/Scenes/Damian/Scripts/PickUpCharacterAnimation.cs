@@ -200,7 +200,7 @@ public class PickUpCharacterAnimation : MonoBehaviour
             }
 
             cartPassengerModel.transform.localScale = Vector3.one;
-            cartPassengerModel.SetActive(true);
+            cartPassengerModel.SetActive(true); // <-- Move this line down
 
             // Immediately set camera to track cameraReturnTarget and FOV to originalFOV
             if (mainCinemachineCamera != null && cameraReturnTarget != null)
@@ -217,6 +217,9 @@ public class PickUpCharacterAnimation : MonoBehaviour
                 Destroy(cartSmoke.gameObject, cartSmoke.main.duration + cartSmoke.main.startLifetime.constantMax);
                 yield return new WaitForSeconds(smokeEffectDuration * 0.5f);
             }
+
+            // Now activate the cart passenger model after all effects and transitions
+            cartPassengerModel.SetActive(true);
 
             yield return new WaitForSeconds(2f);
         }
@@ -294,7 +297,7 @@ public class PickUpCharacterAnimation : MonoBehaviour
                 StopCoroutine(resetScaleCoroutine);
             resetScaleCoroutine = StartCoroutine(ScaleBackAfterCooldown());
         }
-        if (cartPassengerModel != null) cartPassengerModel.SetActive(false);
+        // if (cartPassengerModel != null) cartPassengerModel.SetActive(false); // <-- Remove or comment out this line
 
         isAnimating = false;
         if (animator != null)
@@ -319,5 +322,12 @@ public class PickUpCharacterAnimation : MonoBehaviour
     private bool AnimatorHasState(Animator anim, int layer, string stateName)
     {
         return anim.HasState(layer, Animator.StringToHash(stateName));
+    }
+
+    // Add this method at the end of the class
+    public void SetCartPassengerInactive()
+    {
+        if (cartPassengerModel != null)
+            cartPassengerModel.SetActive(false);
     }
 }

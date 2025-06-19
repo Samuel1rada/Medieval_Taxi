@@ -147,7 +147,6 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         // Trip logic
         if (isOnTrip)
         {
-            Passenger.SetActive(true);
 
             // Only update timer if player input is enabled (MInput.enabled)
             if (MInput != null && MInput.enabled)
@@ -354,7 +353,6 @@ public class SimplifiedPickUpSystem : MonoBehaviour
             pickupPoint.passengerAnimation.StartPickupAnimation(transform);
         }
 
-        Passenger.SetActive(true);
         Invoke("OnPassengerAnimationComplete", 6f);
 
     }
@@ -389,9 +387,10 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         if (pickupPoints[currentPointIndex].passengerAnimation != null)
         {
             pickupPoints[currentPointIndex].passengerAnimation.ResetPassenger();
+            pickupPoints[currentPointIndex].passengerAnimation.SetCartPassengerInactive(); // <-- Add this line
         }
 
-        Passenger.SetActive(false);
+        // Passenger.SetActive(false); // <-- Remove or comment out this line to keep the passenger active
 
         // Move to the next pickup point in sequence (wrap around)
         currentPointIndex = (currentPointIndex + 1) % pickupPoints.Count;
