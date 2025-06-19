@@ -2,6 +2,8 @@ using MalbersAnimations.Controller;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.Events;
 
 public class MAnimalEventHelper : MonoBehaviour
 {
@@ -10,11 +12,22 @@ public class MAnimalEventHelper : MonoBehaviour
     [SerializeField] private float delay = 1f;
     [SerializeField] private int minSpeedIndex = 2;
 
+
     private bool isSprinting = false;
     private bool isSlowingDown = false;
     private float timer = 0f;
 
+    void Awake()
+    {
+        
+    }
     private void Update()
+    {
+        HorseSpinting();    
+    }
+
+    #region Player/Horese sprint logic
+    private void HorseSpinting()
     {
         if (isSprinting)
         {
@@ -61,7 +74,6 @@ public class MAnimalEventHelper : MonoBehaviour
             }
         }
     }
-
     public void OnSprintpressed()
     {
         isSprinting = true;
@@ -69,7 +81,6 @@ public class MAnimalEventHelper : MonoBehaviour
         timer = 0f;
         Debug.Log("Sprint started.");
     }
-
     public void OnIsSprintReleased()
     {
         isSprinting = false;
@@ -77,6 +88,7 @@ public class MAnimalEventHelper : MonoBehaviour
         timer = 0f;
         Debug.Log("Sprint released — slowing down initiated.");
     }
+    #endregion
 }
 
 

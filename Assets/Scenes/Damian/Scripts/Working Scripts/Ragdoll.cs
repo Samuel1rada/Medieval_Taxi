@@ -1,13 +1,16 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Ragdoll : MonoBehaviour
 {
     private Rigidbody[] rigidbodies;
     private Animator animator;
+    private NavMeshAgent navMeshAgent;
+    private WaypintNavigator waypoint;
     public Collider specificTrigger;
     public string targetTag = "Player";
     public bool DebugRagdoll = false; 
-    public float DestroyAfter = 10f;
+    public float DestroyAfter = 100f;
     [Tooltip("Randomized between min/max values")] 
     public float minImpactForce = 20f;
     public float maxImpactForce = 100f;
@@ -42,7 +45,9 @@ public class Ragdoll : MonoBehaviour
     {
         rigidbodies = GetComponentsInChildren<Rigidbody>();
         animator = GetComponent<Animator>();
-        
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        waypoint = GetComponent<WaypintNavigator>();
+
         // Audio source setup
         if (audioSource == null)
         {
@@ -107,11 +112,19 @@ public class Ragdoll : MonoBehaviour
         }
     }
 
-    private void EnableRagdoll(Vector3 impactPoint, Vector3 direction, float force)
+    public void EnableRagdoll(Vector3 impactPoint, Vector3 direction, float force)
     {
         if (animator != null)
         {
             animator.enabled = false; 
+        }
+        if (navMeshAgent != null)
+        {
+            navMeshAgent.enabled = false;
+        }
+        if (waypoint != null)
+        {
+            waypoint.enabled = false;
         }
 
         foreach (Rigidbody rigidbody in rigidbodies)
@@ -129,6 +142,7 @@ public class Ragdoll : MonoBehaviour
             }
         }
 
+        Debug.Log("RandollEnabeld");
         PlayGenderBasedSound();
         Destroy(gameObject, DestroyAfter);
     }
