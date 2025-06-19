@@ -7574,7 +7574,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1610060510}
-  - component: {fileID: 1610060509}
+  - component: {fileID: 1610060511}
   m_Layer: 0
   m_Name: score
   m_TagString: Untagged
@@ -7582,29 +7582,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1610060509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1610060508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91ccae678183a4447aee3539068b8949, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseScore: 50
-  scoreCountDuration: 1.5
-  totalScoreText: {fileID: 974335607}
-  scorePopupPrefab: {fileID: 0}
-  popupParent: {fileID: 0}
-  popupStartPosition: {x: 0, y: -100}
-  popupLifetime: 1.5
-  popupRiseDistance: 100
-  positiveColor: {r: 0, g: 1, b: 0, a: 1}
-  negativeColor: {r: 1, g: 0, b: 0, a: 1}
-  testScoreAmount: 100
 --- !u!4 &1610060510
 Transform:
   m_ObjectHideFlags: 0
@@ -7620,6 +7597,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1610060511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610060508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 170e575d4afac204d911307a8434434a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseScore: 50
+  scoreCountDuration: 1.5
+  totalScoreText: {fileID: 974335607}
+  scorePopupPrefab: {fileID: 0}
+  popupParent: {fileID: 0}
+  popupStartPosition: {x: 0, y: -100}
+  popupLifetime: 1.5
+  popupRiseDistance: 100
+  positiveColor: {r: 0, g: 1, b: 0, a: 1}
+  negativeColor: {r: 1, g: 0, b: 0, a: 1}
+  _currentScore: 500
+  testScoreAmount: 100
 --- !u!1 &1616012018
 GameObject:
   m_ObjectHideFlags: 0
