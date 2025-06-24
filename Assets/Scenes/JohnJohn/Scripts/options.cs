@@ -107,6 +107,12 @@ public class Options : MonoBehaviour
         
     }
 
+    public void Setfullscreen(bool isFullscreen)
+    {
+        Screen.fullScreen = isFullscreen;
+        Debug.Log("Fullscreen!");
+    }
+
     public void Back()
     {
         options_ui.gameObject.SetActive(false);
