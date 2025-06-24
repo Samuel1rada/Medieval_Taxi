@@ -4,114 +4,120 @@ using TMPro;
 using System.Collections.Generic;
 using MalbersAnimations.Controller;
 
+/// <summary>
+/// Handles the pickup and dropoff system for passengers, including trip logic, scoring, UI, and event feedback.
+/// This script is the "brain" of the medieval taxi game. If you break it, the peasants will riot.
+/// </summary>
 public class SimplifiedPickUpSystem : MonoBehaviour
 {
+    // === Inspector Fields ===
+
     [Header("Pickup Settings")]
-    public List<PickupDropoffPoint> pickupPoints;
-    private int currentPointIndex = 0;
-    private PickupDropoffPoint activePoint;
-    private bool isInPickupZone = false;
-    public GameObject Passenger;
+    public List<PickupDropoffPoint> pickupPoints; // All the places your medieval Uber can go!
+    private int currentPointIndex = 0;            // Where are we picking up from?
+    private PickupDropoffPoint activePoint;       // Where are we dropping off?
+    private bool isInPickupZone = false;          // Are we ready to pick up a passenger?
+    public GameObject Passenger;                  // The actual passenger object (don't lose them!)
 
     [Header("Scoring")]
-    public float baseFare = 100f;
-    public float fastMultiplier = 1.5f;
-    public float normalMultiplier = 1.0f;
-    public float slowMultiplier = 0.5f;
+    public float baseFare = 100f;                 // How much a trip is worth (before tips)
+    public float fastMultiplier = 1.5f;           // Speed demon bonus
+    public float normalMultiplier = 1.0f;         // Average Joe
+    public float slowMultiplier = 0.5f;           // Grandma pace
 
     [Header("Global Event Bonuses & Penalties")]
-    public float globalDriveByBonus = 20f;
-    public float globalDriveByPenalty = 15f;
-    public float globalDestructionBonus = 25f;
-    public float globalDestructionPenalty = 20f;
+    public float globalDriveByBonus = 20f;        // For those sweet drive-bys
+    public float globalDriveByPenalty = 15f;      // For drive-bys gone wrong
+    public float globalDestructionBonus = 25f;    // Smashy smashy bonus
+    public float globalDestructionPenalty = 20f;  // Oops, too much smashy
 
-    public string driveByTag = "DriveByPoint";
-    public string destructionTag = "Destructible";
+    public string driveByTag = "DriveByPoint";    // Tag for drive-by triggers (like a medieval checkpoint)
+    public string destructionTag = "Destructible";// Tag for destructible objects (barrels, crates, dreams)
 
     [Header("Cooldowns & Thresholds")]
-    public float jobCooldown = 5f;
-    public float dropoffSpeedThreshold = 0.2f;
-    public float driveByCooldown = 0.5f;
-    public float destructionCooldown = 0.5f;
+    public float jobCooldown = 5f;                // Time before you can get another job (unused, but feels official)
+    public float dropoffSpeedThreshold = 0.2f;    // How slow you must go to drop off (no drifting into dropoffs!)
+    public float driveByCooldown = 0.5f;          // Can't spam drive-bys
+    public float destructionCooldown = 0.5f;      // Can't spam destruction either
 
     [Header("UI Elements")]
-    public GameObject jobPanel;
-    public TextMeshProUGUI destinationText;
-    public TextMeshProUGUI timerText;
-    public TextMeshProUGUI dropOffHint;
-    public GameObject pickupIndicator;
-    public Image destinationImage; // Assign in inspector
-    public Image driveByPreferenceImage;      // Assign in inspector
-    public Image destructionPreferenceImage;  // Assign in inspector
+    public GameObject jobPanel;                   // The big UI panel that tells you what to do
+    public TextMeshProUGUI destinationText;       // Where are we going?
+    public TextMeshProUGUI timerText;             // How long have we been driving?
+    public TextMeshProUGUI dropOffHint;           // Helpful hints for the player
+    public GameObject pickupIndicator;            // The magical arrow that points the way
+    public Image destinationImage;                // A picture is worth a thousand words
+    public Image driveByPreferenceImage;          // Shows if the passenger likes drive-bys
+    public Image destructionPreferenceImage;      // Shows if the passenger likes chaos
 
     [Header("Preference Sprites")]
-    public Sprite driveByLikedSprite;
-    public Sprite driveByDislikedSprite;
-    public Sprite driveByNeutralSprite;
-    public Sprite destructionLikedSprite;
-    public Sprite destructionDislikedSprite;
-    public Sprite destructionNeutralSprite;
+    public Sprite driveByLikedSprite;             // "Yay, drive-bys!"
+    public Sprite driveByDislikedSprite;          // "Boo, drive-bys!"
+    public Sprite driveByNeutralSprite;           // "Meh, drive-bys."
+    public Sprite destructionLikedSprite;         // "Yay, destruction!"
+    public Sprite destructionDislikedSprite;      // "Boo, destruction!"
+    public Sprite destructionNeutralSprite;       // "Meh, destruction."
 
     [Header("Score Manager")]
-    public ScoreManager scoreManager;
+    public ScoreManager scoreManager;             // The keeper of all points
 
     [Header("Timer Thresholds (multipliers)")]
-    public float goldMultiplier = 1.3f;    // Gold: baseTime * goldMultiplier
-    public float silverMultiplier = 2f;  // Silver: baseTime * silverMultiplier
-    public float bronzeMultiplier = 2.7f;  // Bronze: baseTime * bronzeMultiplier
+    public float goldMultiplier = 1.3f;           // Be fast for gold!
+    public float silverMultiplier = 2f;           // Silver is still shiny
+    public float bronzeMultiplier = 2.7f;         // Bronze is for finishers
 
-    public float baseTime = 10f; // Base time in seconds for gold (edit in inspector)
-    public float averageSpeed = 10f; // Units per second, edit in inspector
+    public float baseTime = 10f;                  // The "par" time for a trip
+    public float averageSpeed = 10f;              // How fast we expect you to go
 
-    private bool isOnTrip = false;
-    private bool isInDropoffZone = false;
-    private float tripStartTime;
-    private float estimatedTime = 10f; // Calculated per trip
-    private float cooldownEndTime = 0f;
-    private float lastDriveByTime = -1f;
-    private float lastDestructionTime = -1f;
-    private Rigidbody rb;
+    // === State Variables ===
 
+    private bool isOnTrip = false;                // Are we currently on a trip?
+    private bool isInDropoffZone = false;         // Are we ready to drop off?
+    private float tripStartTime;                  // When did this trip start?
+    private float estimatedTime = 10f;            // How long should this trip take?
+    private float cooldownEndTime = 0f;           // (Unused) When can we take another job?
+    private float lastDriveByTime = -1f;          // When was the last drive-by?
+    private float lastDestructionTime = -1f;      // When was the last destruction?
+    private Rigidbody rb;                         // For checking our speed (no cheating!)
 
-    public PickUpCharacterAnimation passengerAnimationController;
+    public PickUpCharacterAnimation passengerAnimationController; // The animation overlord
 
-    // Reference to Malbers Input component (assign in inspector or auto-find)
-    public MAnimal MInput; // Reference to Malbers Input component
+    public MAnimal MInput;                        // Controls for the medieval taxi (horse, cart, etc.)
 
     [Header("Emoji & Audio")]
-    public Sprite likeEmojiSprite;          // Assign in inspector (sprite)
-    public Sprite dislikeEmojiSprite;       // Assign in inspector (sprite)
-    public AudioClip likeAudioClip;         // Assign in inspector
-    public AudioClip dislikeAudioClip;      // Assign in inspector
-    public Canvas uiCanvas;                 // Assign your main UI canvas here
-    public float emojiAnimDuration = 0.7f;
-    public Image emojiPopupImage;           // Assign in inspector: UI Image for emoji popup
+    public Sprite likeEmojiSprite;                // "Nice job!" emoji
+    public Sprite dislikeEmojiSprite;             // "Boo!" emoji
+    public AudioClip likeAudioClip;               // Happy sound
+    public AudioClip dislikeAudioClip;            // Sad sound
+    public Canvas uiCanvas;                       // The canvas of destiny
+    public float emojiAnimDuration = 0.7f;        // How long the emoji dances
+    public Image emojiPopupImage;                 // Where the emoji appears
 
-    private AudioSource audioSource;
+    private AudioSource audioSource;              // For making noise
 
-    // Emoji cooldown
-    private float lastEmojiTime = -1f;
-    public float emojiCooldown = 0.5f; // seconds
+    private float lastEmojiTime = -1f;            // When did we last show an emoji?
+    public float emojiCooldown = 0.5f;            // Don't spam emojis
 
     [Header("Preference Sliders")]
-    public Slider driveBySlider;        // Assign in inspector
-    public Slider destructionSlider;    // Assign in inspector
+    public Slider driveBySlider;                  // Shows drive-by preference numerically
+    public Slider destructionSlider;              // Shows destruction preference numerically
 
-    // Add separate cooldown trackers for bonuses
-    private float lastDriveByBonusTime = -1f;
-    private float lastDestructionBonusTime = -1f;
-    public float driveByBonusCooldown = 2f;      // seconds, set in inspector
-    public float destructionBonusCooldown = 2f;  // seconds, set in inspector
+    private float lastDriveByBonusTime = -1f;     // When did we last give a drive-by bonus?
+    private float lastDestructionBonusTime = -1f; // When did we last give a destruction bonus?
+    public float driveByBonusCooldown = 2f;       // Can't spam drive-by bonuses
+    public float destructionBonusCooldown = 2f;   // Can't spam destruction bonuses
+
+    // === Unity Methods ===
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        if (jobPanel != null) jobPanel.SetActive(false);
-        if (dropOffHint != null) dropOffHint.text = "";
-        if (pickupIndicator != null) pickupIndicator.SetActive(false);
-        Passenger.SetActive(false);
+        if (jobPanel != null) jobPanel.SetActive(false); // Hide job panel at start
+        if (dropOffHint != null) dropOffHint.text = "";  // Clear dropoff hint
+        if (pickupIndicator != null) pickupIndicator.SetActive(false); // Hide pickup indicator
+        Passenger.SetActive(false); // Hide passenger at start
 
-        // Auto-assign MInput if not set
+        // If you forgot to assign MInput, we'll try to find it for you!
         if (MInput == null)
         {
             MInput = GetComponent<MAnimal>();
@@ -121,11 +127,13 @@ public class SimplifiedPickUpSystem : MonoBehaviour
             }
         }
 
+        // Listen for when the animation is done so we can give control back to the player
         if (passengerAnimationController != null)
         {
             passengerAnimationController.OnPickupAnimationComplete += OnPassengerAnimationComplete;
         }
 
+        // Make sure we can play sounds
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
             audioSource = gameObject.AddComponent<AudioSource>();
@@ -133,7 +141,7 @@ public class SimplifiedPickUpSystem : MonoBehaviour
 
     void Update()
     {
-        // Trip initiation
+        // Waiting for the player to start a trip? Listen for E!
         if (!isOnTrip && isInPickupZone)
         {
             if (Input.GetKeyDown(KeyCode.E))
@@ -144,11 +152,10 @@ public class SimplifiedPickUpSystem : MonoBehaviour
             }
         }
 
-        // Trip logic
+        // If we're on a trip, update everything!
         if (isOnTrip)
         {
-
-            // Only update timer if player input is enabled (MInput.enabled)
+            // Update the timer and make it shiny if you're fast!
             if (MInput != null && MInput.enabled)
             {
                 float elapsedTime = Time.time - tripStartTime;
@@ -157,7 +164,6 @@ public class SimplifiedPickUpSystem : MonoBehaviour
                 {
                     timerText.text = FormatTime(elapsedTime);
 
-                    // Use estimatedTime for thresholds
                     float goldTime = estimatedTime * goldMultiplier;
                     float silverTime = estimatedTime * silverMultiplier;
                     float bronzeTime = estimatedTime * bronzeMultiplier;
@@ -173,22 +179,21 @@ public class SimplifiedPickUpSystem : MonoBehaviour
                 }
             }
 
-            // Pickup indicator image logic (support UI Image and SpriteRenderer)
+            // Spin the magical pickup indicator to point the way!
             if (pickupIndicator != null && activePoint != null)
             {
                 Vector3 direction = (activePoint.pointTransform.position - transform.position).normalized;
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
                 pickupIndicator.transform.rotation = Quaternion.Euler(90f, targetRotation.eulerAngles.y, 0f);
 
-                // Enable UI Image if present
                 var img = pickupIndicator.GetComponent<UnityEngine.UI.Image>();
                 if (img != null) img.enabled = true;
 
-                // Enable SpriteRenderer if present (for worldspace indicators)
                 var sprite = pickupIndicator.GetComponent<SpriteRenderer>();
                 if (sprite != null) sprite.enabled = true;
             }
 
+            // Only allow dropoff if you're basically stopped (no drive-thru dropoffs!)
             if (isInDropoffZone && rb.linearVelocity.magnitude < dropoffSpeedThreshold)
             {
                 dropOffHint.text = "Press E to Drop Off";
@@ -204,13 +209,17 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         }
     }
 
+    // === Emoji Feedback ===
+
+    /// <summary>
+    /// Shows an emoji popup and plays audio feedback for like/dislike events.
+    /// If you make the passenger happy or mad, let them show it!
+    /// </summary>
     void ShowEmoji(bool isLike)
     {
-        // Emoji cooldown logic
         if (Time.time - lastEmojiTime < emojiCooldown) return;
         lastEmojiTime = Time.time;
 
-        // Use assigned Image component for popup
         if (emojiPopupImage == null) return;
         Sprite sprite = isLike ? likeEmojiSprite : dislikeEmojiSprite;
         AudioClip clip = isLike ? likeAudioClip : dislikeAudioClip;
@@ -222,16 +231,18 @@ public class SimplifiedPickUpSystem : MonoBehaviour
 
         StartCoroutine(AnimateEmojiImage(emojiPopupImage, emojiAnimDuration));
 
-        // Play audio
         if (clip != null && audioSource != null)
             audioSource.PlayOneShot(clip);
     }
 
+    /// <summary>
+    /// Coroutine to animate the emoji popup image.
+    /// The emoji grows, then shrinks, like your ego after a code review.
+    /// </summary>
     private System.Collections.IEnumerator AnimateEmojiImage(Image img, float duration)
     {
         float half = duration * 0.5f;
         float timer = 0f;
-        // Grow
         while (timer < half)
         {
             float t = timer / half;
@@ -240,7 +251,6 @@ public class SimplifiedPickUpSystem : MonoBehaviour
             yield return null;
         }
         img.transform.localScale = Vector3.one;
-        // Shrink
         timer = 0f;
         while (timer < half)
         {
@@ -253,6 +263,13 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         img.enabled = false;
     }
 
+    // === Animation Event Callback ===
+
+    /// <summary>
+    /// Called when the passenger pickup animation is complete.
+    /// Re-enables controls and resets timer.
+    /// This is where the magic happens after the cutscene!
+    /// </summary>
     void OnPassengerAnimationComplete()
     {
         Debug.Log("Passenger animation complete - attempting to re-enable controls");
@@ -265,7 +282,6 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         if (MInput != null)
         {
             MInput.enabled = true;
-            // Reset and start timer when input is re-enabled
             tripStartTime = Time.time;
             if (timerText != null)
                 timerText.text = "0:00:000";
@@ -279,25 +295,30 @@ public class SimplifiedPickUpSystem : MonoBehaviour
 
     void OnDestroy()
     {
+        // Unsubscribe from animation event to avoid memory leaks
         if (passengerAnimationController != null)
         {
             passengerAnimationController.OnPickupAnimationComplete -= OnPassengerAnimationComplete;
         }
     }
 
+    // === Trip Logic ===
+
+    /// <summary>
+    /// Starts a new trip from the given pickup point.
+    /// Sets up UI, destination, and triggers the pickup animation.
+    /// This is the start of every adventure!
+    /// </summary>
     void StartTrip(PickupDropoffPoint pickupPoint)
     {
         MInput.enabled = false;
-        // Sequentially select the next dropoff point in the list (wrap around)
         int nextIndex = (currentPointIndex + 1) % pickupPoints.Count;
         activePoint = pickupPoints[nextIndex];
 
-        // Calculate estimated time based on distance and averageSpeed
         float distance = Vector3.Distance(pickupPoint.pointTransform.position, activePoint.pointTransform.position);
         estimatedTime = (averageSpeed > 0f) ? distance / averageSpeed : baseTime;
 
         isOnTrip = true;
-        // tripStartTime = Time.time; // <-- REMOVE this line, timer will start after animation
 
         if (jobPanel != null)
             jobPanel.SetActive(true);
@@ -314,11 +335,10 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         if (destinationText != null)
             destinationText.text = $"Next Stop: {activePoint.pointName}";
 
-        // Set the destination image sprite from the next dropoff point
         if (destinationImage != null && activePoint.pointSprite != null)
             destinationImage.sprite = activePoint.pointSprite;
 
-        // Set the drive-by preference image and slider
+        // Set drive-by preference UI
         if (driveByPreferenceImage != null)
         {
             if (activePoint.driveByPreference == PreferenceLevel.Like)
@@ -331,7 +351,7 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         if (driveBySlider != null)
             driveBySlider.value = (int)activePoint.driveByPreference;
 
-        // Set the destruction preference image and slider
+        // Set destruction preference UI
         if (destructionPreferenceImage != null)
         {
             if (activePoint.destructionPreference == PreferenceLevel.Like)
@@ -344,19 +364,49 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         if (destructionSlider != null)
             destructionSlider.value = (int)activePoint.destructionPreference;
 
-        // Reset timer display to zero at job start
         if (timerText != null)
             timerText.text = "0:00:000";
 
+        // Start the pickup animation for the passenger
         if (pickupPoint.passengerAnimation != null)
         {
             pickupPoint.passengerAnimation.StartPickupAnimation(transform);
         }
 
+        // Fallback: ensure controls are re-enabled if animation event fails
         Invoke("OnPassengerAnimationComplete", 6f);
-
     }
 
+
+    // ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⠴⠶⠖⠒⠒⠒⠶⠤⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+    // ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡞⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠓⠶⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+    // ⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠏⠀⠀⠀⠀⠀⠀⠀⠰⡆⠀⠀⠀⠀⣠⣀⣀⠀⠀⠀⠙⠳⣤⠀⠀⠀⠀⠀⠀⠀
+    // ⠀⠀⠀⠀⠀⠀⠀⠀⣰⠋⠀⠀⠀⠀⠀⠀⠰⠂⠀⠰⢤⡙⢆⠀⠈⠿⠋⠀⠀⠀⠀⠀⠈⢳⡀⠀⠀⠀⠀⠀
+    // ⠀⠀⠀⠀⠀⠀⠀⢰⠏⠀⠀⠀⠀⠀⠀⢀⣠⣤⣶⣶⡠⡝⢎⣧⠀⠀⣀⠤⠔⠀⠠⠀⠀⠀⢻⡄⠀⠀⠀⠀
+    // ⠀⠀⠀⠀⠀⠀⢠⡟⠀⠀⠀⠀⠀⠀⠀⢻⡟⠁⢀⣨⣽⣿⣦⠹⣤⠊⠀⢀⠀⠀⠀⠀⠐⠂⠀⢻⡄⠀⠀⠀
+    // ⠀⠀⠀⠀⠀⠀⡾⠀⠀⠀⠀⠀⣀⠀⠀⠸⡇⠀⡿⢿⡿⡟⣿⣿⠻⢤⣶⣿⡦⣶⣤⡀⠀⠣⠀⠈⣷⠀⠀⠀
+    // ⠀⠀⠀⠀⠀⢸⠇⠀⠀⠀⠀⠈⠉⠀⠀⠀⠙⣄⣈⢛⣚⣅⠉⡉⠀⠰⣏⠛⠓⠛⠻⠇⠀⠀⠀⠀⢻⠀⠀⠀
+    // ⢠⣴⢿⡉⠓⣾⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠿⠛⢡⣴⣇⣀⠀⠈⣹⣆⠀⠀⠀⠈⠃⠀⠀⢸⠀⠀⠀
+    // ⣿⡷⡀⢧⠀⣿⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠟⠛⣋⣁⠚⠛⢿⣿⣇⠀⠀⠀⠀⠀⠀⡿⠀⠀⠀
+    // ⢻⡇⠙⠈⠂⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⡶⠋⡠⣬⣿⣭⣿⣽⣿⠀⠀⠀⠀⠀⠀⡿⠀⠀⠀
+    // ⠘⡇⠀⠀⠀⠘⢧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⠿⣤⣾⣷⣾⣷⣶⣾⡿⠃⣸⠀⠀⠀⠀⣸⠇⠀⠀⠀
+    // ⠀⠹⣄⠀⠀⠀⠀⠙⢦⣄⠀⠀⠀⠀⠀⠀⠀⡰⠋⡃⢸⣿⣿⣿⣿⢿⣿⣤⠀⢰⡏⠀⠀⠀⣠⡟⠀⠀⠀⠀
+    // ⠀⠀⠈⢧⡀⠀⠀⠀⠀⠙⠳⣦⣀⠀⠀⠀⠀⠳⣀⠻⠄⣉⣛⠻⢿⢿⠟⢛⣽⠀⠀⠀⠀⢰⡟⣀⣀⡴⢶⡄
+    // ⠀⠀⠀⠀⠑⢄⠀⠀⢀⣠⠞⠉⠙⠳⣦⡀⠀⠀⠘⠦⠄⠀⠈⠉⠽⣿⣿⠟⠀⠀⠀⢀⣴⠟⠙⣻⣿⠖⢦⣿
+    // ⠀⠀⠀⠀⠀⢀⡿⢯⠉⠀⠀⠀⠀⠀⠀⠙⠳⠦⠤⣤⣄⣀⣀⣀⣀⣀⣀⣤⡤⠶⠞⠋⠁⣠⠞⠁⠈⣳⠘⠃
+    // ⠀⠀⠀⢀⡴⠋⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⢉⡽⠋⠀⠀⠀⠀⢀⡤⠚⠁⠀⠀⠀⠋⠀⠀
+    // ⠀⢀⡴⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡾⢀⣀⣀⣀⣠⠖⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀
+    // ⠀⡾⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠋⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+    // ⠀⠓⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠼⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+    // 
+    // 
+    //  JUST WORK DAMMIT!!!
+
+
+    /// <summary>
+    /// Completes the current trip, calculates score, resets UI, and handles passenger logic.
+    /// This is the finish line! Tally up the points, reset the world, and get ready for the next ride.
+    /// </summary>
     void CompleteTrip()
     {
         float tripTime = Time.time - tripStartTime;
@@ -368,46 +418,47 @@ public class SimplifiedPickUpSystem : MonoBehaviour
 
         isOnTrip = false;
         isInDropoffZone = false;
-        // cooldownEndTime = Time.time + jobCooldown; // Remove cooldown
 
         if (jobPanel != null) jobPanel.SetActive(false);
         if (dropOffHint != null) dropOffHint.text = "";
         if (pickupIndicator != null)
         {
             pickupIndicator.SetActive(false);
-            // Disable UI Image if present
             var img = pickupIndicator.GetComponent<UnityEngine.UI.Image>();
             if (img != null) img.enabled = false;
-            // Disable SpriteRenderer if present
             var sprite = pickupIndicator.GetComponent<SpriteRenderer>();
             if (sprite != null) sprite.enabled = false;
         }
 
-        // ✅ Call reset logic if assigned
+        // Reset and hide the passenger, and spawn smoke at cart after dropoff
         if (pickupPoints[currentPointIndex].passengerAnimation != null)
         {
             pickupPoints[currentPointIndex].passengerAnimation.ResetPassenger();
             pickupPoints[currentPointIndex].passengerAnimation.SetCartPassengerInactive();
-            pickupPoints[currentPointIndex].passengerAnimation.SpawnSmokeAtCartPassenger(); // <-- Add this line
+            pickupPoints[currentPointIndex].passengerAnimation.SpawnSmokeAtCartPassenger();
         }
 
-        // Passenger.SetActive(false); // <-- Remove or comment out this line to keep the passenger active
-
-        // Move to the next pickup point in sequence (wrap around)
+        // Move to the next pickup point in the list
         currentPointIndex = (currentPointIndex + 1) % pickupPoints.Count;
     }
 
+    // === Trigger and Collision Logic ===
+
+    /// <summary>
+    /// Handles entering pickup/dropoff zones and drive-by events.
+    /// If you see this, you're either picking up, dropping off, or causing chaos.
+    /// </summary>
     void OnTriggerEnter(Collider other)
     {
         if (!isOnTrip)
         {
-            // Find which pickup point this is
+            // Check if entering a pickup zone
             for (int i = 0; i < pickupPoints.Count; i++)
             {
                 if (other.transform == pickupPoints[i].pointTransform)
                 {
                     isInPickupZone = true;
-                    currentPointIndex = i; // Set current pickup index to this point
+                    currentPointIndex = i;
                     dropOffHint.text = "Press E to Start Trip";
                     break;
                 }
@@ -416,16 +467,17 @@ public class SimplifiedPickUpSystem : MonoBehaviour
 
         if (isOnTrip)
         {
+            // Check if entering dropoff zone
             if (other.transform == activePoint.pointTransform)
             {
                 isInDropoffZone = true;
             }
 
+            // Handle drive-by event
             if (other.CompareTag(driveByTag) && Time.time - lastDriveByTime >= driveByCooldown)
             {
                 lastDriveByTime = Time.time;
 
-                // Bonus/penalty cooldown logic
                 if (Time.time - lastDriveByBonusTime >= driveByBonusCooldown)
                 {
                     float scoreChange = ScoreManager.GetScoreForPreference(activePoint.driveByPreference, globalDriveByBonus, globalDriveByPenalty);
@@ -447,6 +499,10 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles exiting pickup/dropoff zones.
+    /// If you leave the zone, we don't want you to pick up or drop off anymore!
+    /// </summary>
     void OnTriggerExit(Collider other)
     {
         if (!isOnTrip && other.transform == pickupPoints[currentPointIndex].pointTransform)
@@ -461,6 +517,10 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles collision with destructible objects for scoring and feedback.
+    /// If you hit something breakable, let's see if the passenger likes it!
+    /// </summary>
     void OnCollisionEnter(Collision collision)
     {
         if (!isOnTrip || !collision.gameObject.CompareTag(destructionTag)) return;
@@ -468,7 +528,6 @@ public class SimplifiedPickUpSystem : MonoBehaviour
 
         lastDestructionTime = Time.time;
 
-        // Bonus/penalty cooldown logic
         if (Time.time - lastDestructionBonusTime >= destructionBonusCooldown)
         {
             float scoreChange = ScoreManager.GetScoreForPreference(activePoint.destructionPreference, globalDestructionBonus, globalDestructionPenalty);
@@ -488,6 +547,12 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         }
     }
 
+
+    // === Timer Formatting ===
+    /// <summary>
+    /// Formats a float time value into a string mm:ss:ms.
+    /// Because nobody likes ugly timers.
+    /// </summary>
     string FormatTime(float seconds)
     {
         int mins = Mathf.FloorToInt(seconds / 60);
@@ -496,3 +561,47 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         return $"{mins}:{secs:00}:{millis:000}";
     }
 }
+
+
+
+//  "Good work Agent 47, All bugs have been eliminated, Please proceed to the next mission."
+// 
+//                        .-""""-.
+//                       / j      \
+//                      :.d;       ;
+//                      $$P        :
+//           .m._       $$         :
+//          dSMMSSSss.__$$b.    __ :
+//         :MMSMMSSSMMMSS$$$b  $$P ;
+//         SMMMSMMSMMMSSS$$$$     :b
+//        dSMMMSMMMMMMSSMM$$$b.dP SSb.
+//       dSMMMMMMMMMMSSMMPT$$=-. /TSSSS.
+//      :SMMMSMMMMMMMSMMP  `$b_.'  MMMMSS.
+//      SMMMMMSMMMMMMMMM \  .'\    :SMMMSSS.
+//     dSMSSMMMSMMMMMMMM  \/\_/; .'SSMMMMSSSm
+//    dSMMMMSMMSMMMMMMMM    :.;'" :SSMMMMSSMM;
+//  .MMSSSSSMSSMMMMMMMM;    :.;   MMSMMMMSMMM;
+// dMSSMMSSSSSSSMMMMMMM;    ;.;   MMMMMMMSMMM
+//:MMMSSSSMMMSSP^TMMMMM     ;.;   MMMMMMMMMMM
+//MMMSMMMMSSSSP   `MMMM     ;.;   :MMMMMMMMM;
+//"TMMMMMMMMMM      TM;    :`.:    MMMMMMMMM;
+//   )MMMMMMM;     _/\\    :`.:    :MMMMMMMM
+//  d$SS$$$MMMb.  |._\\\   :`.:     MMMMMMMM
+//  T$$S$$$$$$$$$$m;O\\\\"-;`.:_.-  MMMMMMM;
+// :$$$$$$$$$$$$$$$b_l./\\ ;`.:    mMMSSMMM;
+// :$$$$$$$$$$$$$$$$$$$./\\;`.:  .$$MSMMMMMM
+//  $$$$$$$$$$$$$$$$$$$$. \\`.:.$$$$SMSSSMMM;
+//  $$$$$$$$$$$$$$$$$$$$$. \\.:$$$$$SSMMMMMMM
+//  :$$$$$$$$$$$$$$$$$$$$$.//.:$$$$SSSSSSSMM;
+//  :$$$$$$$$$$$$$$$$$$$$$$.`.:$$SSSSSSSMMMP
+//   $$$$$$$$$;"^$J "^$$$$;.`.$$P  `SSSMMMM
+//   :$$$$$$$$$       :$$$;.`.P'..   TMMM$$b
+//   :$$$$$$$$$;      $$$$;.`/ c^'   d$$$$$S;
+//   $$$$$S$$$$;      '^^^:_d$g:___.$$$$$$SSS
+//   $$$$SS$$$$;            $$$$$$$$$$$$$$SSS;
+//  :$$$SSSS$$$$            : $$$$$$$$$$$$$SSS
+//  :$P"TSSSS$$$            ; $$$$$$$$$$$$$SSS;
+//  j    `SSSSS$           :  :$$$$$$$$$$$$$SS$
+// :       "^S^'           :   $$$$$$$$$$$$$S$;
+// ;.____.-;"               "--^$$$$$$$$$$$$$P
+// '-....-"                       ""^^T$$$$P"

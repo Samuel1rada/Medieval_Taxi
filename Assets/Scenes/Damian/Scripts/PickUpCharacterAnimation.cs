@@ -3,49 +3,52 @@ using System.Collections;
 using System;
 using Unity.Cinemachine;
 
+/// <summary>
+/// Handles the pickup animation, model switching, and camera logic for a passenger character.
+/// </summary>
 public class PickUpCharacterAnimation : MonoBehaviour
 {
-    // Serialized fields for Unity Inspector
-    [SerializeField] private Animator animator;
-    [SerializeField] private float moveSpeed = 2f;
-    [SerializeField] private float arrivalThreshold = 0.5f;
-    [SerializeField] private GameObject characterModel;
-    [SerializeField] private GameObject cartPassengerModel;
-    [SerializeField] private ParticleSystem smokeEffect;
-    [SerializeField] private float smokeEffectDuration = 0.5f;
-    [SerializeField] private Transform rootPosition;
-    [SerializeField] private bool debugReset = false;
-    [SerializeField] private string idleStateName = "Idle"; // <-- Add this line
+    // === Inspector Fields ===
 
+    [SerializeField] private Animator animator;                  // Animator for character
+    [SerializeField] private float moveSpeed = 2f;               // Speed to move to cart
+    [SerializeField] private float arrivalThreshold = 0.5f;      // Distance threshold for arrival
+    [SerializeField] private GameObject characterModel;          // Reference to the character model
+    [SerializeField] private GameObject cartPassengerModel;      // Reference to the cart passenger model
+    [SerializeField] private ParticleSystem smokeEffect;         // Particle effect for smoke
+    [SerializeField] private float smokeEffectDuration = 0.5f;   // Duration for smoke effect
+    [SerializeField] private Transform rootPosition;             // Transform for reset position
+    [SerializeField] private bool debugReset = false;            // Enable debug reset
+    [SerializeField] private string idleStateName = "Idle";      // Animator idle state name
 
-    // Private state variables
-    private bool isSpinning = false;
-    private bool isAnimating = false;
-    private Transform cartTarget;
-    private Coroutine pickupCoroutine;
+    // === State Variables ===
 
-    // Original transform data for reset
-    private Vector3 originalPosition;
-    private Quaternion originalRotation;
-    private Vector3 characterOriginalScale;
-    [SerializeField] private Transform playerTransform;
-    private Coroutine resetScaleCoroutine;
+    private bool isSpinning = false;                             // True if spinning animation is active
+    private bool isAnimating = false;                            // True if pickup animation is running
+    private Transform cartTarget;                                // Target transform for cart
+    private Coroutine pickupCoroutine;                           // Reference to running coroutine
+
+    private Vector3 originalPosition;                            // Original position for reset
+    private Quaternion originalRotation;                         // Original rotation for reset
+    private Vector3 characterOriginalScale;                      // Original scale for reset
+    [SerializeField] private Transform playerTransform;          // Reference to player transform
+    private Coroutine resetScaleCoroutine;                       // Coroutine for scaling back
 
     [Header("Cinemachine Camera Settings")]
-    [SerializeField] private CinemachineCamera mainCinemachineCamera;
-    [SerializeField] private Transform characterLookTarget; // usually characterModel.transform
-    [SerializeField] private float characterFOV = 40f;
-    [SerializeField] private float originalFOVValue = 60f; // <-- Add this line
-    private Transform originalLookAtTarget;
-    private float originalFOV;
+    [SerializeField] private CinemachineCamera mainCinemachineCamera; // Cinemachine camera reference
+    [SerializeField] private Transform characterLookTarget;           // Camera look target
+    [SerializeField] private float characterFOV = 40f;                // Camera FOV during animation
+    [SerializeField] private float originalFOVValue = 60f;            // Default FOV value
+    private Transform originalLookAtTarget;                           // Camera's original LookAt
+    private float originalFOV;                                        // Camera's original FOV
 
     [Header("Camera Return Target")]
-    [SerializeField] private Transform cameraReturnTarget; // <-- Add this line
+    [SerializeField] private Transform cameraReturnTarget;            // Camera target after animation
 
-    // Add a coroutine reference for camera return
-    private Coroutine cameraReturnCoroutine;
+    private Coroutine cameraReturnCoroutine;                          // Coroutine for camera return
 
-    // Unity Update loop
+    // === Unity Methods ===
+
     void Update()
     {
         // Rotate to face player if not walking or spinning
@@ -57,24 +60,25 @@ public class PickUpCharacterAnimation : MonoBehaviour
                 transform.rotation = Quaternion.LookRotation(lookPos);
         }
 
-        // Debug reset functionality
+        // Debug: Reset passenger with R key if enabled
         if (debugReset == true)
         {
             if (Input.GetKeyDown(KeyCode.R)) ResetPassenger();
         }
     }
 
-    // Public method to start pickup animation
+    /// <summary>
+    /// Starts the pickup animation sequence towards the cart.
+    /// </summary>
     public void StartPickupAnimation(Transform cartTargetPos)
     {
         if (isAnimating || cartTargetPos == null) return;
         cartTarget = cartTargetPos;
 
-        // Store original LookAt and FOV, then switch to character (do NOT change Follow)
+        // Store camera state and focus on character
         if (mainCinemachineCamera != null)
         {
             originalLookAtTarget = mainCinemachineCamera.LookAt;
-            // Use the field value as fallback if not set
             originalFOV = mainCinemachineCamera.Lens.FieldOfView != 0 ? mainCinemachineCamera.Lens.FieldOfView : originalFOVValue;
             mainCinemachineCamera.LookAt = characterLookTarget != null ? characterLookTarget : this.transform;
             mainCinemachineCamera.Lens.FieldOfView = characterFOV;
@@ -84,7 +88,9 @@ public class PickUpCharacterAnimation : MonoBehaviour
         pickupCoroutine = StartCoroutine(AnimatePickupSequence());
     }
 
-    // Initialization
+    /// <summary>
+    /// Initializes original transform and model state.
+    /// </summary>
     private void Awake()
     {
         originalPosition = transform.position;
@@ -99,13 +105,19 @@ public class PickUpCharacterAnimation : MonoBehaviour
         if (cartPassengerModel != null) cartPassengerModel.SetActive(false);
     }
 
-    // Property to check if animation is running
+    /// <summary>
+    /// Returns true if the pickup animation is running.
+    /// </summary>
     public bool IsAnimating => isAnimating;
 
-    // Event for animation completion
+    /// <summary>
+    /// Event triggered when pickup animation is complete.
+    /// </summary>
     public event Action OnPickupAnimationComplete;
 
-    // Spawn smoke effect at passenger location
+    /// <summary>
+    /// Spawns smoke effect at the passenger's current position.
+    /// </summary>
     public void SpawnSmokeAtPassenger()
     {
         if (smokeEffect != null)
@@ -116,7 +128,10 @@ public class PickUpCharacterAnimation : MonoBehaviour
         }
     }
 
-    // Main pickup animation coroutine
+    /// <summary>
+    /// Main coroutine for the pickup animation sequence.
+    /// Handles walking, spinning, model switching, and camera logic.
+    /// </summary>
     private IEnumerator AnimatePickupSequence()
     {
         isAnimating = true;
@@ -175,13 +190,13 @@ public class PickUpCharacterAnimation : MonoBehaviour
         }
         isSpinning = false;
 
-        // === Only after spin is finished, handle smoke, model switching, and camera ===
+        // After spin, handle smoke, model switching, and camera
         if (cartPassengerModel != null)
         {
             if (characterModel != null)
                 characterModel.transform.localScale = Vector3.one * 0.001f;
 
-            // Spawn smoke at NPC position
+            // Smoke at NPC position
             if (smokeEffect != null)
             {
                 ParticleSystem smoke = Instantiate(smokeEffect, transform.position, Quaternion.identity);
@@ -190,7 +205,7 @@ public class PickUpCharacterAnimation : MonoBehaviour
                 yield return new WaitForSeconds(smokeEffectDuration * 0.5f);
             }
 
-            // Camera change to character (optional, can be removed if not needed)
+            // Camera focus on character
             if (mainCinemachineCamera != null)
             {
                 originalLookAtTarget = mainCinemachineCamera.LookAt;
@@ -200,16 +215,16 @@ public class PickUpCharacterAnimation : MonoBehaviour
             }
 
             cartPassengerModel.transform.localScale = Vector3.one;
-            cartPassengerModel.SetActive(true); // <-- Move this line down
+            cartPassengerModel.SetActive(true);
 
-            // Immediately set camera to track cameraReturnTarget and FOV to originalFOV
+            // Camera returns to follow target
             if (mainCinemachineCamera != null && cameraReturnTarget != null)
             {
                 mainCinemachineCamera.LookAt = cameraReturnTarget;
                 mainCinemachineCamera.Lens.FieldOfView = originalFOV;
             }
 
-            // Spawn smoke at cart passenger
+            // Smoke at cart passenger
             if (smokeEffect != null)
             {
                 ParticleSystem cartSmoke = Instantiate(smokeEffect, cartPassengerModel.transform.position, Quaternion.identity);
@@ -218,7 +233,6 @@ public class PickUpCharacterAnimation : MonoBehaviour
                 yield return new WaitForSeconds(smokeEffectDuration * 0.5f);
             }
 
-            // Now activate the cart passenger model after all effects and transitions
             cartPassengerModel.SetActive(true);
 
             yield return new WaitForSeconds(2f);
@@ -232,7 +246,7 @@ public class PickUpCharacterAnimation : MonoBehaviour
         // Reset passenger after animation
         ResetPassenger();
 
-        // Restore camera's LookAt and FOV smoothly to cameraReturnTarget (do NOT change Follow)
+        // Smoothly restore camera's LookAt and FOV
         if (mainCinemachineCamera != null && cameraReturnTarget != null)
         {
             if (cameraReturnCoroutine != null)
@@ -241,7 +255,9 @@ public class PickUpCharacterAnimation : MonoBehaviour
         }
     }
 
-    // Smoothly return the camera to its original LookAt and FOV
+    /// <summary>
+    /// Smoothly returns the camera to its original LookAt and FOV.
+    /// </summary>
     private IEnumerator SmoothReturnCamera(CinemachineCamera cam, Transform target, float targetFOV, float duration)
     {
         if (cam == null) yield break;
@@ -252,7 +268,6 @@ public class PickUpCharacterAnimation : MonoBehaviour
 
         while (elapsed < duration)
         {
-            // Only interpolate FOV, as LookAt is a Transform reference (snap at end)
             cam.Lens.FieldOfView = Mathf.Lerp(startFOV, targetFOV, elapsed / duration);
             elapsed += Time.deltaTime;
             yield return null;
@@ -261,7 +276,9 @@ public class PickUpCharacterAnimation : MonoBehaviour
         cam.LookAt = target;
     }
 
-    // Reset passenger to original state
+    /// <summary>
+    /// Resets the passenger to its original state and position.
+    /// </summary>
     public void ResetPassenger()
     {
         if (pickupCoroutine != null)
@@ -297,7 +314,6 @@ public class PickUpCharacterAnimation : MonoBehaviour
                 StopCoroutine(resetScaleCoroutine);
             resetScaleCoroutine = StartCoroutine(ScaleBackAfterCooldown());
         }
-        // if (cartPassengerModel != null) cartPassengerModel.SetActive(false); // <-- Remove or comment out this line
 
         isAnimating = false;
         if (animator != null)
@@ -306,11 +322,12 @@ public class PickUpCharacterAnimation : MonoBehaviour
             animator.ResetTrigger("Spin");
             if (!string.IsNullOrEmpty(idleStateName) && AnimatorHasState(animator, 0, idleStateName))
                 animator.Play(idleStateName, 0);
-            // else: do not call Play if state doesn't exist
         }
     }
 
-    // Coroutine to scale character back after cooldown
+    /// <summary>
+    /// Coroutine to scale the character back to original size after a cooldown.
+    /// </summary>
     private IEnumerator ScaleBackAfterCooldown()
     {
         yield return new WaitForSeconds(10f);
@@ -318,20 +335,26 @@ public class PickUpCharacterAnimation : MonoBehaviour
             characterModel.transform.localScale = characterOriginalScale;
     }
 
-    // Utility to check if animator has a state in a given layer
+    /// <summary>
+    /// Checks if the animator has a state with the given name in the given layer.
+    /// </summary>
     private bool AnimatorHasState(Animator anim, int layer, string stateName)
     {
         return anim.HasState(layer, Animator.StringToHash(stateName));
     }
 
-    // Add this method at the end of the class
+    /// <summary>
+    /// Sets the cart passenger model inactive (used after job completion).
+    /// </summary>
     public void SetCartPassengerInactive()
     {
         if (cartPassengerModel != null)
             cartPassengerModel.SetActive(false);
     }
 
-    // Add this method at the end of the class
+    /// <summary>
+    /// Spawns smoke effect at the cart passenger's position (used after job completion).
+    /// </summary>
     public void SpawnSmokeAtCartPassenger()
     {
         if (smokeEffect != null && cartPassengerModel != null)
@@ -342,3 +365,40 @@ public class PickUpCharacterAnimation : MonoBehaviour
         }
     }
 }
+
+
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡴⠶⠶⠶⠶⠶⠤⠤⠤⢤⣤⣠⡶⠻⠉⢹⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣷⠀⢀⣀⡠⠤⠤⠤⠤⢄⣴⠟⠀⠀⠀⢀⣿⣿⣖⠶⠤⠤⣄⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⡄⠀⣀⣀⣀⣀⣀⣴⣿⠏⠀⠀⠀⡇⢘⣿⣿⣝⣧⣐⣒⣤⣬⠭⣉⣛⠒⠦⢤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⡀⠈⡍⠁⠀⠀⡾⢱⡟⠀⠀⠀⠀⡗⠈⢿⡿⠙⠚⢿⡄⠈⠉⠉⠓⠚⠿⢵⣖⣪⣭⣓⠢⣄⡀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡜⠀⣷⠀⠀⢸⠃⣿⣇⠀⢀⢀⣈⣀⣀⡈⢷⣶⣷⣶⣿⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠑⠶⠤⣉⡳⢦⡀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣧⡄⠸⡄⠀⢸⢠⣟⣧⣶⣿⣛⢿⣿⣿⣿⢷⣿⣿⡿⠿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠑⠺⢷⣄⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⡍⠀⣇⠀⣿⠻⣿⣿⣿⣿⣷⣦⡙⣿⣿⣿⣿⣯⣡⣤⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡇⠀⢸⠀⣿⢼⣿⣿⠷⠋⡙⣟⣿⣉⠉⠹⢿⣿⣏⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢳⡀⠘⣆⣿⢸⣻⣿⣾⡏⣡⡄⣀⣉⣹⣶⣾⣿⡏⠟⣽⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⡀⢻⡿⣌⣿⣿⣿⣿⠟⢛⣉⠁⠈⣿⣿⡟⠁⢠⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣯⠁⠘⣧⣿⣿⣿⣿⣿⣶⣶⣶⣶⣶⣿⡟⣤⣴⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⡤⣿⣀⠀⢿⡏⢧⡈⣿⣿⣿⣿⣿⣿⣿⢿⠟⠛⠻⣿⠿⠙⣗⣦⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣶⠏⠁⢀⣿⡏⡀⢸⣷⣸⣿⡙⠿⣿⣿⣿⣿⣟⢮⡞⠀⠀⠋⠀⢘⣿⠟⠈⠉⠳⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⠁⣀⣀⣸⣿⣷⢷⠀⣿⣷⡱⣝⠒⣿⣿⢿⡿⣷⣿⠆⠀⣠⠂⢠⡟⡁⠀⠀⠈⠙⢿⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⣠⣿⣩⠠⠤⣀⣭⣿⣿⣞⡆⢹⣷⡿⣍⠓⠦⣼⣿⣿⡋⢁⣤⡞⣁⠴⠿⢋⣕⠀⡀⠀⠀⠀⢻⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⢀⣼⠿⠏⢀⠀⠀⢸⣿⣿⣿⣿⢃⠀⣿⣿⠈⠣⡀⠨⣿⣿⣾⣛⣽⡟⠁⠛⣿⡿⠿⠀⡇⠀⠀⠀⠘⣿⡀                      ⠀⠀⠀⠀⠀⠀     ⠀⣠⠶⣶⠁⢶⡒⢶⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⢠⠟⣿⠤⣄⠈⣳⣼⣿⣿⠝⠃⣿⣾⡀⢹⣌⡓⠦⠬⠿⠿⢿⣿⣯⣭⡔⠒⡛⠁⠀⡤⣠⣿⠀⡄⠀⢠⠈⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀        ⠀⠀⠀⠀⠀⣤⣾⣿⣦⢿⡷⠖⣳⢤⣿⢻⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⢰⡏⠀⡏⣴⣟⣿⣿⣿⡿⠏⠀⠀⠘⣷⣧⣀⣏⣛⡲⠤⠿⣿⣿⣯⣭⣽⣶⠞⠁⣠⢞⣽⣿⡟⢨⠁⠀⢸⡆⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀             ⠀⠀⠀⠀⢸⠏⢼⣿⠟⢉⣴⡿⢋⣠⡈⠻⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⣿⠁⣸⠃⠙⠛⣿⢦⣀⣀⣤⢶⣶⣿⣿⣿⣿⣶⣶⡏⠀⢀⠉⢻⣟⣫⠿⠊⢁⡾⠁⠉⣾⣿⣧⣾⣏⠀⢸⡇⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀        ⠀⠀⠀⠀⢸⡄⢀⠉⠚⣋⡉⠀⢿⣿⣶⠀⢹⣿⣆⠀⠀⠀⢠⡴⣄⠀⠸⣿⣇⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⢸⡯⢰⠋⠀⣰⣿⣿⣿⡿⣿⡏⡠⣯⡈⣹⣟⣿⣝⣙⡇⠈⢩⣭⣿⣿⠇⢀⡴⠋⠀⠀⠐⣻⣿⢿⣿⠃⠀⣿⡇⠻⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀         ⠀⠀⠀⠀⠈⣷⣿⡆⠞⣻⡿⠆⠸⡟⠋⠁⠀⢿⣿⠀⠀⠀⠀⢳⡛⢦⠀⢷⣼⡄⠀⢸⠛⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⢠⡿⢠⠏⠀⢀⣻⣿⠏⢿⣿⣸⢸⠁⠸⣿⣿⣿⢿⠛⣿⣷⣿⣿⣿⣷⠶⠚⠉⠀⠀⠀⠀⠘⢿⣿⣿⡷⡄⢸⣹⠇⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀             ⠀⠀⠀⠀⠀⠈⠙⣿⡆⠌⠛⠀⣀⣹⡶⠤⣄⠈⣇⠀⢰⣶⣄⠀⠻⣉⣷⣸⡤⢷⠀⡏⢸⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⢠⡟⢀⣴⣶⣾⣿⣿⡏⣰⢸⠇⣇⡏⠀⠀⠙⣿⣿⣟⡄⢹⡿⠿⠛⠛⣿⣶⣶⡦⠤⢔⣂⣀⠀⣾⡟⠻⡿⠁⢌⡿⠀⢀⡇⠀⠀⠀⠀⠀⠀⠀⠀             ⠀⠀⠀⠀⠀⠀⠀⠹⣿⣄⠀⠘⢠⣴⣾⣷⡄⠀⡿⣷⣤⣻⣏⠓⢦⣽⡏⠙⢃⡈⠛⠙⣯⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⢸⠀⣸⠿⠟⠟⠙⡿⠀⡇⡾⢠⣏⢣⣄⢲⣄⡘⣿⣿⣷⠘⣇⢀⣒⡯⠉⠉⠁⠈⠓⠿⣿⠟⢰⣿⡇⠴⠁⠀⣼⡽⠁⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀             ⠀⠀⠀⠀⠀⢠⣤⡀⠀⠉⠳⣄⠈⢻⣿⣿⣷⡄⢣⡇⠹⢿⠈⠓⣤⡉⢥⣄⣬⣵⡶⠦⠸⣍⣙⢶⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀
+//⢘⣇⠉⠀⠀⣀⡼⠁⢸⣱⠇⢠⢻⡄⣿⣿⣿⣿⣿⣿⣏⠀⢻⣿⣷⣄⡄⠀⠀⢀⡤⠞⠁⢠⣿⣿⡀⠀⢀⣾⣵⡗⠀⣾⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀             ⢀⣶⣄⠀⠘⣿⣿⡄⠀⠀⠈⣷⣄⠛⠿⠟⣠⣾⣀⣀⢸⡀⠙⠋⠹⣌⠛⠛⠻⣿⢠⡆⣿⠙⠒⢶⡿⠿⣿⣷⣦⣄⡀⠀⠀
+//⠾⢾⣆⣰⣶⣷⡄⠀⢡⠏⠀⠀⠈⠀⠉⠙⢿⢱⠙⢿⣿⣄⡸⣿⣿⣿⣿⡿⠟⢉⡠⠆⣰⢿⣿⢿⠁⣠⠋⠐⣾⠇⠀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀              ⠈⠻⣿⣷⣄⠹⣟⣿⡄⠀⠀⣸⣿⠛⣶⣿⣿⣿⢿⡏⣩⢁⡄⠀⢠⡿⡰⢾⣷⣄⣤⢀⣜⣀⣀⡀⠁⠀⠈⠛⠿⠓⢿⣦⠀
+//⠀⠀⠻⣌⠻⣿⡿⠿⣯⡶⠇⠀⠀⢠⠀⠀⠸⣿⠀⠀⣿⡏⠁⣿⠋⠁⣁⣤⠞⠉⠀⠰⢛⣿⠋⣠⡞⠁⢀⡀⠉⠀⢠⢿⠁⠀⠀⠀⠀⠀⠀⠀⠀             ⣶⣦⣄⠈⢻⣿⡷⣿⢿⠳⣄⡴⠿⠜⣾⡿⠿⢻⡿⣾⡿⣷⡟⢀⡴⢋⣠⠤⣤⣾⣿⣿⣟⡻⠿⡿⠟⣣⣴⣶⣦⣤⣤⣤⣿⣷
+//⠀⠀⠀⠈⠓⠧⣤⣄⣉⣀⣀⡈⠐⢪⣷⡄⠀⡇⣧⡀⣾⣧⠁⢻⣶⣾⣿⡄⠀⠀⠀⠀⣿⣯⣾⣿⡾⠛⢉⣀⡅⠀⡜⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀             ⠈⠻⢿⣿⡶⠿⠹⡧⢈⣥⣙⢷⡤⠴⠋⣠⢴⣋⡿⢿⣴⡟⡴⠋⡴⠋⢀⣤⣴⣤⣼⣿⢿⣏⠉⠙⠒⠭⣟⣿⣿⣿⣿⣿⡟⠋
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⢹⣟⣷⣦⣾⣷⠀⣿⣿⣧⣿⢿⣇⠀⣿⣿⠛⠀⡀⢀⠀⣠⣿⣫⣾⡽⠞⠛⠛⠾⠁⣸⢁⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀                  ⠉⣳⠞⠓⣴⣿⣿⣿⡆⢀⣀⡞⠁⢸⠋⠀⢸⢿⠁⠉⠉⠠⠶⠞⣛⣻⣿⣿⣿⣿⣿⣆⠀⠀⠀⠀⠈⠉⠉⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⢸⡟⣿⡿⣿⣷⢿⣿⣿⣿⡜⣷⠄⢸⡘⣊⣭⡾⢋⡾⣿⣿⣿⣵⠶⠚⠁⠀⠀⠀⣿⣸⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀              ⢰⣶⣞⣽⣽⣿⡰⠛⣛⠛⠋⣠⣿⡟⣷⠀⣾⠆⣀⢼⠸⣤⣶⠖⠀⢐⣩⣽⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡟⢸⣧⢻⣷⢻⢿⣧⡻⣿⣿⢷⣽⡆⠈⣧⠡⢄⣼⡿⠞⣻⢿⡭⠆⠀⢀⣠⣴⠀⢰⣏⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                ⠈⠹⣌⢻⣷⣶⣿⡏⠉⡟⢰⣿⠆⠁⢸⠀⣷⣾⣵⣾⣿⣿⣿⣿⣿⣿⣿⣿⣏⢹⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⣿⢸⡿⣟⣷⡻⣿⣿⣿⣟⣿⣿⡂⢹⣶⣿⣿⠀⢸⡟⠉⠀⠀⠻⣿⣞⠋⢠⠇⣻⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   ⠀⠀⠀⠀⠀⠀              ⢀⣿⣬⣿⠿⠿⡇⣾⣧⣾⢿⠀⠀⡸⠀⣿⣻⢽⣿⣿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+// ⠀⠀⠀⠀⠀                                                                                    ⢀⡞⠳⣜⣀⣠⠾⣇⢻⣿⣿⢼⡀⠀⡇⠀⢸⠚⠋⢁⣠⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀
+// ⠀⠀⠀⠀⠀                                                                                    ⢸⢧⣤⣶⣿⣿⡟⣹⣿⣿⡿⠈⡇⠀⡇⠀⢸⠴⠚⡿⠟⢛⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀
+// ⠀⠀⠀⠀⠀                                                                                    ⢸⡀⢀⣤⣿⣿⣿⣧⡟⠉⢻⣇⢳⠄⡇⠀⣼⠀⢠⢽⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀
