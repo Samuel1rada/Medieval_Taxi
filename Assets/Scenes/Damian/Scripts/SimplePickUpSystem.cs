@@ -13,26 +13,26 @@ public class SimplifiedPickUpSystem : MonoBehaviour
     // === Inspector Fields ===
 
     [Header("Pickup Settings")]
-    public List<PickupDropoffPoint> pickupPoints; // All the places your medieval Uber can go!
-    private int currentPointIndex = 0;            // Where are we picking up from?
-    private PickupDropoffPoint activePoint;       // Where are we dropping off?
+    public List<PickupDropoffPoint> pickupPoints; // List of pick up points
+    private int currentPointIndex = 0;            // Track which pickup point we're at
+    private PickupDropoffPoint activePoint;       // Where we dropping?
     private bool isInPickupZone = false;          // Are we ready to pick up a passenger?
     public GameObject Passenger;                  // The actual passenger object (don't lose them!)
 
     [Header("Scoring")]
     public float baseFare = 100f;                 // How much a trip is worth (before tips)
-    public float fastMultiplier = 1.5f;           // Speed demon bonus
-    public float normalMultiplier = 1.0f;         // Average Joe
-    public float slowMultiplier = 0.5f;           // Grandma pace
+    public float fastMultiplier = 1.5f;           // Im fast pay me more
+    public float normalMultiplier = 1.0f;         // Idc how much you pay me, I just want to drive
+    public float slowMultiplier = 0.5f;           // Wow! Look at the scenery!
 
     [Header("Global Event Bonuses & Penalties")]
-    public float globalDriveByBonus = 20f;        // For those sweet drive-bys
-    public float globalDriveByPenalty = 15f;      // For drive-bys gone wrong
-    public float globalDestructionBonus = 25f;    // Smashy smashy bonus
-    public float globalDestructionPenalty = 20f;  // Oops, too much smashy
+    public float globalDriveByBonus = 20f;        // hey Im walking here bonus
+    public float globalDriveByPenalty = 15f;      // I have walked here get out
+    public float globalDestructionBonus = 25f;    // CART SMASH!
+    public float globalDestructionPenalty = 20f;  // Oops, too much smash
 
-    public string driveByTag = "DriveByPoint";    // Tag for drive-by triggers (like a medieval checkpoint)
-    public string destructionTag = "Destructible";// Tag for destructible objects (barrels, crates, dreams)
+    public string driveByTag = "NPC";    // Tag for drive-by triggers (like a medieval checkpoint)
+    public string destructionTag = "Obstacle";// Tag for destructible objects (barrels, crates, dreams)
 
     [Header("Cooldowns & Thresholds")]
     public float jobCooldown = 5f;                // Time before you can get another job (unused, but feels official)
@@ -277,6 +277,8 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         if (passengerAnimationController != null)
         {
             passengerAnimationController.SpawnSmokeAtPassenger();
+            // === Camera returns to cameraReturnTarget when input is enabled ===
+            passengerAnimationController.CameraLookAtReturnTarget();
         }
 
         if (MInput != null)
@@ -376,7 +378,6 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         // Fallback: ensure controls are re-enabled if animation event fails
         Invoke("OnPassengerAnimationComplete", 6f);
     }
-
 
     // ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⠴⠶⠖⠒⠒⠒⠶⠤⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
     // ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡞⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠓⠶⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀

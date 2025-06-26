@@ -217,11 +217,16 @@ public class PickUpCharacterAnimation : MonoBehaviour
             cartPassengerModel.transform.localScale = Vector3.one;
             cartPassengerModel.SetActive(true);
 
-            // Camera returns to follow target
-            if (mainCinemachineCamera != null && cameraReturnTarget != null)
+            // Smoothly transition camera to cart passenger model
+            if (mainCinemachineCamera != null && cartPassengerModel != null)
             {
-                mainCinemachineCamera.LookAt = cameraReturnTarget;
-                mainCinemachineCamera.Lens.FieldOfView = originalFOV;
+                yield return StartCoroutine(SmoothLookAtTransition(mainCinemachineCamera, cartPassengerModel.transform, 0.5f));
+                yield return new WaitForSeconds(1); // Hold for a short moment
+                if (cameraReturnTarget != null)
+                {
+                    yield return StartCoroutine(SmoothLookAtTransition(mainCinemachineCamera, cameraReturnTarget, 0.5f));
+                    mainCinemachineCamera.Lens.FieldOfView = originalFOV;
+                }
             }
 
             // Smoke at cart passenger
@@ -253,6 +258,34 @@ public class PickUpCharacterAnimation : MonoBehaviour
                 StopCoroutine(cameraReturnCoroutine);
             cameraReturnCoroutine = StartCoroutine(SmoothReturnCamera(mainCinemachineCamera, cameraReturnTarget, originalFOV, 1f));
         }
+    }
+
+    /// <summary>
+    /// Smoothly transitions the camera's LookAt to the target transform over the given duration.
+    /// </summary>
+    private IEnumerator SmoothLookAtTransition(CinemachineCamera cam, Transform target, float duration)
+    {
+        if (cam == null || target == null) yield break;
+
+        Transform startLookAt = cam.LookAt;
+        Vector3 startPos = startLookAt != null ? startLookAt.position : cam.transform.forward * 10f;
+        Vector3 endPos = target.position;
+        float elapsed = 0f;
+
+        // Use a temporary GameObject as an intermediate LookAt target
+        GameObject tempLookAt = new GameObject("TempCameraLookAt");
+        tempLookAt.transform.position = startPos;
+        cam.LookAt = tempLookAt.transform;
+
+        while (elapsed < duration)
+        {
+            tempLookAt.transform.position = Vector3.Lerp(startPos, endPos, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        tempLookAt.transform.position = endPos;
+        cam.LookAt = target;
+        Destroy(tempLookAt);
     }
 
     /// <summary>
@@ -364,13 +397,34 @@ public class PickUpCharacterAnimation : MonoBehaviour
             Destroy(smoke.gameObject, smoke.main.duration + smoke.main.startLifetime.constantMax);
         }
     }
+
+    /// <summary>
+    /// Call this when input is enabled to make the camera look at the cameraReturnTarget.
+    /// </summary>
+    public void CameraLookAtReturnTarget()
+    {
+        if (mainCinemachineCamera != null && cameraReturnTarget != null)
+        {
+            mainCinemachineCamera.LookAt = cameraReturnTarget;
+            mainCinemachineCamera.Lens.FieldOfView = originalFOV;
+        }
+    }
+
+    // Optional: helper to create an offset transform for the camera to look at (uncomment if you want to use it)
+    // private Transform GetOffsetTransform(Transform target, Vector3 offset)
+    // {
+    //     GameObject temp = new GameObject("TempLookAt");
+    //     temp.transform.position = target.position + offset;
+    //     Destroy(temp, 2f); // Clean up after a short time
+    //     return temp.transform;
+    // }
 }
 
 
 //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡴⠶⠶⠶⠶⠶⠤⠤⠤⢤⣤⣠⡶⠻⠉⢹⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣷⠀⢀⣀⡠⠤⠤⠤⠤⢄⣴⠟⠀⠀⠀⢀⣿⣿⣖⠶⠤⠤⣄⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⡄⠀⣀⣀⣀⣀⣀⣴⣿⠏⠀⠀⠀⡇⢘⣿⣿⣝⣧⣐⣒⣤⣬⠭⣉⣛⠒⠦⢤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⡄⠀⣀⣀⣀⣀⣀⣀⣴⣿⠏⠀⠀⠀⡇⢘⣿⣿⣝⣧⣐⣒⣤⣬⠭⣉⣛⠒⠦⢤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⡀⠈⡍⠁⠀⠀⡾⢱⡟⠀⠀⠀⠀⡗⠈⢿⡿⠙⠚⢿⡄⠈⠉⠉⠓⠚⠿⢵⣖⣪⣭⣓⠢⣄⡀⠀⠀⠀⠀⠀⠀
 //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡜⠀⣷⠀⠀⢸⠃⣿⣇⠀⢀⢀⣈⣀⣀⡈⢷⣶⣷⣶⣿⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠑⠶⠤⣉⡳⢦⡀⠀⠀⠀
 //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣧⡄⠸⡄⠀⢸⢠⣟⣧⣶⣿⣛⢿⣿⣿⣿⢷⣿⣿⡿⠿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠑⠺⢷⣄⠀
@@ -382,23 +436,13 @@ public class PickUpCharacterAnimation : MonoBehaviour
 //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⡤⣿⣀⠀⢿⡏⢧⡈⣿⣿⣿⣿⣿⣿⣿⢿⠟⠛⠻⣿⠿⠙⣗⣦⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 //⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣶⠏⠁⢀⣿⡏⡀⢸⣷⣸⣿⡙⠿⣿⣿⣿⣿⣟⢮⡞⠀⠀⠋⠀⢘⣿⠟⠈⠉⠳⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 //⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⠁⣀⣀⣸⣿⣷⢷⠀⣿⣷⡱⣝⠒⣿⣿⢿⡿⣷⣿⠆⠀⣠⠂⢠⡟⡁⠀⠀⠈⠙⢿⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⣠⣿⣩⠠⠤⣀⣭⣿⣿⣞⡆⢹⣷⡿⣍⠓⠦⣼⣿⣿⡋⢁⣤⡞⣁⠴⠿⢋⣕⠀⡀⠀⠀⠀⢻⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⣠⣿⣩⠠⠤⣀⣭⣿⣿⣞⡆⢹⣷⡿⣍⠓⠦⣼⣿⣿⡋⢀⣤⡞⣁⠴⠿⢋⣕⠀⡀⠀⠀⠀⢻⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 //⠀⠀⠀⠀⠀⢀⣼⠿⠏⢀⠀⠀⢸⣿⣿⣿⣿⢃⠀⣿⣿⠈⠣⡀⠨⣿⣿⣾⣛⣽⡟⠁⠛⣿⡿⠿⠀⡇⠀⠀⠀⠘⣿⡀                      ⠀⠀⠀⠀⠀⠀     ⠀⣠⠶⣶⠁⢶⡒⢶⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 //⠀⠀⠀⠀⢠⠟⣿⠤⣄⠈⣳⣼⣿⣿⠝⠃⣿⣾⡀⢹⣌⡓⠦⠬⠿⠿⢿⣿⣯⣭⡔⠒⡛⠁⠀⡤⣠⣿⠀⡄⠀⢠⠈⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀        ⠀⠀⠀⠀⠀⣤⣾⣿⣦⢿⡷⠖⣳⢤⣿⢻⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⢰⡏⠀⡏⣴⣟⣿⣿⣿⡿⠏⠀⠀⠘⣷⣧⣀⣏⣛⡲⠤⠿⣿⣿⣯⣭⣽⣶⠞⠁⣠⢞⣽⣿⡟⢨⠁⠀⢸⡆⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀             ⠀⠀⠀⠀⢸⠏⢼⣿⠟⢉⣴⡿⢋⣠⡈⠻⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⣿⠁⣸⠃⠙⠛⣿⢦⣀⣀⣤⢶⣶⣿⣿⣿⣿⣶⣶⡏⠀⢀⠉⢻⣟⣫⠿⠊⢁⡾⠁⠉⣾⣿⣧⣾⣏⠀⢸⡇⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀        ⠀⠀⠀⠀⢸⡄⢀⠉⠚⣋⡉⠀⢿⣿⣶⠀⢹⣿⣆⠀⠀⠀⢠⡴⣄⠀⠸⣿⣇⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⢸⡯⢰⠋⠀⣰⣿⣿⣿⡿⣿⡏⡠⣯⡈⣹⣟⣿⣝⣙⡇⠈⢩⣭⣿⣿⠇⢀⡴⠋⠀⠀⠐⣻⣿⢿⣿⠃⠀⣿⡇⠻⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀         ⠀⠀⠀⠀⠈⣷⣿⡆⠞⣻⡿⠆⠸⡟⠋⠁⠀⢿⣿⠀⠀⠀⠀⢳⡛⢦⠀⢷⣼⡄⠀⢸⠛⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⢠⡿⢠⠏⠀⢀⣻⣿⠏⢿⣿⣸⢸⠁⠸⣿⣿⣿⢿⠛⣿⣷⣿⣿⣿⣷⠶⠚⠉⠀⠀⠀⠀⠘⢿⣿⣿⡷⡄⢸⣹⠇⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀             ⠀⠀⠀⠀⠀⠈⠙⣿⡆⠌⠛⠀⣀⣹⡶⠤⣄⠈⣇⠀⢰⣶⣄⠀⠻⣉⣷⣸⡤⢷⠀⡏⢸⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⢠⡟⢀⣴⣶⣾⣿⣿⡏⣰⢸⠇⣇⡏⠀⠀⠙⣿⣿⣟⡄⢹⡿⠿⠛⠛⣿⣶⣶⡦⠤⢔⣂⣀⠀⣾⡟⠻⡿⠁⢌⡿⠀⢀⡇⠀⠀⠀⠀⠀⠀⠀⠀             ⠀⠀⠀⠀⠀⠀⠀⠹⣿⣄⠀⠘⢠⣴⣾⣷⡄⠀⡿⣷⣤⣻⣏⠓⢦⣽⡏⠙⢃⡈⠛⠙⣯⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⢸⠀⣸⠿⠟⠟⠙⡿⠀⡇⡾⢠⣏⢣⣄⢲⣄⡘⣿⣿⣷⠘⣇⢀⣒⡯⠉⠉⠁⠈⠓⠿⣿⠟⢰⣿⡇⠴⠁⠀⣼⡽⠁⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀             ⠀⠀⠀⠀⠀⢠⣤⡀⠀⠉⠳⣄⠈⢻⣿⣿⣷⡄⢣⡇⠹⢿⠈⠓⣤⡉⢥⣄⣬⣵⡶⠦⠸⣍⣙⢶⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀
-//⢘⣇⠉⠀⠀⣀⡼⠁⢸⣱⠇⢠⢻⡄⣿⣿⣿⣿⣿⣿⣏⠀⢻⣿⣷⣄⡄⠀⠀⢀⡤⠞⠁⢠⣿⣿⡀⠀⢀⣾⣵⡗⠀⣾⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀             ⢀⣶⣄⠀⠘⣿⣿⡄⠀⠀⠈⣷⣄⠛⠿⠟⣠⣾⣀⣀⢸⡀⠙⠋⠹⣌⠛⠛⠻⣿⢠⡆⣿⠙⠒⢶⡿⠿⣿⣷⣦⣄⡀⠀⠀
-//⠾⢾⣆⣰⣶⣷⡄⠀⢡⠏⠀⠀⠈⠀⠉⠙⢿⢱⠙⢿⣿⣄⡸⣿⣿⣿⣿⡿⠟⢉⡠⠆⣰⢿⣿⢿⠁⣠⠋⠐⣾⠇⠀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀              ⠈⠻⣿⣷⣄⠹⣟⣿⡄⠀⠀⣸⣿⠛⣶⣿⣿⣿⢿⡏⣩⢁⡄⠀⢠⡿⡰⢾⣷⣄⣤⢀⣜⣀⣀⡀⠁⠀⠈⠛⠿⠓⢿⣦⠀
-//⠀⠀⠻⣌⠻⣿⡿⠿⣯⡶⠇⠀⠀⢠⠀⠀⠸⣿⠀⠀⣿⡏⠁⣿⠋⠁⣁⣤⠞⠉⠀⠰⢛⣿⠋⣠⡞⠁⢀⡀⠉⠀⢠⢿⠁⠀⠀⠀⠀⠀⠀⠀⠀             ⣶⣦⣄⠈⢻⣿⡷⣿⢿⠳⣄⡴⠿⠜⣾⡿⠿⢻⡿⣾⡿⣷⡟⢀⡴⢋⣠⠤⣤⣾⣿⣿⣟⡻⠿⡿⠟⣣⣴⣶⣦⣤⣤⣤⣿⣷
-//⠀⠀⠀⠈⠓⠧⣤⣄⣉⣀⣀⡈⠐⢪⣷⡄⠀⡇⣧⡀⣾⣧⠁⢻⣶⣾⣿⡄⠀⠀⠀⠀⣿⣯⣾⣿⡾⠛⢉⣀⡅⠀⡜⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀             ⠈⠻⢿⣿⡶⠿⠹⡧⢈⣥⣙⢷⡤⠴⠋⣠⢴⣋⡿⢿⣴⡟⡴⠋⡴⠋⢀⣤⣴⣤⣼⣿⢿⣏⠉⠙⠒⠭⣟⣿⣿⣿⣿⣿⡟⠋
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⢹⣟⣷⣦⣾⣷⠀⣿⣿⣧⣿⢿⣇⠀⣿⣿⠛⠀⡀⢀⠀⣠⣿⣫⣾⡽⠞⠛⠛⠾⠁⣸⢁⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀                  ⠉⣳⠞⠓⣴⣿⣿⣿⡆⢀⣀⡞⠁⢸⠋⠀⢸⢿⠁⠉⠉⠠⠶⠞⣛⣻⣿⣿⣿⣿⣿⣆⠀⠀⠀⠀⠈⠉⠉⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⢸⡟⣿⡿⣿⣷⢿⣿⣿⣿⡜⣷⠄⢸⡘⣊⣭⡾⢋⡾⣿⣿⣿⣵⠶⠚⠁⠀⠀⠀⣿⣸⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀              ⢰⣶⣞⣽⣽⣿⡰⠛⣛⠛⠋⣠⣿⡟⣷⠀⣾⠆⣀⢼⠸⣤⣶⠖⠀⢐⣩⣽⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡟⢸⣧⢻⣷⢻⢿⣧⡻⣿⣿⢷⣽⡆⠈⣧⠡⢄⣼⡿⠞⣻⢿⡭⠆⠀⢀⣠⣴⠀⢰⣏⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                ⠈⠹⣌⢻⣷⣶⣿⡏⠉⡟⢰⣿⠆⠁⢸⠀⣷⣾⣵⣾⣿⣿⣿⣿⣿⣿⣿⣿⣏⢹⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⣿⢸⡿⣟⣷⡻⣿⣿⣿⣟⣿⣿⡂⢹⣶⣿⣿⠀⢸⡟⠉⠀⠀⠻⣿⣞⠋⢠⠇⣻⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   ⠀⠀⠀⠀⠀⠀              ⢀⣿⣬⣿⠿⠿⡇⣾⣧⣾⢿⠀⠀⡸⠀⣿⣻⢽⣿⣿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-// ⠀⠀⠀⠀⠀                                                                                    ⢀⡞⠳⣜⣀⣠⠾⣇⢻⣿⣿⢼⡀⠀⡇⠀⢸⠚⠋⢁⣠⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀
-// ⠀⠀⠀⠀⠀                                                                                    ⢸⢧⣤⣶⣿⣿⡟⣹⣿⣿⡿⠈⡇⠀⡇⠀⢸⠴⠚⡿⠟⢛⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀
-// ⠀⠀⠀⠀⠀                                                                                    ⢸⡀⢀⣤⣿⣿⣿⣧⡟⠉⢻⣇⢳⠄⡇⠀⣼⠀⢠⢽⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⢰⣿⠁⣀⣀⣸⣿⣷⢷⡿⠏⠀⠀⠘⣷⣧⣀⣏⣛⡲⠤⠿⣿⣿⣯⣭⣽⣶⠞⠁⣠⢞⣽⣿⡟⢨⠁⠀⢸⡆⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀             ⠀⠀⠀⠀⢸⠏⢼⣿⠟⢉⣴⡿⢋⣠⡈⠻⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⠀⠀⠀⣿⠁⣸⠃⠙⠛⣿⢦⣀⣀⣤⢶⣶⣿⣿⣿⣶⣶⡏⠀⢀⠉⢻⣟⣫⠿⠊⢀⡴⠋⠀⠀⠀⠀⠐⣻⣿⣧⣾⣏⠀⢸⡇⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀             ⠀⠀⠀⠀⠀⠈⣷⣿⡆⠞⣻⡿⠆⠸⡟⠋⠁⠀⢿⣿⠀⠀⠀⠀⢳⡛⢦⠀⢷⣼⡄⠀⢸⠛⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⢠⡟⢀⣴⣶⣾⣿⣿⡏⣰⢸⠇⣇⡏⠀⠀⠙⣿⣿⣟⡄⢹⡿⠿⠛⠛⣿⣶⣶⡦⠤⢔⣂⣀⠀⣾⡟⠻⡿⠁⢌⡿⠀⢀⡇⠀⠀⠀⠀⠀⠀⠀⠀             ⠀⠀⠀⠀⠀⠀⠀⠙⣿⡆⠌⠛⠀⣀⣹⡶⠤⣄⠈⣇⠀⢰⣶⣄⠀⠻⣉⣷⣸⡤⢷⠀⡏⢸⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⢸⠀⣸⠿⠟⠟⠙⡿⠀⡇⡾⢠⣏⢣⣄⢲⣄⡘⣿⣿⣷⠘⣇⢀⣒⡯⠉⠉⠁⠈⠓⠿⣿⠟⢰⣿⡇⠴⠁⠀⣼⡽⠁⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀             ⠀⠀⠀⠀⠀⠀⠀⠈⣷⣿⡆⠞⣻⡿⠆⠸⡟⠋⠁⠀⢿⣿⠀⠀⠀⠀⢳⡛⢦⠀⢷⣼⡄⠀⢸⠛⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+//⢘⣇⠉⠀⠀⣀⡼⠁⢸⣱⠇⢠⢻⡄⣿⣿⣿⣿⣿⣿⣏⠀⢻⣿⣷⣄⡄⠀⠀⢀⡤⠞⠁⢠⣿⣿⡀⠀⢀⣾⣵⡗⠀⣾⡇⠀⠀⠀⠀⠀⠀⠀⠀             ⢀⣶⣄⠀⠘⣿⣿⡄⠀⠀⠈⣷⣄⠛⠿⠟⣠⣾⣀⣀⢸⡀⠙⠋⠹⣌⠛⠛⠻⣿⢠⡆⣿⠙⠒⢶⡿⠿⣿⣷⣦⣄⡀⠀⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⢹⣟⣷⣦⣾⣷⠀⣿⣿⣧⣿⢿⣇⠀⣿⣿⠛⠀⡀⢀⠀⣠⣿⣫⣾⡾⠞⠛⠛⠾⠁⣸⢁⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀             ⠈⠻⣿⣷⣄⠹⣟⣿⡄⠀⠀⣸⣿⠛⣶⣿⣿⣿⢿⡏⣩⢁⡄⠀⢠⡿⡰⢾⣷⣄⣤⢀⣜⣀⣀⡀⠁⠀⠈⠛⠿⠓⢿⣦⠀
+//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡿⢸⡟⣿⡿⣿⣷⢿⣿⣿⣿⡜⣷⠄⢸⡘⣊⣭⡾⢋⡾⣿⣿⣿⣵⠶⠚⠁⠀⠀⠀⣿⣸⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀              ⢀⣿⣬⣿⠿⠿⡇⣾⣧⣾⢿⠀⠀⡸⠀⣿⣻⢽⣿⣿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣏⢹⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
