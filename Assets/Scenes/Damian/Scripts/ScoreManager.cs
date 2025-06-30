@@ -47,10 +47,6 @@ public class ScoreManager : MonoBehaviour
             InitializeComponents();
             ResetScore();
         }
-        else
-        {
-            Destroy(gameObject);
-        }
     }
 
     private void InitializeComponents()
