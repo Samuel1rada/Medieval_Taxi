@@ -137,6 +137,8 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
             audioSource = gameObject.AddComponent<AudioSource>();
+
+        StartCoroutine(PickupZoneChecker());
     }
 
     void Update()
@@ -506,6 +508,7 @@ public class SimplifiedPickUpSystem : MonoBehaviour
     /// </summary>
     void OnTriggerExit(Collider other)
     {
+        // Only clear pickup zone if we are not on a trip anymore
         if (!isOnTrip && other.transform == pickupPoints[currentPointIndex].pointTransform)
         {
             isInPickupZone = false;
@@ -560,6 +563,38 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         int secs = Mathf.FloorToInt(seconds % 60);
         int millis = Mathf.FloorToInt((seconds - mins * 60 - secs) * 1000);
         return $"{mins}:{secs:00}:{millis:000}";
+    }
+
+    // Checks every second if player is inside a pickup zone and no job is active
+    private System.Collections.IEnumerator PickupZoneChecker()
+    {
+        while (true)
+        {
+            if (!isOnTrip)
+            {
+                bool found = false;
+                for (int i = 0; i < pickupPoints.Count; i++)
+                {
+                    float dist = Vector3.Distance(transform.position, pickupPoints[i].pointTransform.position);
+                    if (dist < 3f) // Adjust this threshold as needed for your trigger size
+                    {
+                        isInPickupZone = true;
+                        currentPointIndex = i;
+                        if (dropOffHint != null)
+                            dropOffHint.text = "Press E to Start Trip";
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    isInPickupZone = false;
+                    if (dropOffHint != null)
+                        dropOffHint.text = "";
+                }
+            }
+            yield return new WaitForSeconds(1f);
+        }
     }
 }
 
