@@ -19,19 +19,38 @@ public class Options : MonoBehaviour
 
     public Canvas options_ui;
 
+    [SerializeField] private UnityEngine.UI.Slider musicSlider;
+
+    [SerializeField] private UnityEngine.UI.Slider SFXSlider;
+
     Resolution[] resolutions;
 
 
-    public void SetVolume(float volume)
+    public void SetVolume()
     {
-        audioMixer.SetFloat("volume_music", volume);
+        float volume = musicSlider.value;
+
+        audioMixer.SetFloat("volume_music", Mathf.Log10(volume)*20);
+        PlayerPrefs.SetFloat("volumeMusic", volume);
         //Debug.Log(volume);
     }
 
-    public void SetVolumeSfx(float volume)
+    public void SetVolumeSfx()
     {
-        audioMixer.SetFloat("volume_sfx", volume);
+        float volume = SFXSlider.value;
+
+        audioMixer.SetFloat("volume_sfx", Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("volumeSFX", volume);
         //Debug.Log(volume);
+    }
+
+    private void LoadVolume()
+    {
+        musicSlider.value = PlayerPrefs.GetFloat("volumeMusic");
+        SFXSlider.value = PlayerPrefs.GetFloat("volumeSFX");
+
+        SetVolume();
+        SetVolumeSfx();
     }
 
 
@@ -40,7 +59,15 @@ public class Options : MonoBehaviour
     void Start()
     {
 
-
+        if (PlayerPrefs.HasKey("volumeMusic"))
+        {
+            LoadVolume();
+        }
+        else
+        {
+            SetVolume();
+            SetVolumeSfx();
+        }
 
     }
 

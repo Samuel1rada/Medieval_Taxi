@@ -1390,7 +1390,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 5de29c6d920052945b42cf04338999a6, type: 3}
   m_Resource: {fileID: 8300000, guid: 5de29c6d920052945b42cf04338999a6, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.15
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1598,10 +1598,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1435322346289351027, guid: 85a880cd05e57314b89ee6da3585d54f, type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2071003615}
-    - target: {fileID: 1435322346289351027, guid: 85a880cd05e57314b89ee6da3585d54f, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetVolumeSfx
       objectReference: {fileID: 0}
@@ -1641,10 +1637,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -5.5
       objectReference: {fileID: 0}
-    - target: {fileID: 4000813736138978611, guid: 85a880cd05e57314b89ee6da3585d54f, type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2071003615}
     - target: {fileID: 4000813736138978611, guid: 85a880cd05e57314b89ee6da3585d54f, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetVolume

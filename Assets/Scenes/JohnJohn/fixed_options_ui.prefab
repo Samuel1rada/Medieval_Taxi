@@ -324,6 +324,7 @@ GameObject:
   - component: {fileID: 2071347607339790453}
   - component: {fileID: 2667987416566290190}
   - component: {fileID: 2183504271763526261}
+  - component: {fileID: 8043738497053455099}
   m_Layer: 5
   m_Name: fixed_options_ui
   m_TagString: Untagged
@@ -422,6 +423,25 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8043738497053455099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2507688221692953626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33ec19f6b7a727f4eaf5718bd68b301c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  audioMixer: {fileID: 24100000, guid: 8a2353e8f1aff004aabb2afea7c481b6, type: 2}
+  audioMixerSfx: {fileID: 0}
+  resolutionDropdown: {fileID: 0}
+  options_ui: {fileID: 0}
+  musicSlider: {fileID: 4000813736138978611}
+  SFXSlider: {fileID: 1435322346289351027}
 --- !u!1 &3073671856866310349
 GameObject:
   m_ObjectHideFlags: 0
@@ -2610,17 +2630,17 @@ MonoBehaviour:
   m_FillRect: {fileID: 2711191984304862741}
   m_HandleRect: {fileID: 889861061848874927}
   m_Direction: 0
-  m_MinValue: -80
-  m_MaxValue: 0
+  m_MinValue: 0.0001
+  m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 8043738497053455099}
         m_TargetAssemblyTypeName: Options, Assembly-CSharp
         m_MethodName: SetVolumeSfx
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2712,17 +2732,17 @@ MonoBehaviour:
   m_FillRect: {fileID: 5757190879357175841}
   m_HandleRect: {fileID: 8242304837238852891}
   m_Direction: 0
-  m_MinValue: -80
-  m_MaxValue: 0
+  m_MinValue: 0.0001
+  m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 8043738497053455099}
         m_TargetAssemblyTypeName: Options, Assembly-CSharp
         m_MethodName: SetVolume
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
