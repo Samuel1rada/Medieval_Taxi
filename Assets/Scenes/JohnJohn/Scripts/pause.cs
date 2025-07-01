@@ -54,6 +54,7 @@ public class pause : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("prototype");
+        ScoreManager.Instance.ResetScore();
     }
 
     public void Quitgame()
