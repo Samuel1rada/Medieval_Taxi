@@ -8,10 +8,12 @@ public class results : MonoBehaviour
     [SerializeField] public TextMeshProUGUI rank;
 
 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        float current_score = ScoreManager.Instance.CurrentScore;
+        current_score = 0;
     }
 
     // Update is called once per frame
