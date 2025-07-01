@@ -69,6 +69,10 @@ public class SimplifiedPickUpSystem : MonoBehaviour
     public float baseTime = 10f;                  // The "par" time for a trip
     public float averageSpeed = 10f;              // How fast we expect you to go
 
+    [Header("Debug & Visualization")]
+    // public bool showSpeedFeedbackAlways = false; // Show speed feedback even if not in pickup zone
+    public bool visualizePickupZone = false;     // Visualize pickup point proximity
+
     // === State Variables ===
 
     private bool isOnTrip = false;                // Are we currently on a trip?
@@ -143,14 +147,44 @@ public class SimplifiedPickUpSystem : MonoBehaviour
 
     void Update()
     {
+        // Visual feedback for proximity to pickup point (even if not in pickup zone)
+        if (visualizePickupZone && !isOnTrip)
+        {
+            bool nearAny = false;
+            for (int i = 0; i < pickupPoints.Count; i++)
+            {
+                float dist = Vector3.Distance(transform.position, pickupPoints[i].pointTransform.position);
+                if (dist < 6f && dist >= 3f) // Near but not close enough
+                {
+                    if (dropOffHint != null)
+                        dropOffHint.text = "<color=yellow>Get closer to pick up!</color>";
+                    nearAny = true;
+                    break;
+                }
+            }
+            if (!nearAny && dropOffHint != null && !isInPickupZone)
+                dropOffHint.text = "";
+        }
+
         // Waiting for the player to start a trip? Listen for E!
         if (!isOnTrip && isInPickupZone)
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            // Check speed before allowing pickup
+            if (rb != null && rb.linearVelocity.magnitude > dropoffSpeedThreshold)
             {
-                StartTrip(pickupPoints[currentPointIndex]);
-                isInPickupZone = false;
-                dropOffHint.text = "";
+                if (dropOffHint != null)
+                    dropOffHint.text = "<color=red>Slow down to pick up!</color>";
+            }
+            else
+            {
+                if (dropOffHint != null)
+                    dropOffHint.text = "Press E to Start Trip";
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    StartTrip(pickupPoints[currentPointIndex]);
+                    isInPickupZone = false;
+                    dropOffHint.text = "";
+                }
             }
         }
 
@@ -196,12 +230,19 @@ public class SimplifiedPickUpSystem : MonoBehaviour
             }
 
             // Only allow dropoff if you're basically stopped (no drive-thru dropoffs!)
-            if (isInDropoffZone && rb.linearVelocity.magnitude < dropoffSpeedThreshold)
+            if (isInDropoffZone)
             {
-                dropOffHint.text = "Press E to Drop Off";
-                if (Input.GetKeyDown(KeyCode.E))
+                if (rb.linearVelocity.magnitude < dropoffSpeedThreshold)
                 {
-                    CompleteTrip();
+                    dropOffHint.text = "Press E to Drop Off";
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        CompleteTrip();
+                    }
+                }
+                else
+                {
+                    dropOffHint.text = "<color=red>Slow down to drop off!</color>";
                 }
             }
             else
@@ -455,15 +496,20 @@ public class SimplifiedPickUpSystem : MonoBehaviour
     {
         if (!isOnTrip)
         {
-            // Check if entering a pickup zone
+            // Check if entering a pickup zone by player tag
             for (int i = 0; i < pickupPoints.Count; i++)
             {
-                if (other.transform == pickupPoints[i].pointTransform)
+                if (other.CompareTag("Player"))
                 {
-                    isInPickupZone = true;
-                    currentPointIndex = i;
-                    dropOffHint.text = "Press E to Start Trip";
-                    break;
+                    // Check if the player is within the pickup point's trigger collider
+                    float dist = Vector3.Distance(other.transform.position, pickupPoints[i].pointTransform.position);
+                    if (dist < 3f) // Adjust radius as needed
+                    {
+                        isInPickupZone = true;
+                        currentPointIndex = i;
+                        dropOffHint.text = "Press E to Start Trip";
+                        break;
+                    }
                 }
             }
         }
@@ -471,7 +517,7 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         if (isOnTrip)
         {
             // Check if entering dropoff zone
-            if (other.transform == activePoint.pointTransform)
+            if (activePoint != null && other.transform == activePoint.pointTransform)
             {
                 isInDropoffZone = true;
             }
@@ -502,20 +548,27 @@ public class SimplifiedPickUpSystem : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Handles exiting pickup/dropoff zones.
-    /// If you leave the zone, we don't want you to pick up or drop off anymore!
-    /// </summary>
     void OnTriggerExit(Collider other)
     {
         // Only clear pickup zone if we are not on a trip anymore
-        if (!isOnTrip && other.transform == pickupPoints[currentPointIndex].pointTransform)
+        if (!isOnTrip)
         {
-            isInPickupZone = false;
-            dropOffHint.text = "";
+            for (int i = 0; i < pickupPoints.Count; i++)
+            {
+                if (other.CompareTag("Player"))
+                {
+                    float dist = Vector3.Distance(other.transform.position, pickupPoints[i].pointTransform.position);
+                    if (dist < 3f) // Adjust radius as needed
+                    {
+                        isInPickupZone = false;
+                        dropOffHint.text = "";
+                        break;
+                    }
+                }
+            }
         }
 
-        if (isOnTrip && other.transform == activePoint.pointTransform)
+        if (isOnTrip && activePoint != null && other.transform == activePoint.pointTransform)
         {
             isInDropoffZone = false;
         }
@@ -575,16 +628,21 @@ public class SimplifiedPickUpSystem : MonoBehaviour
                 bool found = false;
                 for (int i = 0; i < pickupPoints.Count; i++)
                 {
-                    float dist = Vector3.Distance(transform.position, pickupPoints[i].pointTransform.position);
-                    if (dist < 3f) // Adjust this threshold as needed for your trigger size
+                    // Check for any collider with tag "Player" within a radius of the pickup point
+                    Collider[] colliders = Physics.OverlapSphere(pickupPoints[i].pointTransform.position, 3f); // Adjust radius as needed
+                    foreach (var col in colliders)
                     {
-                        isInPickupZone = true;
-                        currentPointIndex = i;
-                        if (dropOffHint != null)
-                            dropOffHint.text = "Press E to Start Trip";
-                        found = true;
-                        break;
+                        if (col.CompareTag("Player"))
+                        {
+                            isInPickupZone = true;
+                            currentPointIndex = i;
+                            if (dropOffHint != null)
+                                dropOffHint.text = "Press E to Start Trip";
+                            found = true;
+                            break;
+                        }
                     }
+                    if (found) break;
                 }
                 if (!found)
                 {
@@ -596,9 +654,27 @@ public class SimplifiedPickUpSystem : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
     }
+
+#if UNITY_EDITOR
+    void OnDrawGizmos()
+    {
+        if (visualizePickupZone && pickupPoints != null)
+        {
+            Gizmos.color = new Color(0f, 1f, 0f, 0.2f);
+            foreach (var point in pickupPoints)
+            {
+                if (point != null && point.pointTransform != null)
+                {
+                    Gizmos.DrawSphere(point.pointTransform.position, 3f); // Pickup radius
+                    Gizmos.color = new Color(1f, 1f, 0f, 0.1f);
+                    Gizmos.DrawSphere(point.pointTransform.position, 6f); // "Near" radius
+                    Gizmos.color = new Color(0f, 1f, 0f, 0.2f);
+                }
+            }
+        }
+    }
 }
-
-
+#endif
 
 //  "Good work Agent 47, All bugs have been eliminated, Please proceed to the next mission."
 // 
