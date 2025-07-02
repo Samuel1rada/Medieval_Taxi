@@ -23,7 +23,7 @@ public class Options : MonoBehaviour
 
     [SerializeField] private UnityEngine.UI.Slider SFXSlider;
 
-    Resolution[] resolutions;
+    
 
 
     public void SetVolume()
