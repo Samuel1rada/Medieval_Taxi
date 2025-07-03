@@ -12,7 +12,6 @@ public class AudioManager : MonoBehaviour
     public AudioClip boost;
     public AudioClip score;
     public AudioClip cratedestruction;
-    public AudioClip witch;
 
     [Header("---------- Ambient ----------")]
     public AudioSource forest;
