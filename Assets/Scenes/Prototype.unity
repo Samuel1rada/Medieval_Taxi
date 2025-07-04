@@ -14857,7 +14857,7 @@ GameObject:
   - component: {fileID: 103731080}
   - component: {fileID: 103731081}
   m_Layer: 0
-  m_Name: Audio_Manager
+  m_Name: Sound_Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14893,10 +14893,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97640a38cac4523489ce286b2cfe1fca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSource: {fileID: 758506236}
-  sfxSource: {fileID: 1785104654}
+  musicSource: {fileID: 0}
+  sfxSource: {fileID: 0}
   ambientSource: {fileID: 0}
-  button: {fileID: 8300000, guid: 5614fdd7ac7bc2240ba0e3da4aa0609b, type: 3}
+  button: {fileID: 0}
   boost: {fileID: 0}
   score: {fileID: 0}
   cratedestruction: {fileID: 0}
