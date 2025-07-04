@@ -111,6 +111,11 @@ public class SimplifiedPickUpSystem : MonoBehaviour
     public float driveByBonusCooldown = 2f;       // Can't spam drive-by bonuses
     public float destructionBonusCooldown = 2f;   // Can't spam destruction bonuses
 
+    [Header("Controller stuff")]
+    private bool usingController = false;             // Are we using a game controller?
+    private float lastInputDeviceCheckTime = 0f;      // When did we last check input device?
+    public float inputDeviceCheckInterval = 2f;       // How often to check for input device changes
+
     // === Unity Methods ===
 
     void Start()
@@ -143,10 +148,14 @@ public class SimplifiedPickUpSystem : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
 
         StartCoroutine(PickupZoneChecker());
+        // Remove DetectInputDevice() from Start, always check in Update instead
     }
 
     void Update()
     {
+        // Always check input device every frame
+        DetectInputDevice();
+
         // Visual feedback for proximity to pickup point (even if not in pickup zone)
         if (visualizePickupZone && !isOnTrip)
         {
@@ -166,7 +175,7 @@ public class SimplifiedPickUpSystem : MonoBehaviour
                 dropOffHint.text = "";
         }
 
-        // Waiting for the player to start a trip? Listen for E!
+        // Waiting for the player to start a trip? Listen for E or controller button!
         if (!isOnTrip && isInPickupZone)
         {
             // Check speed before allowing pickup
@@ -178,8 +187,13 @@ public class SimplifiedPickUpSystem : MonoBehaviour
             else
             {
                 if (dropOffHint != null)
-                    dropOffHint.text = "Press E to Start Trip";
-                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    dropOffHint.text = usingController
+                        ? "Press Y/Triangle to Start Trip"
+                        : "Press E to Start Trip";
+                }
+                if ((usingController && Input.GetKeyDown(KeyCode.JoystickButton3)) ||
+                    (!usingController && Input.GetKeyDown(KeyCode.E)))
                 {
                     StartTrip(pickupPoints[currentPointIndex]);
                     isInPickupZone = false;
@@ -234,8 +248,14 @@ public class SimplifiedPickUpSystem : MonoBehaviour
             {
                 if (rb.linearVelocity.magnitude < dropoffSpeedThreshold)
                 {
-                    dropOffHint.text = "Press E to Drop Off";
-                    if (Input.GetKeyDown(KeyCode.E))
+                    if (dropOffHint != null)
+                    {
+                        dropOffHint.text = usingController
+                            ? "Press Y/Triangle to Drop Off"
+                            : "Press E to Drop Off";
+                    }
+                    if ((usingController && Input.GetKeyDown(KeyCode.JoystickButton3)) ||
+                        (!usingController && Input.GetKeyDown(KeyCode.E)))
                     {
                         CompleteTrip();
                     }
@@ -507,7 +527,6 @@ public class SimplifiedPickUpSystem : MonoBehaviour
                     {
                         isInPickupZone = true;
                         currentPointIndex = i;
-                        dropOffHint.text = "Press E to Start Trip";
                         break;
                     }
                 }
@@ -636,8 +655,6 @@ public class SimplifiedPickUpSystem : MonoBehaviour
                         {
                             isInPickupZone = true;
                             currentPointIndex = i;
-                            if (dropOffHint != null)
-                                dropOffHint.text = "Press E to Start Trip";
                             found = true;
                             break;
                         }
@@ -652,6 +669,44 @@ public class SimplifiedPickUpSystem : MonoBehaviour
                 }
             }
             yield return new WaitForSeconds(1f);
+        }
+    }
+
+    /// <summary>
+    /// Detects whether the player is using a controller or keyboard/mouse.
+    /// Because peasants can't decide how they want to control their carts.
+    /// </summary>
+    void DetectInputDevice()
+    {
+        // Check for controller input
+        string[] joystickNames = Input.GetJoystickNames();
+        bool controllerConnected = false;
+
+        foreach (string name in joystickNames)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                controllerConnected = true;
+                break;
+            }
+        }
+        bool controllerInput =
+            Mathf.Abs(Input.GetAxis("Horizontal")) > 0.1f ||
+            Mathf.Abs(Input.GetAxis("Vertical")) > 0.1f ||
+            Input.GetKey(KeyCode.JoystickButton0) ||
+            Input.GetKey(KeyCode.JoystickButton1) ||
+            Input.GetKey(KeyCode.JoystickButton2) ||
+            Input.GetKey(KeyCode.JoystickButton3);
+
+        // Only switch to controller mode if we actually get controller input
+        if (controllerConnected && controllerInput)
+        {
+            usingController = true;
+        }
+        // Switch back to keyboard if we get keyboard input
+        else if (Input.anyKeyDown && !controllerInput)
+        {
+            usingController = false;
         }
     }
 
