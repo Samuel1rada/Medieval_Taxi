@@ -5,6 +5,7 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using TMPro;
+using Slider = UnityEngine.UI.Slider;
 
 public class Options : MonoBehaviour
 {
@@ -13,18 +14,29 @@ public class Options : MonoBehaviour
 
     public AudioMixer audioMixer;
 
-    public AudioMixer audioMixerSfx;
-
-    public Dropdown resolutionDropdown;
-
     public Canvas options_ui;
 
-    [SerializeField] private UnityEngine.UI.Slider musicSlider;
+    [SerializeField] public Slider musicSlider;
 
-    [SerializeField] private UnityEngine.UI.Slider SFXSlider;
+    [SerializeField] public Slider SFXSlider;
 
-    
 
+
+
+    void Start()
+    {
+
+        if (PlayerPrefs.HasKey("volumeMusic"))
+        {
+            LoadVolume();
+        }
+        else
+        {
+            SetVolume();
+            SetVolumeSfx();
+        }
+
+    }
 
     public void SetVolume()
     {
@@ -44,32 +56,27 @@ public class Options : MonoBehaviour
         //Debug.Log(volume);
     }
 
-    private void LoadVolume()
+    public void LoadVolume()
     {
-        musicSlider.value = PlayerPrefs.GetFloat("volumeMusic");
-        SFXSlider.value = PlayerPrefs.GetFloat("volumeSFX");
-
-        SetVolume();
-        SetVolumeSfx();
-    }
-
-
-
-     //Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-        if (PlayerPrefs.HasKey("volumeMusic"))
+        if (audioMixer != null && musicSlider != null && SFXSlider != null)
         {
-            LoadVolume();
-        }
-        else
-        {
+            musicSlider.value = PlayerPrefs.GetFloat("volumeMusic");
+            SFXSlider.value = PlayerPrefs.GetFloat("volumeSFX");
+
             SetVolume();
             SetVolumeSfx();
         }
-
+        else
+        {
+            Debug.LogError("audioMixer, musicSlider, or SFXSlider is null in LoadVolume()");
+        }
     }
+
+
+
+
+    //Start is called once before the first execution of Update after the MonoBehaviour is created
+
 
 
 
@@ -84,7 +91,7 @@ public class Options : MonoBehaviour
         Screen.fullScreen = isFullscreen;
         
 
-        if (Screen.fullScreen = isFullscreen)
+        if (Screen.fullScreen == isFullscreen)
         {
             Debug.Log("Fullscreen!");
         }
