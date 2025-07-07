@@ -14950,14 +14950,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97640a38cac4523489ce286b2cfe1fca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSource: {fileID: 0}
-  ambientSource: {fileID: 0}
-  sfxSource: {fileID: 0}
-  movementSource: {fileID: 0}
-  backgroundMusic: {fileID: 0}
-  ambientSound: {fileID: 0}
-  movementSound: {fileID: 0}
-  sfxClips: []
 --- !u!1 &104121769
 GameObject:
   m_ObjectHideFlags: 0
@@ -231818,49 +231810,49 @@ MonoBehaviour:
   pickupPoints:
   - pointName: Tavern
     pointTransform: {fileID: 7983806556073001699}
-    pointSprite: {fileID: 21300000, guid: 2b2f40b31a6d4df4985d1af4dc3baa2e, type: 3}
+    pointSprite: {fileID: 21300000, guid: d1304b20cba3eaa469dc59843cc103fb, type: 3}
     driveByPreference: 2
     destructionPreference: 2
     passengerAnimation: {fileID: 1091300803}
   - pointName: Tower
     pointTransform: {fileID: 1081392807}
-    pointSprite: {fileID: 21300000, guid: b8629bebbe7531145b82e2c392ff53ef, type: 3}
+    pointSprite: {fileID: 21300000, guid: fec33f8da5e72e04cae64d0712de2901, type: 3}
     driveByPreference: 2
     destructionPreference: 0
     passengerAnimation: {fileID: 1976283299}
   - pointName: The High Wall
     pointTransform: {fileID: 1130193899}
-    pointSprite: {fileID: 21300000, guid: bfab7b7c87afa1c4c924aa51c6770d4c, type: 3}
+    pointSprite: {fileID: 21300000, guid: c4b9f453d742e1241a273e0123ed1d08, type: 3}
     driveByPreference: 0
     destructionPreference: 0
     passengerAnimation: {fileID: 63122076}
   - pointName: Windmill
     pointTransform: {fileID: 2036726450}
-    pointSprite: {fileID: 21300000, guid: b083fcd2e8f749a46955e62f73ef83a2, type: 3}
+    pointSprite: {fileID: 21300000, guid: 8264c53b4b7eede46811e0afd3348626, type: 3}
     driveByPreference: 2
     destructionPreference: 2
     passengerAnimation: {fileID: 1196880137}
   - pointName: Gate
     pointTransform: {fileID: 1108929543}
-    pointSprite: {fileID: 21300000, guid: 987167fc0a78e8f47a3c553a98eed762, type: 3}
+    pointSprite: {fileID: 21300000, guid: 1d9104a27311f6d42b7e26f5ada80c8c, type: 3}
     driveByPreference: 2
     destructionPreference: 1
     passengerAnimation: {fileID: 1329415424}
   - pointName: Courtyard
     pointTransform: {fileID: 348785845}
-    pointSprite: {fileID: 21300000, guid: 178e59875a55fa14d9f4bdbac4b2bf51, type: 3}
+    pointSprite: {fileID: 21300000, guid: 555c17c9a4c3cc145a8c9737ea8d4bf8, type: 3}
     driveByPreference: 0
     destructionPreference: 1
     passengerAnimation: {fileID: 1379888329}
   - pointName: Creepy House
     pointTransform: {fileID: 207391985}
-    pointSprite: {fileID: 21300000, guid: 15126de69b8d4c240a633e2c04e01296, type: 3}
+    pointSprite: {fileID: 21300000, guid: 36af10071ff8a4440ab59880b6856f4d, type: 3}
     driveByPreference: 2
     destructionPreference: 2
     passengerAnimation: {fileID: 740101956}
   - pointName: Stable
     pointTransform: {fileID: 575454996}
-    pointSprite: {fileID: 21300000, guid: 3263b09d53dfba6459fde0cd6bb50e45, type: 3}
+    pointSprite: {fileID: 21300000, guid: 40a04a6c3cfad79439b84b3c6d22e4f1, type: 3}
     driveByPreference: 1
     destructionPreference: 2
     passengerAnimation: {fileID: 1706059150}
