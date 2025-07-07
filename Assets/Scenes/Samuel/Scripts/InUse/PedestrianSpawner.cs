@@ -8,17 +8,6 @@ public class PedestrianSpawner : MonoBehaviour
 
     [SerializeField] private List<GameObject> pedestrian = new List<GameObject>();
     public int pedestrianAmount;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        StartCoroutine(Spawn());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     IEnumerator Spawn()
     {
@@ -36,7 +25,7 @@ public class PedestrianSpawner : MonoBehaviour
                 GameObject obj = Instantiate(pedestrian[Random.Range(0, pedestrian.Count)], hit.position, Quaternion.identity);
                 obj.GetComponent<WaypintNavigator>().currenwaypoint = child.GetComponent<Waypoint>();
 
-                count++; // Only count successful spawns
+                count++; 
             }
             else
             {

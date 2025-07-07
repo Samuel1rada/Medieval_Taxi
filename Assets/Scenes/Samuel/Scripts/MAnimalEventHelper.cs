@@ -57,20 +57,20 @@ public class MAnimalEventHelper : MonoBehaviour
                     if (animal.CurrentSpeedIndex <= minSpeedIndex)
                     {
                         isSlowingDown = false;
-                        Debug.Log("Reached minimum speed index. Stopping slowdown.");
+                        //Debug.Log("Reached minimum speed index. Stopping slowdown.");
                         return;
                     }
 
                     animal.SpeedDown();
 
                 }
-                Debug.Log("Slowing down: Current Speed Index = " + animal.CurrentSpeedIndex);
+                //Debug.Log("Slowing down: Current Speed Index = " + animal.CurrentSpeedIndex);
             }
             else
             {
                 isSlowingDown = false;
                 timer = 0f;
-                Debug.Log("Already at or below minimum speed index. No slowdown needed.");
+               // Debug.Log("Already at or below minimum speed index. No slowdown needed.");
             }
         }
     }
@@ -79,7 +79,7 @@ public class MAnimalEventHelper : MonoBehaviour
         isSprinting = true;
         isSlowingDown = false;
         timer = 0f;
-        Debug.Log("Sprint started.");
+        //Debug.Log("Sprint started.");
     }
     public void OnIsSprintReleased()
     {
