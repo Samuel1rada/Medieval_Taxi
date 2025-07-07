@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PresetMonitor : MonoBehaviour
 {
-    [HideInInspector] public PresetManager manager; // replace with your manager class name
+    [HideInInspector] public PresetManager manager; 
     /*[HideInInspector]*/ public int spawnIndex;
 
     private List<Transform> children = new List<Transform>();

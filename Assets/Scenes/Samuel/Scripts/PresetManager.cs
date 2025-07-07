@@ -22,7 +22,7 @@ public class PresetManager : MonoBehaviour
             SpawnPresetAt(i);
         }
     }
-
+    // spawn logic. spawn the preset and attaches the presetmonitor script to them
     void SpawnPresetAt(int index)
     {
         Transform spawnPos = spawnLocations[index];
@@ -31,7 +31,6 @@ public class PresetManager : MonoBehaviour
 
         GameObject obj = Instantiate(prefab, spawnPos.position, randomRotation);
 
-        // Attach monitor and set references
         var monitor = obj.AddComponent<PresetMonitor>();
         monitor.manager = this;
         monitor.spawnIndex = index;
