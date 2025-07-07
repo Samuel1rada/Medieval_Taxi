@@ -437,11 +437,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 0}
   audioMixer: {fileID: 24100000, guid: 8a2353e8f1aff004aabb2afea7c481b6, type: 2}
-  audioMixerSfx: {fileID: 0}
-  resolutionDropdown: {fileID: 0}
   options_ui: {fileID: 0}
   musicSlider: {fileID: 4000813736138978611}
   SFXSlider: {fileID: 1435322346289351027}
+  fullscreen: {fileID: 4328007997188145412}
 --- !u!1 &3073671856866310349
 GameObject:
   m_ObjectHideFlags: 0
@@ -2056,10 +2055,10 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8938937466320608078, guid: 900cb3bc8701f204783da5d8ba8b6397, type: 3}
+      - m_Target: {fileID: 8043738497053455099}
         m_TargetAssemblyTypeName: Options, Assembly-CSharp
         m_MethodName: Setfullscreen
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

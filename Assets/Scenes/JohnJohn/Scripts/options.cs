@@ -20,11 +20,22 @@ public class Options : MonoBehaviour
 
     [SerializeField] public Slider SFXSlider;
 
+    [SerializeField] public UnityEngine.UI.Toggle fullscreen;
+
 
 
 
     void Start()
     {
+        if (PlayerPrefs.HasKey("full"))
+        {
+            loadFullscreen();
+        }
+        else
+        {
+            Setfullscreen();
+        }
+
 
         if (PlayerPrefs.HasKey("volumeMusic"))
         {
@@ -86,20 +97,47 @@ public class Options : MonoBehaviour
         
     }
 
-    public void Setfullscreen(bool isFullscreen)
+    public void Setfullscreen()
     {
-        Screen.fullScreen = isFullscreen;
-        
 
-        if (Screen.fullScreen == isFullscreen)
+        bool isFull = fullscreen.isOn;
+
+        PlayerPrefs.SetInt("full", (isFull ? 1 : 0));
+
+        if (fullscreen.isOn)
         {
+            Screen.fullScreen = true;
             Debug.Log("Fullscreen!");
         }
         else
         {
+            Screen.fullScreen = false;
             Debug.Log("Not Fullscreen!");
         }
 
+        //Screen.fullScreen = isFullscreen;
+        
+
+        //if (Screen.fullScreen == isFullscreen)
+       // {
+            
+       //     Debug.Log("Fullscreen!");
+        //}
+       // else
+       // {
+        //    Debug.Log("Not Fullscreen!");
+        //}
+
+    }
+
+    private void loadFullscreen()
+    {
+        if (fullscreen != null)
+        {
+            fullscreen.isOn = (PlayerPrefs.GetInt("full") != 0);
+        }
+
+        Setfullscreen();
     }
 
     public void Back()
