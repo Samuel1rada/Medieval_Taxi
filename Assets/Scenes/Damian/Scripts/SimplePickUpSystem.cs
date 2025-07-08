@@ -377,7 +377,17 @@ public class SimplifiedPickUpSystem : MonoBehaviour
     void StartTrip(PickupDropoffPoint pickupPoint)
     {
         MInput.enabled = false;
-        int nextIndex = (currentPointIndex + 1) % pickupPoints.Count;
+
+        // Pick a random destination index that is not the same as the pickup index
+        int pickupIndex = currentPointIndex;
+        int nextIndex = pickupIndex;
+        if (pickupPoints.Count > 1)
+        {
+            do
+            {
+                nextIndex = Random.Range(0, pickupPoints.Count);
+            } while (nextIndex == pickupIndex);
+        }
         activePoint = pickupPoints[nextIndex];
 
         float distance = Vector3.Distance(pickupPoint.pointTransform.position, activePoint.pointTransform.position);
@@ -502,7 +512,7 @@ public class SimplifiedPickUpSystem : MonoBehaviour
             pickupPoints[currentPointIndex].passengerAnimation.SpawnSmokeAtCartPassenger();
         }
 
-        // Move to the next pickup point in the list
+        // Move to the next pickup point in the list (sequential, not random)
         currentPointIndex = (currentPointIndex + 1) % pickupPoints.Count;
     }
 
