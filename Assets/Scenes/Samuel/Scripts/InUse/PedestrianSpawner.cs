@@ -9,6 +9,11 @@ public class PedestrianSpawner : MonoBehaviour
     [SerializeField] private List<GameObject> pedestrian = new List<GameObject>();
     public int pedestrianAmount;
 
+
+    private void Start()
+    {
+       StartCoroutine(Spawn());
+    }
     IEnumerator Spawn()
     {
         int count = 0;
