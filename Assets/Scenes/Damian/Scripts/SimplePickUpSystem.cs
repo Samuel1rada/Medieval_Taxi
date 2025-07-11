@@ -719,27 +719,28 @@ public class SimplifiedPickUpSystem : MonoBehaviour
             usingController = false;
         }
     }
+    // #if UNITY_EDITOR
+    //     void OnDrawGizmos()
+    //     {
+    //         if (visualizePickupZone && pickupPoints != null)
+    //         {
+    //             Gizmos.color = new Color(0f, 1f, 0f, 0.2f);
+    //             foreach (var point in pickupPoints)
+    //             {
+    //                 if (point != null && point.pointTransform != null)
+    //                 {
+    //                     Gizmos.DrawSphere(point.pointTransform.position, 3f); // Pickup radius
+    //                     Gizmos.color = new Color(1f, 1f, 0f, 0.1f);
+    //                     Gizmos.DrawSphere(point.pointTransform.position, 6f); // "Near" radius
+    //                     Gizmos.color = new Color(0f, 1f, 0f, 0.2f);
+    //                 }
+    //             }
+    //         }
+    //     }
 
-#if UNITY_EDITOR
-    void OnDrawGizmos()
-    {
-        if (visualizePickupZone && pickupPoints != null)
-        {
-            Gizmos.color = new Color(0f, 1f, 0f, 0.2f);
-            foreach (var point in pickupPoints)
-            {
-                if (point != null && point.pointTransform != null)
-                {
-                    Gizmos.DrawSphere(point.pointTransform.position, 3f); // Pickup radius
-                    Gizmos.color = new Color(1f, 1f, 0f, 0.1f);
-                    Gizmos.DrawSphere(point.pointTransform.position, 6f); // "Near" radius
-                    Gizmos.color = new Color(0f, 1f, 0f, 0.2f);
-                }
-            }
-        }
-    }
+    // #endif
 }
-#endif
+
 
 //  "Good work Agent 47, All bugs have been eliminated, Please proceed to the next mission."
 // 
