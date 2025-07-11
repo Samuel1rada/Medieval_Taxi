@@ -1,5 +1,7 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+using System; // Add for scene management
 
 public class results : MonoBehaviour
 {
@@ -39,6 +41,19 @@ public class results : MonoBehaviour
         if (current_score >= 1000)
         {
             rank.text = "Rank: A";
+        }
+
+        // Restart scene on "button south" (A)
+        if (Input.GetKeyDown(KeyCode.JoystickButton0))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        // Exit to desktop on "button east" (B)
+        if (Input.GetKeyDown(KeyCode.JoystickButton1))
+        {
+            Application.Quit();
+            Debug.Log("Application Quit");
         }
     }
 }
